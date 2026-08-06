@@ -28,7 +28,7 @@ If the gesture packages aren't installed, the bottom-sheet still works via the c
 ## Forcing bottom-sheet mode
 
 ```html
-<saganta-appkit-modal mode="bottom-sheet"></saganta-appkit-modal>
+<saganta-appkit-modal mode="bottomsheet"></saganta-appkit-modal>
 ```
 
 ## Forcing modal mode (even on mobile)

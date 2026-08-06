@@ -204,7 +204,7 @@ All four wrappers accept the same prop shape (defined in `src/ui-web/modal-props
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `mode` | `'auto' \| 'modal' \| 'bottom-sheet' \| 'inline'` | `'auto'` | Presentation mode — auto picks modal on desktop, bottom-sheet on mobile |
+| `mode` | `'auto' \| 'modal' \| 'bottomsheet' \| 'inline'` | `'auto'` | Presentation mode — auto picks modal on desktop, bottom-sheet on mobile |
 | `theme` | `'dark' \| 'light'` | `'dark'` | Built-in theme — override individual tokens via CSS custom properties |
 | `branding` | `'default' \| 'minimal' \| 'hidden'` | `'default'` | Branding mode for the wallet list view |
 | `logoSrc` | `string` | — | URL to a custom logo image |

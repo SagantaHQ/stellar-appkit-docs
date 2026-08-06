@@ -164,7 +164,7 @@ The `mode` prop controls how the modal is presented:
 <StellarAppKitModal mode="auto" />
 
 <!-- Always a bottom-sheet, even on desktop -->
-<StellarAppKitModal mode="bottom-sheet" />
+<StellarAppKitModal mode="bottomsheet" />
 
 <!-- Embedded inline — no overlay, always visible -->
 <StellarAppKitModal mode="inline" />
@@ -203,7 +203,7 @@ See [Theming](/core/theming/) for the full token list.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `mode` | `'auto' \| 'modal' \| 'bottom-sheet' \| 'inline'` | `'auto'` | Presentation mode |
+| `mode` | `'auto' \| 'modal' \| 'bottomsheet' \| 'inline'` | `'auto'` | Presentation mode |
 | `theme` | `'dark' \| 'light'` | `'dark'` | Built-in theme |
 | `branding` | `'default' \| 'minimal' \| 'hidden'` | `'default'` | Branding mode for the wallet list view |
 | `logo-src` | `string` | — | URL to a custom logo image |

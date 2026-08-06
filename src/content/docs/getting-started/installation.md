@@ -23,7 +23,7 @@ That's it. All wallet SDKs, the Stellar SDK, and the gesture libraries are bundl
 | `@walletconnect/sign-client` | `createWalletConnectConnector()` | WalletConnect connector not imported |
 | `@use-gesture/vanilla` + `motion` | `<saganta-appkit-modal>` bottom-sheet mode | Bottom-sheet mode not used |
 
-Every connector lazy-imports its SDK inside its `connect()` / `signTransaction()` methods, so bundlers only include the SDK code if the connector is actually called. The gesture libraries are lazy-imported inside the modal's `setupBottomSheetGestures()`, only called when `mode === 'bottom-sheet'`.
+Every connector lazy-imports its SDK inside its `connect()` / `signTransaction()` methods, so bundlers only include the SDK code if the connector is actually called. The gesture libraries are lazy-imported inside the modal's `setupBottomSheetGestures()`, only called when `mode === 'bottomsheet'`.
 
 ## Register the UI Web Component
 

@@ -77,7 +77,7 @@ export default defineConfig({
           label: 'UI Components',
           items: [
             { label: 'Modal', slug: 'ui/modal' },
-            { label: 'Bottom Sheet', slug: 'ui/bottom-sheet' },
+            { label: 'Bottom Sheet', slug: 'ui/bottomsheet' },
             { label: 'Avatars', slug: 'ui/avatars' },
             { label: 'Copy-to-Clipboard', slug: 'ui/copy-clipboard' },
           ],

@@ -108,7 +108,7 @@ If you really want a component-style API, you can wrap it yourself:
 <!-- Modal.svelte -->
 <script lang="ts">
   import { stellarmodal } from '@saganta/stellar-appkit/svelte';
-  export let mode: 'auto' | 'modal' | 'bottom-sheet' | 'inline' = 'auto';
+  export let mode: 'auto' | 'modal' | 'bottomsheet' | 'inline' = 'auto';
   export let theme: 'dark' | 'light' = 'dark';
 </script>
 
@@ -152,7 +152,7 @@ The `mode` attribute controls how the modal is presented:
 <saganta-appkit-modal use:stellarmodal mode="auto"></saganta-appkit-modal>
 
 <!-- Always a bottom-sheet, even on desktop -->
-<saganta-appkit-modal use:stellarmodal mode="bottom-sheet"></saganta-appkit-modal>
+<saganta-appkit-modal use:stellarmodal mode="bottomsheet"></saganta-appkit-modal>
 
 <!-- Embedded inline — no overlay, always visible -->
 <saganta-appkit-modal use:stellarmodal mode="inline"></saganta-appkit-modal>
