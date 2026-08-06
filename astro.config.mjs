@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  site: 'https://stellar-appkit-docs.libertypie.workers.dev',
+  site: 'https://stellar-appkit.saganta.com',
   output: 'static',
   integrations: [
     starlight({
@@ -11,6 +11,19 @@ export default defineConfig({
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/SagantaHQ/stellar-appkit' },
       ],
+      head: [
+        { tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
+        { tag: 'meta', attrs: { property: 'og:site_name', content: 'Stellar AppKit' } },
+        { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+        { tag: 'meta', attrs: { name: 'robots', content: 'index, follow' } },
+        { tag: 'meta', attrs: { name: 'author', content: 'Saganta' } },
+        { tag: 'meta', attrs: { name: 'application-name', content: 'Stellar AppKit' } },
+        { tag: 'meta', attrs: { name: 'keywords', content: 'Stellar, Soroban, wallet, Web3Modal, AppKit, Freighter, Albedo, xBull, Ledger, WalletConnect, SIWS, Sign-In With Stellar, SEP-43, SEP-0053, React, Vue, Solid, Svelte, TypeScript' } },
+        { tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
+      ],
+      components: {
+        Head: './src/components/Head.astro',
+      },
       sidebar: [
         {
           label: 'Getting Started',

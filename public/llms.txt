@@ -1,0 +1,60 @@
+# Stellar AppKit
+
+> One SDK for every Stellar wallet — unified wallet API, Soroban built in, real transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.
+
+Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides one unified wallet API, a first-class Soroban layer, real transaction previews instead of raw XDR, and a themeable UI that works identically dropped into any site.
+
+## Documentation
+
+- [Introduction](https://stellar-appkit.saganta.com/getting-started/introduction/): Overview, features, and why Stellar AppKit exists
+- [Installation](https://stellar-appkit.saganta.com/getting-started/installation/): Install the core package, wallet SDKs, and framework wrappers
+- [Quick Start](https://stellar-appkit.saganta.com/getting-started/quick-start/): Working wallet connect flow in 10 lines
+- [Wallet Connection](https://stellar-appkit.saganta.com/core/wallet-connection/): Connect wallets, manage sessions, switch accounts, network mismatch recovery
+- [Transaction Preview](https://stellar-appkit.saganta.com/core/transaction-preview/): Risk flags, contract badges, fee estimates, balance deltas
+- [Soroban Integration](https://stellar-appkit.saganta.com/core/soroban/): invoke(), RPC failover, typed contract clients, auth-entry signing
+- [Sign-In With Stellar](https://stellar-appkit.saganta.com/core/siws/): SEP-0053 signing, multi-candidate verification, debug diagnostics
+- [Theming](https://stellar-appkit.saganta.com/core/theming/): CSS custom properties, theme attribute, all modal attributes
+
+## Framework Wrappers
+
+- [React](https://stellar-appkit.saganta.com/wrappers/react/): useSyncExternalStore-based hooks, tearing-safe
+- [Vue](https://stellar-appkit.saganta.com/wrappers/vue/): Composition API composables
+- [Solid](https://stellar-appkit.saganta.com/wrappers/solid/): createSignal/createMemo hooks
+- [Svelte](https://stellar-appkit.saganta.com/wrappers/svelte/): Svelte 4 + 5 compatible stores
+
+## Soroban Features
+
+- [Typed Contract Client](https://stellar-appkit.saganta.com/soroban/typed-client/): Type-safe contract calls from TS interface
+- [RPC Failover](https://stellar-appkit.saganta.com/soroban/rpc-failover/): Multi-provider failover with health tracking
+- [Contract Badges](https://stellar-appkit.saganta.com/soroban/badges/): Verified, audited, published-by badges
+- [Fee Estimation](https://stellar-appkit.saganta.com/soroban/fee-estimation/): Full fee breakdown before signing
+- [Auth-Entry Signing](https://stellar-appkit.saganta.com/soroban/auth-entry/): Soroban delegated auth via authorizeEntry()
+
+## Wallets
+
+- [Freighter](https://stellar-appkit.saganta.com/wallets/freighter/): Extension + mobile, SEP-0053 signing
+- [Albedo](https://stellar-appkit.saganta.com/wallets/albedo/): Popup-based, no install required
+- [xBull](https://stellar-appkit.saganta.com/wallets/xbull/): Extension detection polling, best-effort SIWS
+- [Ledger](https://stellar-appkit.saganta.com/wallets/ledger/): WebHID/WebUSB, multi-account, auth-entry signing
+- [WalletConnect](https://stellar-appkit.saganta.com/wallets/walletconnect/): QR pairing, mobile deep-linking
+
+## UI Components
+
+- [Modal](https://stellar-appkit.saganta.com/ui/modal/): Shadow DOM Web Component, attributes, events
+- [Bottom Sheet](https://stellar-appkit.saganta.com/ui/bottom-sheet/): Draggable with spring physics
+- [Avatars](https://stellar-appkit.saganta.com/ui/avatars/): Wallet-provided, Stellar Expert, gradient fallback
+- [Copy-to-Clipboard](https://stellar-appkit.saganta.com/ui/copy-clipboard/): Per-address feedback
+
+## Reference
+
+- [API Reference](https://stellar-appkit.saganta.com/reference/api/): StellarAppKit, SorobanConnection, verifySiws
+- [Error Handling](https://stellar-appkit.saganta.com/reference/errors/): ConnectError, NetworkMismatchError, SEP-43 codes
+- [Bundle Size](https://stellar-appkit.saganta.com/reference/bundle-size/): Tree-shaking guarantees
+- [Changelog](https://stellar-appkit.saganta.com/reference/changelog/): Release history
+
+## Links
+
+- [GitHub](https://github.com/SagantaHQ/stellar-appkit)
+- [npm: @saganta/stellar-appkit](https://www.npmjs.com/package/@saganta/stellar-appkit)
+- [npm: @saganta/stellar-appkit-siws-verify](https://www.npmjs.com/package/@saganta/stellar-appkit-siws-verify)
+- [License: MIT](https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE)

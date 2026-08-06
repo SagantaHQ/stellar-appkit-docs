@@ -1,0 +1,137 @@
+# Stellar AppKit — Full Documentation
+
+> One SDK for every Stellar wallet — unified wallet API, Soroban built in, real transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.
+> 
+> GitHub: https://github.com/SagantaHQ/stellar-appkit
+> Docs: https://stellar-appkit.saganta.com
+> npm: @saganta/stellar-appkit
+> License: MIT
+
+## What is Stellar AppKit?
+
+Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides one unified wallet API, a first-class Soroban layer, real transaction previews instead of raw XDR, and a themeable UI that works identically dropped into any site.
+
+Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer infrastructure (embedded wallets, gas sponsorship, smart accounts, payment APIs).
+
+## Key Features
+
+### Wallet Connectivity
+- Unified adapter interface aligned with SEP-43
+- Freighter, Albedo, xBull, Ledger, and WalletConnect adapters
+- Network mismatch recovery with auto-retry
+- Cross-tab session sync via BroadcastChannel
+
+### Transaction Preview
+- Every operation decoded into plain language
+- Risk flags: account-merge, signer-change, threshold-change, large-transfer, unverified-contract, broad-auth-grant
+- Contract verification badges (Verified, Audited, Published by)
+- Fee estimation (base fee, Soroban resource fee, total in XLM)
+- Balance-delta previews from simulation stateChanges
+- Auth-entry preview for standalone signAuthEntry() calls
+- Signature-request queueing
+
+### Soroban Integration
+- One invoke() call: build → simulate → prepare → sign → submit → poll
+- Typed contract client (ContractClient<T>) from stellar contract bindings
+- RPC failover (FailoverRpcServer) with health tracking and cooldown
+- Pre-simulate fee estimation (FeeEstimate)
+- Auth-entry signing via authorizeEntry() — HashIdPreimage, SHA-256, ScVal wrapping
+- Contract verification badges (ContractBadge)
+- Balance-delta preview (decodeSimulationDeltas)
+
+### Sign-In With Stellar (SIWS)
+- Self-issued message format analogous to EIP-4361
+- SEP-0053 message encoding for Freighter: sha256("Stellar Signed Message:\n" + message)
+- Multi-candidate verification (8+ candidates: utf8, sha256, sha512, domain-prefixed, CRLF)
+- Debug mode with diagnostics dump
+- Unified signedData contract across all wallets
+- Server-side verifier package (@saganta/stellar-appkit-siws-verify)
+
+### Framework Wrappers
+- React (/react): StellarAppKitProvider + hooks, useSyncExternalStore
+- Vue (/vue): StellarAppKitPlugin + composables, shallowRef + shallowReadonly
+- Solid (/solid): StellarAppKitProvider + hooks, createSignal/createMemo
+- Svelte (/svelte): setStellarAppKitContext + stores (Svelte 4 + 5)
+- Tree-shakable subpath exports — only ship the framework you use
+
+### UI
+- <saganta-appkit-modal> Shadow DOM Web Component
+- Modal (desktop), bottom-sheet (mobile), inline (embedded) presentation
+- Draggable bottom-sheet with spring physics (@use-gesture/vanilla + motion)
+- Wallet-provided avatars + gradient fallback + Stellar Expert avatars
+- Copy-to-clipboard on all address displays
+- Conic-gradient loading spinner
+- Sleek custom scrollbar (hover-show, theme-aware)
+- Connected view: XLM balance, transaction history, explorer links, network pill, overflow menu
+
+## Installation
+
+```bash
+npm install @saganta/stellar-appkit
+npm install @stellar/stellar-sdk @stellar/freighter-api
+```
+
+## Quick Start
+
+```ts
+import { StellarAppKit, createFreighterConnector } from '@saganta/stellar-appkit';
+import '@saganta/stellar-appkit/ui-web';
+
+const appkit = new StellarAppKit({
+  network: 'TESTNET',
+  connectors: [createFreighterConnector()],
+  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+});
+
+const modal = document.querySelector('saganta-appkit-modal');
+modal.client = appkit;
+modal.open();
+```
+
+## SorobanConnection
+
+```ts
+import { SorobanConnection } from '@saganta/stellar-appkit';
+
+const soroban = new SorobanConnection({
+  rpcUrl: 'https://soroban-testnet.stellar.org',
+  networkPassphrase: Networks.TESTNET,
+  wallet: appkit,
+});
+
+// One call: build → simulate → prepare → sign → submit → poll
+const result = await soroban.invoke({ contractId, method: 'transfer', args });
+
+// Preview with balance deltas + fee estimate
+const preview = await soroban.previewInvoke({ contractId, method: 'transfer', args });
+
+// Typed contract client
+const token = soroban.contract<TokenContract>('C...', { specEntries });
+await token.transfer({ from, to, amount: 100n });
+```
+
+## SIWS
+
+```ts
+// Client
+const { message, signedMessage, signerAddress, signedData } = await appkit.signIn({
+  statement: 'Sign in to My App',
+  nonce: await fetch('/api/siws/nonce').then(r => r.text()),
+});
+
+// Server
+import { verifySiws } from '@saganta/stellar-appkit-siws-verify';
+const result = await verifySiws(
+  { message, signedMessage, signerAddress, signedData },
+  { expectedDomain: 'app.example.com', expectedNonce }
+);
+```
+
+## Error Handling
+
+ConnectError with SEP-43 codes: -1 (internal), -2 (external service), -3 (invalid request), -4 (user rejected).
+NetworkMismatchError subclass with expectedNetwork and actualNetwork.
+
+## License
+
+MIT

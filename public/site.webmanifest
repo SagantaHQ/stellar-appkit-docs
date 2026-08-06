@@ -1,0 +1,16 @@
+{
+  "name": "Stellar AppKit Documentation",
+  "short_name": "Stellar AppKit",
+  "description": "One SDK for every Stellar wallet",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0D0E",
+  "theme_color": "#0B0D0E",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

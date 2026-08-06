@@ -1,0 +1,54 @@
+---
+import DefaultHead from '@astrojs/starlight/components/Head.astro';
+
+const canonical = new URL(Astro.url.pathname, 'https://stellar-appkit.saganta.com').toString();
+const { title, description } = Astro.props;
+---
+
+<DefaultHead {...Astro.props} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Stellar AppKit" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<!-- Additional SEO -->
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Saganta" />
+<meta name="application-name" content="Stellar AppKit" />
+<meta name="keywords" content="Stellar, Soroban, wallet, Web3Modal, AppKit, Freighter, Albedo, xBull, Ledger, WalletConnect, SIWS, Sign-In With Stellar, SEP-43, SEP-0053, React, Vue, Solid, Svelte, TypeScript" />
+
+<!-- Structured Data: SoftwareApplication -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Stellar AppKit",
+  "description": "One SDK for every Stellar wallet — unified wallet API, Soroban built in, real transaction previews, and framework wrappers.",
+  "url": "https://stellar-appkit.saganta.com",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "Saganta", "url": "https://github.com/SagantaHQ" },
+  "license": "https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE",
+  "codeRepository": "https://github.com/SagantaHQ/stellar-appkit"
+})} />
+
+<!-- Structured Data: BreadcrumbList -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Stellar AppKit", "item": "https://stellar-appkit.saganta.com" },
+    { "@type": "ListItem", "position": 2, "name": title, "item": canonical }
+  ]
+})} />
