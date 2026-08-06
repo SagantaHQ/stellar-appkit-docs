@@ -31,44 +31,33 @@
   --sl-color-heading: #000;
 }
 
-/* ---- Button text contrast ---- */
-
-/* Dark mode: primary buttons have mint bg → dark text */
-.sl-link-button.primary {
-  color: #0B0D0E !important;
-}
-.sl-link-button.primary:hover {
-  color: #0B0D0E !important;
-}
-
-/* Light mode: primary buttons have green bg → white text */
-[data-theme='light'] .sl-link-button.primary,
-[data-theme='light'] .sl-link-button.primary:hover {
-  color: #ffffff !important;
-}
-
-/* ---- Active sidebar link ---- */
-/* Starlight uses TWO different selectors for active links:
-   1. [aria-current='page'] — the group/card link style with bg
-   2. [aria-current='true'] — the tree link style (text only, no bg)
-   Both need explicit overrides because @layer overrides our CSS vars. */
-
-/* Dark mode */
-.sidebar-tree [aria-current='page'] {
-  color: #0B0D0E !important;
-  background-color: #6EE7B7 !important;
-}
-.sidebar-tree a[aria-current='true'] {
-  color: #6EE7B7 !important;
-}
-
-/* Light mode */
-[data-theme='light'] .sidebar-tree [aria-current='page'] {
+/* ---- Active sidebar link (the .astro-ojxuodky items) ---- */
+/* Starlight's @layer overrides CSS variables, so we target the elements directly.
+   Same accent color for both themes, white text — simple and always visible. */
+:where(.astro-ojxuodky)[aria-current='page'],
+:where(.astro-ojxuodky)[aria-current='page']:hover,
+:where(.astro-ojxuodky)[aria-current='page']:focus {
   color: #ffffff !important;
   background-color: #0F7C5A !important;
+  font-weight: 600;
+}
+
+/* Also catch the tree-style links that use aria-current='true' */
+.sidebar-tree a[aria-current='true'] {
+  color: #0F7C5A !important;
 }
 [data-theme='light'] .sidebar-tree a[aria-current='true'] {
   color: #0F7C5A !important;
+}
+
+/* ---- Primary buttons ---- */
+.sl-link-button.primary,
+.sl-link-button.primary:hover {
+  color: #0B0D0E !important;
+}
+[data-theme='light'] .sl-link-button.primary,
+[data-theme='light'] .sl-link-button.primary:hover {
+  color: #ffffff !important;
 }
 
 /* ---- Hover sidebar links ---- */
