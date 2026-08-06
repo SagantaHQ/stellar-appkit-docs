@@ -21,7 +21,7 @@ const appkit = new StellarAppKit({
 });
 
 const modal = document.querySelector('saganta-appkit-modal');
-modal.client = appkit; // wires up the UI — preview, account switcher, everything
+modal.client = appkit; // wires up the UI — preview, balance, history, network mismatch recovery
 
 connectButton.addEventListener('click', () => modal.open());
 
@@ -35,12 +35,12 @@ await appkit.restore(); // resume a persisted session on page load, if any
 That's a working wallet connect flow with:
 - Modal (desktop) / bottom-sheet (mobile) / inline (embedded) presentation
 - Transaction preview with risk flags before every signature
-- Multiple wallets connected simultaneously
+- Connected view with XLM balance, transaction history, and explorer links
 - Cross-tab session sync
 
 ## Next steps
 
-- [Wallet Connection](../core/wallet-connection/) — multi-wallet sessions, account switching
-- [Transaction Preview](../core/transaction-preview/) — risk flags, contract badges, fee estimates
-- [Soroban Integration](../core/soroban/) — typed contract clients, RPC failover, invoke pipeline
-- [Framework Wrappers](../wrappers/react/) — React, Vue, Solid, Svelte hooks
+- [Wallet Connection](/core/wallet-connection/) — sessions, account switching, network mismatch recovery
+- [Transaction Preview](/core/transaction-preview/) — risk flags, contract badges, fee estimates
+- [Soroban Integration](/core/soroban/) — typed contract clients, RPC failover, invoke pipeline
+- [Framework Wrappers](/wrappers/react/) — React, Vue, Solid, Svelte hooks

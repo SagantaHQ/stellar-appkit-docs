@@ -15,19 +15,6 @@ The `connect()` method:
 3. Validates the wallet's network matches the app's configured network
 4. Stores the session and emits a `connect` event
 
-## Multiple wallets, one session
-
-Connecting a second wallet doesn't replace the first — both stay connected:
-
-```ts
-await appkit.connect('freighter');
-await appkit.connect('ledger'); // both connected now; Ledger is active
-
-appkit.sessions;                       // every connected session
-appkit.session;                        // the active one
-await appkit.switchAccount('freighter'); // back to Freighter, Ledger stays connected
-```
-
 ## Account picker (hardware wallets)
 
 Ledger exposes multiple accounts via derivation paths. When connecting, the modal automatically shows an account picker:
@@ -36,6 +23,21 @@ Ledger exposes multiple accounts via derivation paths. When connecting, the moda
 const accounts = await appkit.registry.getOrThrow('ledger').listAccounts();
 await appkit.switchAccount('ledger', accounts[2].address);
 ```
+
+## Advanced: multi-session API
+
+The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first, and `switchAccount(walletId)` flips the active one without disconnecting:
+
+```ts
+await appkit.connect('freighter');
+await appkit.connect('ledger'); // both connected; Ledger is active
+
+appkit.sessions;                          // every connected session
+appkit.session;                           // the active one
+await appkit.switchAccount('freighter');  // back to Freighter, Ledger stays connected
+```
+
+**Note:** the built-in `<saganta-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client. If you're using the modal, treat the connect flow as single-wallet.
 
 ## Network mismatch recovery
 

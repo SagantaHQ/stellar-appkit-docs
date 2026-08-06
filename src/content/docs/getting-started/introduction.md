@@ -14,14 +14,13 @@ Stellar already has solid wallet-connection plumbing — [SEP-43](https://github
 - A **polished, themeable, cross-platform UI** (modal / bottom-sheet / inline) — the existing connector libraries are deliberately headless, so "sleek out of the box" is a gap, not a solved problem.
 - A **transaction preview** that decodes operations into plain language and flags risk *before* the wallet's own signature prompt — every wallet-connect kit passes raw XDR straight through today.
 - A **first-class Soroban layer** — simulate → prepare → sign → submit as one call, with typed contract clients, instead of hand-rolling `rpc.Server` calls per app.
-- **Multi-wallet sessions**, hardware wallet support, and network-mismatch recovery that goes further than "fail with a generic error."
+- **Network-mismatch recovery** that goes further than "fail with a generic error" — typed error with `expectedNetwork` / `actualNetwork`, plus an optional auto-retry mode that polls until the user switches networks.
 
 ## Key features
 
 ### Wallet connectivity
 - Unified adapter interface aligned with SEP-43, so new wallets are one file, not a redesign
 - Freighter, Albedo, xBull, Ledger, and WalletConnect adapters, ready to use
-- Multiple wallets connected simultaneously — switch the active one without disconnecting the others
 - Hardware wallets with real multi-account support (derivation-path based) via `listAccounts()` / `selectAccount()`
 - Richer-than-boolean reachability (`'available' | 'locked' | 'not-installed' | 'unavailable'`)
 - Typed `NetworkMismatchError` with an optional auto-retry mode that polls until the user switches networks
@@ -66,7 +65,7 @@ Stellar already has solid wallet-connection plumbing — [SEP-43](https://github
 - Wallet-provided avatars with deterministic gradient fallback + opt-in Stellar Expert avatars
 - Copy-to-clipboard everywhere an address appears
 - Contract verification badges with audit URLs rendered in the transaction preview
-- Account switcher, account picker (multi-account wallets), network-mismatch view, and transaction-preview view all built in
+- Account picker (multi-account hardware wallets), network-mismatch view, and transaction-preview view all built in
 
 ## License
 
