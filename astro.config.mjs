@@ -87,6 +87,7 @@ export default defineConfig({
             { label: 'API Reference', slug: 'reference/api' },
             { label: 'Error Handling', slug: 'reference/errors' },
             { label: 'Bundle Size', slug: 'reference/bundle-size' },
+            { label: 'AI Integration', slug: 'reference/ai-integration' },
             { label: 'Changelog', slug: 'reference/changelog' },
           ],
         },

@@ -132,6 +132,29 @@ const result = await verifySiws(
 ConnectError with SEP-43 codes: -1 (internal), -2 (external service), -3 (invalid request), -4 (user rejected).
 NetworkMismatchError subclass with expectedNetwork and actualNetwork.
 
+## AI Integration
+
+The library repo ships two AI-readable files at its root so AI coding tools (Cursor, GitHub Copilot, Claude Code, Windsurf, Continue) can pick up the full API surface without you having to paste docs into chat:
+
+- SKILL.md — Structured AI skill file with YAML frontmatter (name, description, license) and a body covering trigger conditions, install commands, common code patterns (basic connection, signing, Soroban, typed client, SIWS, React hooks), API reference tables, connectors table, per-wallet SIWS signing table, theming, and links. Used by skill-aware agents.
+- llms.txt — Compact plain-text API index (~250 lines) following the llms.txt convention at https://llmstxt.org/. Sections: header, install, quick start, wallet connection, signing, Soroban, SIWS verification, framework wrappers, transaction preview, theming, error handling, tree-shaking, links. Read by any agent that reads repo files.
+
+Raw URLs:
+- https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/SKILL.md
+- https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/llms.txt
+
+This docs site also serves its own:
+- https://stellar-appkit.saganta.com/llms.txt — compact index of every docs page
+- https://stellar-appkit.saganta.com/llms-full.txt — full docs content concatenated (this file)
+
+Recommended agent workflow:
+1. Install the package first — once it is in package.json, agents can read llms.txt from node_modules/@saganta/stellar-appkit/llms.txt
+2. Point the agent at the raw SKILL.md URL for trigger conditions and common patterns
+3. For Soroban work, also point the agent at the typed-client docs page or the Soroban section of llms-full.txt
+4. For SIWS verification, always have the agent read the SIWS docs page — the multi-candidate verification logic is subtle
+
+Full AI Integration docs: https://stellar-appkit.saganta.com/reference/ai-integration/
+
 ## License
 
 MIT

@@ -50,7 +50,17 @@ Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides
 - [API Reference](https://stellar-appkit.saganta.com/reference/api/): StellarAppKit, SorobanConnection, verifySiws
 - [Error Handling](https://stellar-appkit.saganta.com/reference/errors/): ConnectError, NetworkMismatchError, SEP-43 codes
 - [Bundle Size](https://stellar-appkit.saganta.com/reference/bundle-size/): Tree-shaking guarantees
+- [AI Integration](https://stellar-appkit.saganta.com/reference/ai-integration/): SKILL.md and llms.txt — let AI agents (Cursor, Copilot, Claude) write correct Stellar AppKit code
 - [Changelog](https://stellar-appkit.saganta.com/reference/changelog/): Release history
+
+## AI-Readable Files
+
+The library repo also ships two AI-readable files at its root, so AI coding tools can pick up the full API surface without you having to paste docs into chat:
+
+- [SKILL.md](https://github.com/SagantaHQ/stellar-appkit/blob/main/SKILL.md): Structured AI skill file with trigger conditions, install commands, common code patterns, and API tables. Used by skill-aware agents (Claude Code with skills, custom agents).
+- [llms.txt](https://github.com/SagantaHQ/stellar-appkit/blob/main/llms.txt): Compact plain-text API index following the llms.txt convention. Read by any agent that reads repo files (Cursor, Continue, Copilot).
+
+This docs site also serves its own compact index (`https://stellar-appkit.saganta.com/llms.txt`) and full-content dump (`https://stellar-appkit.saganta.com/llms-full.txt`) for one-fetch context loading.
 
 ## Links
 
