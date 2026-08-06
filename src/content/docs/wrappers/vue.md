@@ -8,18 +8,12 @@ This guide covers everything you need to build a Stellar dApp frontend with Vue 
 ## Installation
 
 ```bash
-npm install vue @saganta/stellar-appkit @stellar/stellar-sdk
+npm install vue @saganta/stellar-appkit
 ```
 
-Then install the wallet SDKs for the connectors you want to support:
+That's it — all wallet SDKs (`@stellar/stellar-sdk`, `@stellar/freighter-api`, `@albedo-link/intent`, `@creit.tech/xbull-wallet-connect`, `@ledgerhq/*`, `@walletconnect/sign-client`) and gesture libraries (`@use-gesture/vanilla`, `motion`) are bundled as regular dependencies of `@saganta/stellar-appkit`. They're installed automatically, version-locked to known-working ranges, and tree-shaken out of your bundle if you don't use the corresponding connector.
 
-```bash
-npm install @stellar/freighter-api              # Freighter
-npm install @albedo-link/intent                 # Albedo (no install required for users)
-npm install @creit.tech/xbull-wallet-connect    # xBull
-npm install @ledgerhq/hw-app-str @ledgerhq/hw-transport-webhid  # Ledger
-npm install @walletconnect/sign-client          # WalletConnect (QR pairing)
-```
+Vue is a peer dependency (not bundled) because your app already has its own Vue instance — having two copies of Vue would cause reactive state to not sync between components.
 
 You also need to register the `<saganta-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `<StellarAppKitModal>` Vue component to work:
 

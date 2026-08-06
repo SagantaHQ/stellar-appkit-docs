@@ -73,8 +73,9 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 
 ```bash
 npm install @saganta/stellar-appkit
-npm install @stellar/stellar-sdk @stellar/freighter-api
 ```
+
+All wallet SDKs (@stellar/stellar-sdk, @stellar/freighter-api, @albedo-link/intent, @creit.tech/xbull-wallet-connect, @ledgerhq/*, @walletconnect/sign-client) and gesture libraries (@use-gesture/vanilla, motion) are bundled as regular dependencies — installed automatically, version-locked, tree-shaken if unused. Frameworks (react, vue, solid-js, svelte) are optional peer dependencies.
 
 ## Quick Start
 
