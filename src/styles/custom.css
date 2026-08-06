@@ -5,8 +5,6 @@
   --sl-color-accent: #6EE7B7;
   --sl-color-accent-low: #1a3a32;
   --sl-color-accent-high: #8af0c8;
-  /* Text on accent-colored buttons/elements — mint bg needs dark text */
-  --sl-color-accent-text: #0B0D0E;
   --sl-color-bg: #0B0D0E;
   --sl-color-bg-nav: #14171A;
   --sl-color-bg-sidebar: #0F1112;
@@ -18,13 +16,11 @@
   --sl-font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
 }
 
-/* ---- Light mode — same green accent family ---- */
+/* ---- Light mode ---- */
 :root[data-theme='light'] {
   --sl-color-accent: #0F7C5A;
   --sl-color-accent-low: #d4f4e8;
   --sl-color-accent-high: #0a5c44;
-  /* Text on accent-colored buttons — green bg needs white text */
-  --sl-color-accent-text: #ffffff;
   --sl-color-bg: #FFFFFF;
   --sl-color-bg-nav: #F8F9FA;
   --sl-color-bg-sidebar: #FAFBFC;
@@ -33,6 +29,42 @@
   --sl-color-text: #1a1a1a;
   --sl-color-text-muted: #666;
   --sl-color-heading: #000;
+}
+
+/* ---- Button text contrast ---- */
+/* Starlight's @layer starlight.base overrides our :root vars, so we need
+   to target the actual elements with explicit color values. */
+
+/* Dark mode: primary buttons have mint bg (#6EE7B7) → dark text */
+.sl-link-button.primary {
+  color: #0B0D0E !important;
+}
+.sl-link-button.primary:hover {
+  color: #0B0D0E !important;
+}
+/* Dark mode: active sidebar link has mint bg → dark text */
+.sidebar-tree [aria-current='page'] {
+  color: #0B0D0E !important;
+  background-color: #6EE7B7 !important;
+}
+
+/* Light mode: primary buttons have green bg (#0F7C5A) → white text */
+[data-theme='light'] .sl-link-button.primary {
+  color: #ffffff !important;
+}
+[data-theme='light'] .sl-link-button.primary:hover {
+  color: #ffffff !important;
+}
+/* Light mode: active sidebar link → white text on green */
+[data-theme='light'] .sidebar-tree [aria-current='page'] {
+  color: #ffffff !important;
+  background-color: #0F7C5A !important;
+}
+
+/* ---- Hover sidebar links ---- */
+.sidebar-tree a:hover {
+  background-color: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
 }
 
 /* ---- Site title ---- */
@@ -44,23 +76,6 @@
 /* ---- Links use accent ---- */
 a {
   color: var(--sl-color-accent);
-}
-
-/* ---- Active sidebar link ---- */
-.sidebar-tree [aria-current='page'] {
-  color: var(--sl-color-accent-text) !important;
-  background-color: var(--sl-color-accent);
-}
-
-/* ---- Hover sidebar links ---- */
-.sidebar-tree a:hover {
-  background-color: var(--sl-color-accent-low);
-  color: var(--sl-color-accent-high);
-}
-
-/* ---- Hero buttons: ensure text is readable ---- */
-.hero-actions a {
-  color: var(--sl-color-accent-text);
 }
 
 /* ---- Rounded sidebar items ---- */
