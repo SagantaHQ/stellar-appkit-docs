@@ -21,6 +21,7 @@ Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides
 - [Vue](https://stellar-appkit.saganta.com/wrappers/vue/): Composition API composables
 - [Solid](https://stellar-appkit.saganta.com/wrappers/solid/): createSignal/createMemo hooks
 - [Svelte](https://stellar-appkit.saganta.com/wrappers/svelte/): Svelte 4 + 5 compatible stores
+- [Modal Components](https://stellar-appkit.saganta.com/wrappers/modal-components/): Typed <StellarAppKitModal> component for React/Vue/Solid + use:stellarmodal Svelte action
 
 ## Soroban Features
 

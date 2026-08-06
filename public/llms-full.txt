@@ -48,11 +48,16 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 - Server-side verifier package (@saganta/stellar-appkit-siws-verify)
 
 ### Framework Wrappers
-- React (/react): StellarAppKitProvider + hooks, useSyncExternalStore
-- Vue (/vue): StellarAppKitPlugin + composables, shallowRef + shallowReadonly
-- Solid (/solid): StellarAppKitProvider + hooks, createSignal/createMemo
-- Svelte (/svelte): setStellarAppKitContext + stores (Svelte 4 + 5)
+- React (/react): StellarAppKitProvider + hooks, useSyncExternalStore. Also exports <StellarAppKitModal> forwardRef component with onConnect/onDisconnect/onError callbacks and imperative handle (open/close/element).
+- Vue (/vue): StellarAppKitPlugin + composables, shallowRef + shallowReadonly. Also exports <StellarAppKitModal> defineComponent with @connect/@disconnect/@error emits.
+- Solid (/solid): StellarAppKitProvider + hooks, createSignal/createMemo. Also exports <StellarAppKitModal> component with ref callback prop.
+- Svelte (/svelte): setStellarAppKitContext + stores (Svelte 4 + 5). Also exports use:stellarmodal action + openModal(node)/closeModal(node)/isStellarAppKitModal(node) helpers.
 - Tree-shakable subpath exports — only ship the framework you use
+- Framework modal components deliberately do NOT import the Web Component class (extends HTMLElement, undefined in pure-Node SSR). Consumers must `import '@saganta/stellar-appkit/ui-web'` once at app entry to register <saganta-appkit-modal>.
+- Shared props: mode, theme, branding, logoSrc, title, autoRetryNetwork, stellarExpertAvatars
+- Shared events: connect, disconnect, error (mirrors client events)
+- Shared imperative handle (React/Solid/Vue via ref): open(), close(), element
+- Docs: https://stellar-appkit.saganta.com/wrappers/modal-components/
 
 ### UI
 - <saganta-appkit-modal> Shadow DOM Web Component

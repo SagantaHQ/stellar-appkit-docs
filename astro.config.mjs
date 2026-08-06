@@ -50,6 +50,7 @@ export default defineConfig({
             { label: 'Vue', slug: 'wrappers/vue' },
             { label: 'Solid', slug: 'wrappers/solid' },
             { label: 'Svelte', slug: 'wrappers/svelte' },
+            { label: 'Modal Components', slug: 'wrappers/modal-components' },
           ],
         },
         {
