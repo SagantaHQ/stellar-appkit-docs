@@ -1,10 +1,11 @@
-/* Dark mode is the default — Starlight uses :root for dark, :root[data-theme="light"] for light */
+/* Dark mode is the default */
 
 /* ---- Dark mode (default) ---- */
 :root {
   --sl-color-accent: #6EE7B7;
   --sl-color-accent-low: #1a3a32;
   --sl-color-accent-high: #8af0c8;
+  /* Text on accent-colored buttons/elements — mint bg needs dark text */
   --sl-color-accent-text: #0B0D0E;
   --sl-color-bg: #0B0D0E;
   --sl-color-bg-nav: #14171A;
@@ -17,11 +18,12 @@
   --sl-font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
 }
 
-/* ---- Light mode — same mint accent, not a different blue ---- */
+/* ---- Light mode — same green accent family ---- */
 :root[data-theme='light'] {
   --sl-color-accent: #0F7C5A;
   --sl-color-accent-low: #d4f4e8;
   --sl-color-accent-high: #0a5c44;
+  /* Text on accent-colored buttons — green bg needs white text */
   --sl-color-accent-text: #ffffff;
   --sl-color-bg: #FFFFFF;
   --sl-color-bg-nav: #F8F9FA;
@@ -31,18 +33,6 @@
   --sl-color-text: #1a1a1a;
   --sl-color-text-muted: #666;
   --sl-color-heading: #000;
-}
-
-/* ---- Fix: button text color visible on accent background ---- */
-/* Starlight buttons use --sl-color-accent-text for the text on accent buttons */
-/* In dark mode, accent is mint green (#6EE7B7) — text must be dark */
-:root {
-  --sl-color-accent-contrast-text: #0B0D0E;
-  --sl-color-white: #0B0D0E;
-}
-:root[data-theme='light'] {
-  --sl-color-accent-contrast-text: #ffffff;
-  --sl-color-white: #ffffff;
 }
 
 /* ---- Site title ---- */
@@ -56,9 +46,9 @@ a {
   color: var(--sl-color-accent);
 }
 
-/* ---- Active sidebar link: text must be readable on accent bg ---- */
+/* ---- Active sidebar link ---- */
 .sidebar-tree [aria-current='page'] {
-  color: var(--sl-color-accent-contrast-text) !important;
+  color: var(--sl-color-accent-text) !important;
   background-color: var(--sl-color-accent);
 }
 
@@ -68,9 +58,9 @@ a {
   color: var(--sl-color-accent-high);
 }
 
-/* ---- Hero buttons text ---- */
+/* ---- Hero buttons: ensure text is readable ---- */
 .hero-actions a {
-  color: var(--sl-color-accent-contrast-text);
+  color: var(--sl-color-accent-text);
 }
 
 /* ---- Rounded sidebar items ---- */
