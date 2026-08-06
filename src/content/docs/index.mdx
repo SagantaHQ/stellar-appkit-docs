@@ -1,40 +1,79 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: Stellar AppKit
+description: One SDK for every Stellar wallet — real transaction previews, Soroban built in, and framework wrappers for React, Vue, Solid, and Svelte.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Unified wallet API, real transaction previews, Soroban built in, and a themeable UI that works in any framework.
   image:
-    file: ../../assets/houston.webp
+    file: ../../assets/logo.svg
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Get Started
+      link: /getting-started/introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: Quick Start
+      link: /getting-started/quick-start/
+      icon: right-arrow
+      variant: minimal
+    - text: GitHub
+      link: https://github.com/SagantaHQ/stellar-appkit
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+## What is Stellar AppKit?
 
-## Next steps
+A **Web3Modal / Reown AppKit equivalent for Stellar** — one unified wallet API, a first-class Soroban layer, real transaction previews instead of raw XDR, and a themeable UI that works identically dropped into any site.
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+## Key Features
+
+### Wallet Connectivity
+Freighter, Albedo, xBull, Ledger, and WalletConnect — unified SEP-43 interface. Multiple wallets, one session, with network mismatch recovery and cross-tab sync.
+
+### Transaction Preview
+Every operation decoded into plain language with risk flags, contract verification badges, fee estimates, and balance-delta previews — all *before* the wallet's signature prompt.
+
+### Soroban Integration
+Build, simulate, prepare, sign, submit, and poll with a single `invoke()` call. Typed contract clients, RPC failover, auth-entry signing, and pre-simulate fee estimation built in.
+
+### Sign-In With Stellar
+Self-issued auth flow with SEP-0053 signing support, multi-candidate verification, and a server-side verifier package. Debug diagnostics for diagnosing verification failures.
+
+### Framework Wrappers
+React, Vue, Solid, and Svelte — same hooks (`useConnect`, `useSession`, `useSoroban`), tree-shakable subpath exports. Only ship the framework you use.
+
+### Themeable UI
+Shadow DOM Web Component with modal, bottom-sheet, and inline presentation. Draggable bottom-sheet with spring physics. Every color, radius, and font is a CSS custom property.
+
+## Packages
+
+| Package | Description |
+|---|---|
+| `@saganta/stellar-appkit` | Core SDK — wallet connections, Soroban, transaction preview, framework wrappers |
+| `@saganta/stellar-appkit-siws-verify` | Server-side SIWS signature/envelope verification |
+
+## Install
+
+```bash
+npm install @saganta/stellar-appkit @stellar/stellar-sdk @stellar/freighter-api
+```
+
+## Quick Example
+
+```ts
+import { StellarAppKit, createFreighterConnector } from '@saganta/stellar-appkit';
+import '@saganta/stellar-appkit/ui-web';
+
+const appkit = new StellarAppKit({
+  network: 'TESTNET',
+  connectors: [createFreighterConnector()],
+  appMetadata: { name: 'My App', domain: 'localhost', uri: 'http://localhost:3000' },
+});
+
+const modal = document.querySelector('saganta-appkit-modal');
+modal.client = appkit;
+modal.open();
+```
+
+## License
+
+MIT — see [LICENSE](https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE).
