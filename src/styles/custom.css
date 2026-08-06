@@ -32,33 +32,43 @@
 }
 
 /* ---- Button text contrast ---- */
-/* Starlight's @layer starlight.base overrides our :root vars, so we need
-   to target the actual elements with explicit color values. */
 
-/* Dark mode: primary buttons have mint bg (#6EE7B7) → dark text */
+/* Dark mode: primary buttons have mint bg → dark text */
 .sl-link-button.primary {
   color: #0B0D0E !important;
 }
 .sl-link-button.primary:hover {
   color: #0B0D0E !important;
 }
-/* Dark mode: active sidebar link has mint bg → dark text */
+
+/* Light mode: primary buttons have green bg → white text */
+[data-theme='light'] .sl-link-button.primary,
+[data-theme='light'] .sl-link-button.primary:hover {
+  color: #ffffff !important;
+}
+
+/* ---- Active sidebar link ---- */
+/* Starlight uses TWO different selectors for active links:
+   1. [aria-current='page'] — the group/card link style with bg
+   2. [aria-current='true'] — the tree link style (text only, no bg)
+   Both need explicit overrides because @layer overrides our CSS vars. */
+
+/* Dark mode */
 .sidebar-tree [aria-current='page'] {
   color: #0B0D0E !important;
   background-color: #6EE7B7 !important;
 }
+.sidebar-tree a[aria-current='true'] {
+  color: #6EE7B7 !important;
+}
 
-/* Light mode: primary buttons have green bg (#0F7C5A) → white text */
-[data-theme='light'] .sl-link-button.primary {
-  color: #ffffff !important;
-}
-[data-theme='light'] .sl-link-button.primary:hover {
-  color: #ffffff !important;
-}
-/* Light mode: active sidebar link → white text on green */
+/* Light mode */
 [data-theme='light'] .sidebar-tree [aria-current='page'] {
   color: #ffffff !important;
   background-color: #0F7C5A !important;
+}
+[data-theme='light'] .sidebar-tree a[aria-current='true'] {
+  color: #0F7C5A !important;
 }
 
 /* ---- Hover sidebar links ---- */
