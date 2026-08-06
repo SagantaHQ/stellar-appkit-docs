@@ -8,10 +8,6 @@ export default defineConfig({
     starlight({
       title: 'Stellar AppKit',
       description: 'One SDK for every Stellar wallet — unified wallet API, Soroban built in, transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.',
-      logo: {
-        src: './src/assets/logo.svg',
-        replacesTitle: true,
-      },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/SagantaHQ/stellar-appkit' },
       ],

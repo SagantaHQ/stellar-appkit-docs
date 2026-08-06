@@ -1,7 +1,11 @@
+/* Dark mode is the default — Starlight uses :root for dark, :root[data-theme="light"] for light */
+
+/* ---- Dark mode (default) ---- */
 :root {
   --sl-color-accent: #6EE7B7;
   --sl-color-accent-low: #1a3a32;
   --sl-color-accent-high: #8af0c8;
+  --sl-color-accent-text: #0B0D0E;
   --sl-color-bg: #0B0D0E;
   --sl-color-bg-nav: #14171A;
   --sl-color-bg-sidebar: #0F1112;
@@ -10,13 +14,15 @@
   --sl-color-text: #F5F6F7;
   --sl-color-text-muted: #9AA0A6;
   --sl-color-heading: #FFFFFF;
+  --sl-font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
 }
 
-/* Dark theme by default */
+/* ---- Light mode — same mint accent, not a different blue ---- */
 :root[data-theme='light'] {
-  --sl-color-accent: #0F4C81;
-  --sl-color-accent-low: #e8f0f8;
-  --sl-color-accent-high: #0a3a6b;
+  --sl-color-accent: #0F7C5A;
+  --sl-color-accent-low: #d4f4e8;
+  --sl-color-accent-high: #0a5c44;
+  --sl-color-accent-text: #ffffff;
   --sl-color-bg: #FFFFFF;
   --sl-color-bg-nav: #F8F9FA;
   --sl-color-bg-sidebar: #FAFBFC;
@@ -27,23 +33,47 @@
   --sl-color-heading: #000;
 }
 
-/* Make the header logo + title look clean */
+/* ---- Fix: button text color visible on accent background ---- */
+/* Starlight buttons use --sl-color-accent-text for the text on accent buttons */
+/* In dark mode, accent is mint green (#6EE7B7) — text must be dark */
+:root {
+  --sl-color-accent-contrast-text: #0B0D0E;
+  --sl-color-white: #0B0D0E;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-contrast-text: #ffffff;
+  --sl-color-white: #ffffff;
+}
+
+/* ---- Site title ---- */
 .site-title {
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-/* Code blocks — use the mono font from the SDK */
-:root {
-  --sl-font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
-}
-
-/* Links — use the accent color */
+/* ---- Links use accent ---- */
 a {
   color: var(--sl-color-accent);
 }
 
-/* Sidebar items — cleaner spacing */
+/* ---- Active sidebar link: text must be readable on accent bg ---- */
+.sidebar-tree [aria-current='page'] {
+  color: var(--sl-color-accent-contrast-text) !important;
+  background-color: var(--sl-color-accent);
+}
+
+/* ---- Hover sidebar links ---- */
+.sidebar-tree a:hover {
+  background-color: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+}
+
+/* ---- Hero buttons text ---- */
+.hero-actions a {
+  color: var(--sl-color-accent-contrast-text);
+}
+
+/* ---- Rounded sidebar items ---- */
 .sidebar-tree :is(a, summary) {
   border-radius: 6px;
 }
