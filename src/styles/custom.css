@@ -2,4 +2,48 @@
   --sl-color-accent: #6EE7B7;
   --sl-color-accent-low: #1a3a32;
   --sl-color-accent-high: #8af0c8;
+  --sl-color-bg: #0B0D0E;
+  --sl-color-bg-nav: #14171A;
+  --sl-color-bg-sidebar: #0F1112;
+  --sl-color-bg-inline-code: #1a1d1f;
+  --sl-color-border: rgba(255, 255, 255, 0.08);
+  --sl-color-text: #F5F6F7;
+  --sl-color-text-muted: #9AA0A6;
+  --sl-color-heading: #FFFFFF;
+}
+
+/* Dark theme by default */
+:root[data-theme='light'] {
+  --sl-color-accent: #0F4C81;
+  --sl-color-accent-low: #e8f0f8;
+  --sl-color-accent-high: #0a3a6b;
+  --sl-color-bg: #FFFFFF;
+  --sl-color-bg-nav: #F8F9FA;
+  --sl-color-bg-sidebar: #FAFBFC;
+  --sl-color-bg-inline-code: #F0F2F4;
+  --sl-color-border: rgba(0, 0, 0, 0.1);
+  --sl-color-text: #1a1a1a;
+  --sl-color-text-muted: #666;
+  --sl-color-heading: #000;
+}
+
+/* Make the header logo + title look clean */
+.site-title {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Code blocks — use the mono font from the SDK */
+:root {
+  --sl-font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+}
+
+/* Links — use the accent color */
+a {
+  color: var(--sl-color-accent);
+}
+
+/* Sidebar items — cleaner spacing */
+.sidebar-tree :is(a, summary) {
+  border-radius: 6px;
 }

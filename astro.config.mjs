@@ -2,15 +2,15 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 export default defineConfig({
-  site: 'https://docs.saganta.com',
+  site: 'https://stellar-appkit-docs.libertypie.workers.dev',
   output: 'static',
   integrations: [
     starlight({
       title: 'Stellar AppKit',
-      description: 'One SDK for every Stellar wallet — real transaction previews, Soroban built in, framework wrappers for React/Vue/Solid/Svelte.',
+      description: 'One SDK for every Stellar wallet — unified wallet API, Soroban built in, transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.',
       logo: {
         src: './src/assets/logo.svg',
-        replacesTitle: false,
+        replacesTitle: true,
       },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/SagantaHQ/stellar-appkit' },

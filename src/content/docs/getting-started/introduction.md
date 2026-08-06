@@ -3,38 +3,78 @@ title: Introduction
 description: One SDK for every Stellar wallet — real transaction previews, Soroban built in, and framework wrappers for React, Vue, Solid, and Svelte.
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+Stellar AppKit is a **Web3Modal / Reown AppKit equivalent for Stellar**. It provides one unified wallet API, a first-class Soroban layer, real transaction previews instead of raw XDR, and a themeable UI that works identically dropped into any site.
 
-Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides one unified wallet API, a first-class Soroban layer, real transaction previews instead of raw XDR, and a themeable UI that works identically dropped into any site.
+Built by [Saganta](https://github.com/saganta) as the wallet-connection layer of its Stellar/Soroban developer infrastructure (embedded wallets, gas sponsorship, smart accounts, payment APIs).
 
 ## Why this exists
 
-Stellar already has solid wallet-connection plumbing — [SEP-43](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md) is an emerging standard interface several wallets are converging on. But no existing library ships what Stellar AppKit does:
+Stellar already has solid wallet-connection plumbing — [SEP-43](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md) is an emerging standard interface several wallets are converging on, and [`@creit-tech/stellar-wallets-kit`](https://github.com/Creit-Tech/Stellar-Wallets-Kit) is a mature, headless connector library covering most of the ecosystem. Neither ships what Stellar AppKit does:
 
-<CardGrid stagger>
-  <Card title="Polished, themeable UI" icon="setting">
-    Modal / bottom-sheet / inline presentation, every color/radius/font is a CSS custom property.
-  </Card>
-  <Card title="Transaction preview" icon="document">
-    Decodes operations into plain language and flags risk *before* the wallet's own signature prompt.
-  </Card>
-  <Card title="First-class Soroban" icon="rocket">
-    Simulate → prepare → sign → submit as one call, with typed contract clients and RPC failover.
-  </Card>
-  <Card title="Framework wrappers" icon="integration">
-    React, Vue, Solid, and Svelte — same hooks, tree-shakable subpath exports.
-  </Card>
-</CardGrid>
+- A **polished, themeable, cross-platform UI** (modal / bottom-sheet / inline) — the existing connector libraries are deliberately headless, so "sleek out of the box" is a gap, not a solved problem.
+- A **transaction preview** that decodes operations into plain language and flags risk *before* the wallet's own signature prompt — every wallet-connect kit passes raw XDR straight through today.
+- A **first-class Soroban layer** — simulate → prepare → sign → submit as one call, with typed contract clients, instead of hand-rolling `rpc.Server` calls per app.
+- **Multi-wallet sessions**, hardware wallet support, and network-mismatch recovery that goes further than "fail with a generic error."
 
 ## Key features
 
-- **Wallet connectivity**: Freighter, Albedo, xBull, Ledger, WalletConnect — unified SEP-43 interface
-- **Transaction preview**: every operation decoded, risk flags, contract verification badges, fee estimates
-- **Soroban**: typed contract clients, RPC failover, balance-delta previews, auth-entry signing
-- **SIWS**: Sign-In With Stellar with SEP-0053 support and server-side verifier
-- **Framework wrappers**: React, Vue, Solid, Svelte — tree-shakable, same hook surface
-- **UI**: Shadow DOM Web Component, modal/bottom-sheet/inline, draggable bottom-sheet with physics
+### Wallet connectivity
+- Unified adapter interface aligned with SEP-43, so new wallets are one file, not a redesign
+- Freighter, Albedo, xBull, Ledger, and WalletConnect adapters, ready to use
+- Multiple wallets connected simultaneously — switch the active one without disconnecting the others
+- Hardware wallets with real multi-account support (derivation-path based) via `listAccounts()` / `selectAccount()`
+- Richer-than-boolean reachability (`'available' | 'locked' | 'not-installed' | 'unavailable'`)
+- Typed `NetworkMismatchError` with an optional auto-retry mode that polls until the user switches networks
+- Cross-tab session sync via `BroadcastChannel` — connect in one tab, every other tab reflects it
+
+### Signing & transaction UX
+- Human-readable transaction previews — every operation decoded, not just a summary
+- Risk flags: account-merge and signer-changes are always flagged; large-transfer and unverified-contract checks are opt-in and app-configurable
+- Soroban call preview backed by real simulation — see "this would fail" before signing anything
+- Soroban balance-delta preview — surfaces the actual balance changes (XLM, trustline assets) the network would apply
+- Auth-entry preview — standalone `signAuthEntry()` calls are decoded and risk-assessed before reaching the wallet
+- Signature-request queueing — concurrent sign calls resolve in order instead of racing the wallet
+
+### Soroban
+- One `invoke()` call covers build → simulate → prepare → sign → submit → poll
+- Typed contract client — `client.transfer({ from, to, amount })` is fully typed
+- RPC failover — pass `rpcUrls: [...]` and the connection transparently fails over on network/5xx errors
+- Contract verification badges — surface "Verified", "Audited", "Published by X" badges in the preview UI
+- Pre-simulate fee estimation — `FeeEstimate` with base fee, Soroban resource fee, instruction count, and total in XLM
+- Auth-entry signing — uses `authorizeEntry()` for correct `HashIdPreimage` construction and `ScVal` wrapping
+- Low-level escape hatches (`simulate`, `prepare`, `submit`, `pollStatus`) for anything `invoke()` doesn't cover
+
+### Identity
+- Sign-In With Stellar (SIWS) — a self-issued, SEP-43-based message-signing flow analogous to Sign-In With Ethereum
+- SEP-0053 message encoding for Freighter — `sha256("Stellar Signed Message:\n" + message)`
+- Multi-candidate verification with debug diagnostics — tries 8+ candidate byte sequences
+- Unified `signedData` contract — every connector surfaces the exact bytes the wallet signed
+- Server-side verifier package (`@saganta/stellar-appkit-siws-verify`)
+
+### Framework wrappers
+- React (`/react`) — `<StellarAppKitProvider>` + hooks using `useSyncExternalStore`
+- Vue (`/vue`) — `StellarAppKitPlugin` + Composition API composables
+- Solid (`/solid`) — `<StellarAppKitProvider>` + hooks using `createSignal`/`createMemo`
+- Svelte (`/svelte`) — `setStellarAppKitContext()` + stores (Svelte 4 + 5 compatible)
+- Each wrapper is a separate subpath export — bundlers only ship the framework code you actually import
+
+### UI
+- `<saganta-appkit-modal>` — a Shadow DOM Web Component, framework-agnostic, zero runtime dependency
+- Modal (desktop), bottom-sheet (mobile web), and inline (embedded) presentation, auto-selected by viewport
+- Draggable bottom-sheet with spring physics (`@use-gesture/vanilla` + `motion`)
+- Every color/radius/font is a themeable CSS custom property that crosses the shadow boundary
+- Wallet-provided avatars with deterministic gradient fallback + opt-in Stellar Expert avatars
+- Copy-to-clipboard everywhere an address appears
+- Contract verification badges with audit URLs rendered in the transaction preview
+- Account switcher, account picker (multi-account wallets), network-mismatch view, and transaction-preview view all built in
 
 ## License
 
 MIT — see [LICENSE](https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE).
+
+## Packages
+
+| Package | What it is |
+|---|---|
+| [`@saganta/stellar-appkit`](https://github.com/SagantaHQ/stellar-appkit) | Unified Stellar wallet connections, Soroban, and transaction preview — the core SDK. Includes the themeable `<saganta-appkit-modal>` Web Component at the `/ui-web` subpath, plus framework wrappers at `/react`, `/vue`, `/solid`, `/svelte`. |
+| [`@saganta/stellar-appkit-siws-verify`](https://github.com/SagantaHQ/stellar-appkit) | Server-side SIWS signature/envelope verification. |
