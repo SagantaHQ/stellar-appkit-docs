@@ -15,14 +15,13 @@ bun run dev
 bun run build
 ```
 
-Output is in `dist/client/`.
+Output is in `dist/`.
 
 ## Deploy to Cloudflare Pages
 
-```bash
-npx wrangler pages deploy dist/client
-```
-
-Or connect this repo to Cloudflare Pages with:
+Connect this repo to Cloudflare Pages with:
+- **Framework preset**: Astro
 - **Build command**: `bun install && bun run build`
-- **Output directory**: `dist/client`
+- **Output directory**: `dist`
+
+No Cloudflare adapter needed — the docs site is fully static HTML, served directly from the CDN. No Workers, no SSR, no nodejs_compat flag required.

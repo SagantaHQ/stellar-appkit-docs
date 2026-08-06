@@ -1,11 +1,9 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://docs.saganta.com',
   output: 'static',
-  adapter: cloudflare(),
   integrations: [
     starlight({
       title: 'Stellar AppKit',
