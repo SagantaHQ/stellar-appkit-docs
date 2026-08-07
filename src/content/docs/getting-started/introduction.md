@@ -67,6 +67,10 @@ Stellar already has solid wallet-connection plumbing — [SEP-43](https://github
 - Contract verification badges with audit URLs rendered in the transaction preview
 - Account picker (multi-account hardware wallets), network-mismatch view, and transaction-preview view all built in
 
+## Live Demos
+
+Want to see Stellar AppKit in action before installing? Check out the **[live demos](https://demos.stellar-appkit.saganta.com)** — 14 working examples covering wallet connection, transaction signing, Soroban contract calls, SIWS authentication, and theming. Each demo is a real Next.js route you can copy into your own app.
+
 ## License
 
 MIT — see [LICENSE](https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE).

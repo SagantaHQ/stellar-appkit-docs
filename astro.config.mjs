@@ -92,6 +92,12 @@ export default defineConfig({
             { label: 'Changelog', slug: 'reference/changelog' },
           ],
         },
+        {
+          label: 'Live Demos',
+          items: [
+            { label: 'Browse Demos →', slug: 'demos' },
+          ],
+        },
       ],
       customCss: ['./src/styles/custom.css'],
     }),
