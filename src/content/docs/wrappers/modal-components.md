@@ -11,11 +11,11 @@ The underlying modal is a Web Component — it works in any framework, but feels
 
 ## The one-line setup requirement
 
-**Always import `@saganta/stellar-appkit/ui-web` once at your app entry point** to register the `<saganta-appkit-modal>` custom element:
+**Always import `@saganta/stellar-appkit-ui-web` once at your app entry point** to register the `<saganta-appkit-modal>` custom element:
 
 ```ts
 // app entry — e.g. main.tsx, main.ts, +layout.svelte
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 ```
 
 The framework modal components deliberately do NOT import the Web Component class themselves. That class `extends HTMLElement`, which is undefined in pure-Node SSR contexts — importing it at module top-level would crash server-side rendering. Keeping the registration as an explicit side-effect import lets bundlers tree-shake the Web Component code out of server bundles.
@@ -28,10 +28,10 @@ import {
   StellarAppKitProvider,
   StellarAppKitModal,
   useAppKit,
-} from '@saganta/stellar-appkit/react';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/react';
+} from '@saganta/stellar-appkit-ui-web/react';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/react';
 import { createFreighterConnector } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 export function App() {
   return (
@@ -70,9 +70,9 @@ The component uses `forwardRef` and `useImperativeHandle` to expose `open()`, `c
 ```vue
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { provideStellarAppKit, StellarAppKitModal } from '@saganta/stellar-appkit/vue';
+  import { provideStellarAppKit, StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/vue';
   import { createFreighterConnector } from '@saganta/stellar-appkit';
-  import '@saganta/stellar-appkit/ui-web';
+  import '@saganta/stellar-appkit-ui-web';
 
   provideStellarAppKit({
     network: 'TESTNET',
@@ -108,10 +108,10 @@ The component uses `defineComponent` with `expose()` for the imperative handle. 
 import {
   StellarAppKitProvider,
   StellarAppKitModal,
-} from '@saganta/stellar-appkit/solid';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/solid';
+} from '@saganta/stellar-appkit-ui-web/solid';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/solid';
 import { createFreighterConnector } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 
 function ModalHost() {
   let handle: StellarAppKitModalHandle | undefined;
@@ -157,9 +157,9 @@ Svelte uses a `use:stellarmodal` **action** on the raw `<saganta-appkit-modal>` 
     openModal,
     closeModal,
     isStellarAppKitModal,
-  } from '@saganta/stellar-appkit/svelte';
+  } from '@saganta/stellar-appkit-ui-web/svelte';
   import { createFreighterConnector } from '@saganta/stellar-appkit';
-  import '@saganta/stellar-appkit/ui-web';
+  import '@saganta/stellar-appkit-ui-web';
 
   setStellarAppKitContext({
     network: 'TESTNET',
@@ -249,7 +249,7 @@ interface StellarAppKitModalHandle {
 Svelte uses standalone helper functions instead (since the `use:stellarmodal` action wraps the raw element directly, and Svelte's `bind:this` already gives you the DOM node):
 
 ```ts
-import { openModal, closeModal, isStellarAppKitModal } from '@saganta/stellar-appkit/svelte';
+import { openModal, closeModal, isStellarAppKitModal } from '@saganta/stellar-appkit-ui-web/svelte';
 
 await openModal(modalEl);
 closeModal(modalEl);
@@ -288,16 +288,16 @@ Svelte (on the raw element):
 
 ## SSR safety
 
-The framework modal components are fully SSR-safe — they don't touch `window`, `document`, or `HTMLElement` at module load time. The custom element tag (`<saganta-appkit-modal>`) is rendered as-is during SSR, then hydrated on the client when `@saganta/stellar-appkit/ui-web` is imported.
+The framework modal components are fully SSR-safe — they don't touch `window`, `document`, or `HTMLElement` at module load time. The custom element tag (`<saganta-appkit-modal>`) is rendered as-is during SSR, then hydrated on the client when `@saganta/stellar-appkit-ui-web` is imported.
 
-If you're using Next.js, Astro, Nuxt, or SvelteKit, the modal component can be rendered in your root layout without any special handling. Just make sure the `import '@saganta/stellar-appkit/ui-web'` is in a client-side entry point (or a component that's only rendered on the client).
+If you're using Next.js, Astro, Nuxt, or SvelteKit, the modal component can be rendered in your root layout without any special handling. Just make sure the `import '@saganta/stellar-appkit-ui-web'` is in a client-side entry point (or a component that's only rendered on the client).
 
 ## Without a provider
 
 If you want to use the modal without the framework provider (e.g. you already have a `StellarAppKit` instance from elsewhere), use the raw `<saganta-appkit-modal>` Web Component directly:
 
 ```ts
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 
 const modal = document.querySelector('saganta-appkit-modal')!;
 modal.client = appkit; // wire up the client manually
@@ -310,9 +310,9 @@ The framework components are designed for the provider-based workflow. The raw e
 
 ```ts
 // React / Solid / Vue
-import { StellarAppKitModal } from '@saganta/stellar-appkit/react';
-import { StellarAppKitModal } from '@saganta/stellar-appkit/solid';
-import { StellarAppKitModal } from '@saganta/stellar-appkit/vue';
+import { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/react';
+import { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/solid';
+import { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/vue';
 
 // Svelte (action + helpers)
 import {
@@ -320,12 +320,12 @@ import {
   openModal,
   closeModal,
   isStellarAppKitModal,
-} from '@saganta/stellar-appkit/svelte';
+} from '@saganta/stellar-appkit-ui-web/svelte';
 
 // Shared types (from any wrapper)
 import type {
   StellarAppKitModalProps,
   StellarAppKitModalHandle,
   StellarAppKitModalEvents,
-} from '@saganta/stellar-appkit/react'; // or /vue, /solid, /svelte
+} from '@saganta/stellar-appkit-ui-web/react'; // or /vue, /solid, /svelte
 ```

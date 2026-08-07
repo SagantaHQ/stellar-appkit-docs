@@ -19,7 +19,7 @@ You also need to register the `<saganta-appkit-modal>` custom element once at yo
 
 ```ts
 // main.ts
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 ```
 
 This import registers the Web Component with the browser's `customElements` registry. It's separate from the Vue wrapper so the wrapper stays SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
@@ -32,7 +32,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 // main.ts
 import { createApp } from 'vue';
 import App from './App.vue';
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 createApp(App).mount('#app');
 ```
@@ -40,7 +40,7 @@ createApp(App).mount('#app');
 ```vue
 <!-- App.vue -->
 <script setup lang="ts">
-  import { provideStellarAppKit, StellarAppKitModal } from '@saganta/stellar-appkit/vue';
+  import { provideStellarAppKit, StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/vue';
   import { createFreighterConnector, createAlbedoConnector } from '@saganta/stellar-appkit';
 
   provideStellarAppKit({
@@ -64,8 +64,8 @@ createApp(App).mount('#app');
 <!-- Header.vue -->
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { useConnect, useSession } from '@saganta/stellar-appkit/vue';
-  import type { StellarAppKitModal } from '@saganta/stellar-appkit/vue';
+  import { useConnect, useSession } from '@saganta/stellar-appkit-ui-web/vue';
+  import type { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/vue';
 
   const { isConnected, isConnecting } = useConnect();
   const session = useSession();
@@ -101,10 +101,10 @@ There are two ways to set up the `StellarAppKit` client: as a Vue plugin (app-wi
 ```ts
 // main.ts
 import { createApp } from 'vue';
-import { StellarAppKitPlugin } from '@saganta/stellar-appkit/vue';
+import { StellarAppKitPlugin } from '@saganta/stellar-appkit-ui-web/vue';
 import { createFreighterConnector } from '@saganta/stellar-appkit';
 import App from './App.vue';
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 
 const app = createApp(App);
 app.use(StellarAppKitPlugin, {
@@ -121,7 +121,7 @@ app.mount('#app');
 ```vue
 <!-- App.vue -->
 <script setup lang="ts">
-  import { provideStellarAppKit } from '@saganta/stellar-appkit/vue';
+  import { provideStellarAppKit } from '@saganta/stellar-appkit-ui-web/vue';
   import { createFreighterConnector } from '@saganta/stellar-appkit';
 
   // Call inside setup() — provides the client to all descendants
@@ -219,8 +219,8 @@ The modal doesn't open automatically — you trigger it from your own button. Us
 <!-- WalletButton.vue -->
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { StellarAppKitModal } from '@saganta/stellar-appkit/vue';
-  import type { StellarAppKitModal as StellarAppKitModalType } from '@saganta/stellar-appkit/vue';
+  import { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/vue';
+  import type { StellarAppKitModal as StellarAppKitModalType } from '@saganta/stellar-appkit-ui-web/vue';
 
   const modal = ref<InstanceType<typeof StellarAppKitModalType>>();
 </script>
@@ -305,7 +305,7 @@ Returned refs are `shallowRef` + `shallowReadonly` to avoid Vue's deep reactivit
 ```vue
 <!-- WalletButton.vue -->
 <script setup lang="ts">
-  import { useConnect, useAddress } from '@saganta/stellar-appkit/vue';
+  import { useConnect, useAddress } from '@saganta/stellar-appkit-ui-web/vue';
 
   const { connect, disconnect, isConnected, isConnecting, error } = useConnect();
   const address = useAddress();
@@ -337,7 +337,7 @@ The underlying `StellarAppKit` client supports keeping multiple wallets connecte
 
 ```vue
 <script setup lang="ts">
-  import { useConnect, useSessions } from '@saganta/stellar-appkit/vue';
+  import { useConnect, useSessions } from '@saganta/stellar-appkit-ui-web/vue';
 
   const { connect, switchAccount } = useConnect();
   const sessions = useSessions(); // Readonly<Ref<ConnectSession[]>>
@@ -360,7 +360,7 @@ If the user's wallet is on a different network than your app expects (e.g. walle
 
 ```vue
 <script setup lang="ts">
-  import { useConnect } from '@saganta/stellar-appkit/vue';
+  import { useConnect } from '@saganta/stellar-appkit-ui-web/vue';
   import { NetworkMismatchError } from '@saganta/stellar-appkit';
 
   const { connect } = useConnect();
@@ -388,7 +388,7 @@ If the user's wallet is on a different network than your app expects (e.g. walle
 ```vue
 <!-- SignButton.vue -->
 <script setup lang="ts">
-  import { useSignTransaction } from '@saganta/stellar-appkit/vue';
+  import { useSignTransaction } from '@saganta/stellar-appkit-ui-web/vue';
 
   const props = defineProps<{ xdr: string }>();
   const { sign, isSigning, data, error } = useSignTransaction();
@@ -415,7 +415,7 @@ await sign(xdr, { skipPreview: true });
 ```vue
 <!-- MessageSigner.vue -->
 <script setup lang="ts">
-  import { useSignMessage, useSignIn } from '@saganta/stellar-appkit/vue';
+  import { useSignMessage, useSignIn } from '@saganta/stellar-appkit-ui-web/vue';
 
   const { sign: signMsg, isSigning: isSigningMsg, data: msgData } = useSignMessage();
   const { sign: signIn, isSigning: isSigningIn, data: signInData } = useSignIn();
@@ -451,7 +451,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 ```vue
 <!-- TokenTransfer.vue -->
 <script setup lang="ts">
-  import { useSoroban } from '@saganta/stellar-appkit/vue';
+  import { useSoroban } from '@saganta/stellar-appkit-ui-web/vue';
   import { Networks } from '@stellar/stellar-sdk';
 
   const props = defineProps<{
@@ -494,7 +494,7 @@ If you don't want to use the built-in modal's preview view, you can render your 
 ```vue
 <!-- CustomPreview.vue -->
 <script setup lang="ts">
-  import { usePreviewTransaction } from '@saganta/stellar-appkit/vue';
+  import { usePreviewTransaction } from '@saganta/stellar-appkit-ui-web/vue';
 
   const { preview, respond, isPending } = usePreviewTransaction();
 </script>
@@ -537,7 +537,7 @@ See [Theming](/core/theming/) for the full token list and examples.
 
 The Vue wrapper is fully SSR-safe — the plugin and composables don't touch `window`, `document`, or `localStorage` during setup. The `StellarAppKit` instance accesses storage lazily (only on actual `connect()` / `restore()` calls), so server-side render won't crash.
 
-The one thing you need to handle: the `import '@saganta/stellar-appkit/ui-web'` side-effect must run only in the browser, not on the server. In Nuxt 3:
+The one thing you need to handle: the `import '@saganta/stellar-appkit-ui-web'` side-effect must run only in the browser, not on the server. In Nuxt 3:
 
 ```ts
 // nuxt.config.ts
@@ -551,7 +551,7 @@ export default defineNuxtConfig({
 
 ```ts
 // plugins/stellar-appkit.ts (universal — sets up the client)
-import { StellarAppKitPlugin } from '@saganta/stellar-appkit/vue';
+import { StellarAppKitPlugin } from '@saganta/stellar-appkit-ui-web/vue';
 import { createFreighterConnector } from '@saganta/stellar-appkit';
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -565,7 +565,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
 ```ts
 // plugins/stellar-appkit-client.ts (client-only — registers the Web Component)
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 
 export default defineNuxtPlugin(() => {
   // The side-effect import above registers <saganta-appkit-modal>
@@ -576,7 +576,7 @@ For pages that need the wallet client on the server (e.g. to verify a SIWS sessi
 
 ## TypeScript
 
-All types are exported from `@saganta/stellar-appkit/vue`:
+All types are exported from `@saganta/stellar-appkit-ui-web/vue`:
 
 ```ts
 import type {
@@ -584,7 +584,7 @@ import type {
   StellarAppKitModalProps,
   StellarAppKitModalHandle,
   StellarAppKitModalEvents,
-} from '@saganta/stellar-appkit/vue';
+} from '@saganta/stellar-appkit-ui-web/vue';
 ```
 
 The composables are fully typed — `useSignTransaction()` returns `{ sign, isSigning, data: Ref<SignTransactionResult | null>, error: Ref<unknown> }`, `useSoroban()` returns the full Soroban surface with typed `InvokeOptions` and `InvokeResult`, etc. You usually don't need to import the types explicitly; they flow through the composables.

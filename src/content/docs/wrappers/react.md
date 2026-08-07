@@ -19,7 +19,7 @@ You also need to register the `<saganta-appkit-modal>` custom element once at yo
 
 ```ts
 // main.tsx (or whatever your app entry is)
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 ```
 
 This import registers the Web Component with the browser's `customElements` registry. It's separate from the React wrapper so the wrapper stays SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
@@ -33,7 +33,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -49,8 +49,8 @@ import {
   StellarAppKitModal,
   useConnect,
   useSession,
-} from '@saganta/stellar-appkit/react';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/react';
+} from '@saganta/stellar-appkit-ui-web/react';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/react';
 import { useRef } from 'react';
 import {
   createFreighterConnector,
@@ -190,8 +190,8 @@ The modal doesn't open automatically — you trigger it from your own button. Us
 
 ```tsx
 import { useRef } from 'react';
-import { StellarAppKitModal } from '@saganta/stellar-appkit/react';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/react';
+import { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/react';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/react';
 
 function Header() {
   const modalRef = useRef<StellarAppKitModalHandle>(null);
@@ -279,7 +279,7 @@ All hooks must be called inside a `<StellarAppKitProvider>` tree. They read the 
 ## Connection management
 
 ```tsx
-import { useConnect, useSession, useAddress } from '@saganta/stellar-appkit/react';
+import { useConnect, useSession, useAddress } from '@saganta/stellar-appkit-ui-web/react';
 
 function WalletButton() {
   const { connect, disconnect, isConnected, isConnecting, error } = useConnect();
@@ -346,7 +346,7 @@ await connect('freighter', { autoRetryNetworkMismatch: true });
 ## Signing transactions
 
 ```tsx
-import { useSignTransaction } from '@saganta/stellar-appkit/react';
+import { useSignTransaction } from '@saganta/stellar-appkit-ui-web/react';
 
 function SignButton({ xdr }: { xdr: string }) {
   const { sign, isSigning, data, error } = useSignTransaction();
@@ -373,7 +373,7 @@ await sign(xdr, { skipPreview: true });
 ### Signing messages and SIWS
 
 ```tsx
-import { useSignMessage, useSignIn } from '@saganta/stellar-appkit/react';
+import { useSignMessage, useSignIn } from '@saganta/stellar-appkit-ui-web/react';
 
 function MessageSigner() {
   const { sign, isSigning, data } = useSignMessage();
@@ -411,7 +411,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 ## Soroban contract calls
 
 ```tsx
-import { useSoroban } from '@saganta/stellar-appkit/react';
+import { useSoroban } from '@saganta/stellar-appkit-ui-web/react';
 import { Networks } from '@stellar/stellar-sdk';
 
 function TokenTransfer({ from, to, amount }: {
@@ -455,7 +455,7 @@ For typed contract clients, RPC failover, and lower-level escape hatches, see [S
 If you don't want to use the built-in modal's preview view, you can render your own with the `usePreviewTransaction` hook:
 
 ```tsx
-import { usePreviewTransaction } from '@saganta/stellar-appkit/react';
+import { usePreviewTransaction } from '@saganta/stellar-appkit-ui-web/react';
 
 function CustomPreview() {
   const { preview, respond, isPending } = usePreviewTransaction();
@@ -505,14 +505,14 @@ See [Theming](/core/theming/) for the full token list and examples.
 
 The React wrapper is fully SSR-safe — the provider and hooks don't touch `window`, `document`, or `localStorage` during render. The `StellarAppKit` instance accesses storage lazily (only on actual `connect()` / `restore()` calls), so server-side render won't crash.
 
-The one thing you need to handle: the `import '@saganta/stellar-appkit/ui-web'` side-effect must run only in the browser, not on the server. In Next.js App Router:
+The one thing you need to handle: the `import '@saganta/stellar-appkit-ui-web'` side-effect must run only in the browser, not on the server. In Next.js App Router:
 
 ```tsx
 // app/providers.tsx
 'use client';
 
-import { StellarAppKitProvider, StellarAppKitModal } from '@saganta/stellar-appkit/react';
-import '@saganta/stellar-appkit/ui-web'; // client-only — guarded by 'use client'
+import { StellarAppKitProvider, StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/react';
+import '@saganta/stellar-appkit-ui-web'; // client-only — guarded by 'use client'
 import { createFreighterConnector } from '@saganta/stellar-appkit';
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -548,7 +548,7 @@ For pages that need the wallet client on the server (e.g. to verify a SIWS sessi
 
 ## TypeScript
 
-All types are exported from `@saganta/stellar-appkit/react`:
+All types are exported from `@saganta/stellar-appkit-ui-web/react`:
 
 ```ts
 import type {
@@ -559,7 +559,7 @@ import type {
   StellarAppKitModalComponentProps,
   UseConnectResult,
   UseSignResult,
-} from '@saganta/stellar-appkit/react';
+} from '@saganta/stellar-appkit-ui-web/react';
 ```
 
 The hooks are fully typed — `useSignTransaction()` returns `UseSignResult<SignTransactionResult>`, `useSoroban()` returns the full Soroban surface with typed `InvokeOptions` and `InvokeResult`, etc. You usually don't need to import the types explicitly; they flow through the hooks.

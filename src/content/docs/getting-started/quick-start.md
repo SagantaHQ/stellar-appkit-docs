@@ -12,7 +12,7 @@ import {
   createAlbedoConnector,
   createXBullConnector,
 } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 const appkit = new StellarAppKit({
   network: 'PUBLIC',

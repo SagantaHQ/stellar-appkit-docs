@@ -19,7 +19,7 @@ You also need to register the `<saganta-appkit-modal>` custom element once at yo
 
 ```tsx
 // entry.tsx (or index.tsx)
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 ```
 
 This import registers the Web Component with the browser's `customElements` registry. It's separate from the Solid wrapper so the wrapper stays SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
@@ -32,7 +32,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 // entry.tsx
 import { render } from 'solid-js/web';
 import { App } from './App';
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 render(() => <App />, document.getElementById('root')!);
 ```
@@ -42,8 +42,8 @@ render(() => <App />, document.getElementById('root')!);
 import {
   StellarAppKitProvider,
   StellarAppKitModal,
-} from '@saganta/stellar-appkit/solid';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/solid';
+} from '@saganta/stellar-appkit-ui-web/solid';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/solid';
 import {
   createFreighterConnector,
   createAlbedoConnector,
@@ -71,8 +71,8 @@ export function App(): JSX.Element {
 
 ```tsx
 // Header.tsx
-import { useConnect, useSession } from '@saganta/stellar-appkit/solid';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/solid';
+import { useConnect, useSession } from '@saganta/stellar-appkit-ui-web/solid';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/solid';
 import type { JSX } from 'solid-js';
 
 export function Header(): JSX.Element {
@@ -183,8 +183,8 @@ See [Theming](/core/theming/) for the full token list.
 The modal doesn't open automatically — you trigger it from your own button. Solid doesn't have `forwardRef`, so the `<StellarAppKitModal>` component accepts a `ref` **callback prop** that's called with the imperative handle once the host element mounts:
 
 ```tsx
-import { StellarAppKitModal } from '@saganta/stellar-appkit/solid';
-import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit/solid';
+import { StellarAppKitModal } from '@saganta/stellar-appkit-ui-web/solid';
+import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/solid';
 import type { JSX } from 'solid-js';
 
 export function WalletButton(): JSX.Element {
@@ -275,7 +275,7 @@ Remember: in Solid, reactive values are functions — call them to read the curr
 ## Connection management
 
 ```tsx
-import { useConnect, useAddress } from '@saganta/stellar-appkit/solid';
+import { useConnect, useAddress } from '@saganta/stellar-appkit-ui-web/solid';
 import type { JSX } from 'solid-js';
 
 export function WalletButton(): JSX.Element {
@@ -349,7 +349,7 @@ await connect('freighter', { autoRetryNetworkMismatch: true });
 ## Signing transactions
 
 ```tsx
-import { useSignTransaction } from '@saganta/stellar-appkit/solid';
+import { useSignTransaction } from '@saganta/stellar-appkit-ui-web/solid';
 import type { JSX } from 'solid-js';
 
 export function SignButton(props: { xdr: string }): JSX.Element {
@@ -377,7 +377,7 @@ await sign(xdr, { skipPreview: true });
 ### Signing messages and SIWS
 
 ```tsx
-import { useSignMessage, useSignIn } from '@saganta/stellar-appkit/solid';
+import { useSignMessage, useSignIn } from '@saganta/stellar-appkit-ui-web/solid';
 
 function MessageSigner() {
   const { sign, isSigning, data } = useSignMessage();
@@ -415,7 +415,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 ## Soroban contract calls
 
 ```tsx
-import { useSoroban } from '@saganta/stellar-appkit/solid';
+import { useSoroban } from '@saganta/stellar-appkit-ui-web/solid';
 import { Networks } from '@stellar/stellar-sdk';
 import type { JSX } from 'solid-js';
 
@@ -462,7 +462,7 @@ For typed contract clients, RPC failover, and lower-level escape hatches, see [S
 If you don't want to use the built-in modal's preview view, you can render your own with the `usePreviewTransaction` hook:
 
 ```tsx
-import { usePreviewTransaction } from '@saganta/stellar-appkit/solid';
+import { usePreviewTransaction } from '@saganta/stellar-appkit-ui-web/solid';
 import { Show, For } from 'solid-js';
 import type { JSX } from 'solid-js';
 
@@ -516,11 +516,11 @@ See [Theming](/core/theming/) for the full token list and examples.
 
 The Solid wrapper is SSR-safe — the provider constructs the client in `onMount` (not during render) to avoid touching `localStorage` during SSR. The composables are safe to call during SSR — they return initial values until the client is mounted.
 
-The one thing you need to handle: the `import '@saganta/stellar-appkit/ui-web'` side-effect must run only in the browser, not on the server. In Solid Start:
+The one thing you need to handle: the `import '@saganta/stellar-appkit-ui-web'` side-effect must run only in the browser, not on the server. In Solid Start:
 
 ```tsx
 // entry-client.tsx
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 import { mount, StartClient } from 'solid-start/entry-client';
 
 mount(() => <StartClient />, document.getElementById('app')!);
@@ -530,7 +530,7 @@ For pages that need the wallet client on the server (e.g. to verify a SIWS sessi
 
 ## TypeScript
 
-All types are exported from `@saganta/stellar-appkit/solid`:
+All types are exported from `@saganta/stellar-appkit-ui-web/solid`:
 
 ```ts
 import type {
@@ -539,7 +539,7 @@ import type {
   StellarAppKitModalHandle,
   StellarAppKitModalEvents,
   StellarAppKitModalComponentProps,
-} from '@saganta/stellar-appkit/solid';
+} from '@saganta/stellar-appkit-ui-web/solid';
 ```
 
 The hooks are fully typed — `useSignTransaction()` returns `{ sign, isSigning: Accessor<boolean>, data: Accessor<SignTransactionResult | null>, error: Accessor<unknown> }`, `useSoroban()` returns the full Soroban surface with typed `InvokeOptions` and `InvokeResult`, etc. You usually don't need to import the types explicitly; they flow through the hooks.

@@ -53,7 +53,7 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 - Solid (/solid): StellarAppKitProvider + hooks, createSignal/createMemo. Also exports <StellarAppKitModal> component with ref callback prop.
 - Svelte (/svelte): setStellarAppKitContext + stores (Svelte 4 + 5). Also exports use:stellarmodal action + openModal(node)/closeModal(node)/isStellarAppKitModal(node) helpers.
 - Tree-shakable subpath exports — only ship the framework you use
-- Framework modal components deliberately do NOT import the Web Component class (extends HTMLElement, undefined in pure-Node SSR). Consumers must `import '@saganta/stellar-appkit/ui-web'` once at app entry to register <saganta-appkit-modal>.
+- Framework modal components deliberately do NOT import the Web Component class (extends HTMLElement, undefined in pure-Node SSR). Consumers must `import '@saganta/stellar-appkit-ui-web'` once at app entry to register <saganta-appkit-modal>.
 - Shared props: mode, theme, branding, logoSrc, title, autoRetryNetwork, stellarExpertAvatars
 - Shared events: connect, disconnect, error (mirrors client events)
 - Shared imperative handle (React/Solid/Vue via ref): open(), close(), element
@@ -81,7 +81,7 @@ All wallet SDKs (@stellar/stellar-sdk, @stellar/freighter-api, @albedo-link/inte
 
 ```ts
 import { StellarAppKit, createFreighterConnector } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 
 const appkit = new StellarAppKit({
   network: 'TESTNET',

@@ -30,7 +30,7 @@ Every connector lazy-imports its SDK inside its `connect()` / `signTransaction()
 The `<saganta-appkit-modal>` Web Component is included in the core package at the `/ui-web` subpath. Import it once at your app entry to register the custom element:
 
 ```ts
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 ```
 
 This is a side-effect import — it registers `<saganta-appkit-modal>` with the browser's `customElements` registry. It's separate from the main entry so the framework wrappers stay SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
@@ -40,10 +40,10 @@ This is a side-effect import — it registers `<saganta-appkit-modal>` with the 
 If you prefer hooks and typed components over the raw Web Component, install the wrapper for your framework. Frameworks are **peer dependencies** (not bundled) because your app already has its own framework instance — having two copies of React (for example) breaks hooks:
 
 ```bash
-npm install react react-dom      # for @saganta/stellar-appkit/react
-npm install vue                  # for @saganta/stellar-appkit/vue
-npm install solid-js             # for @saganta/stellar-appkit/solid
-npm install svelte               # for @saganta/stellar-appkit/svelte
+npm install react react-dom      # for @saganta/stellar-appkit-ui-web/react
+npm install vue                  # for @saganta/stellar-appkit-ui-web/vue
+npm install solid-js             # for @saganta/stellar-appkit-ui-web/solid
+npm install svelte               # for @saganta/stellar-appkit-ui-web/svelte
 ```
 
 Each wrapper is a separate subpath export — bundlers only ship the framework code you actually import. A React app never ships Vue or Svelte code.
@@ -62,7 +62,7 @@ Quick check that everything works:
 
 ```ts
 import { StellarAppKit, createFreighterConnector } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 
 const appkit = new StellarAppKit({
   network: 'TESTNET',

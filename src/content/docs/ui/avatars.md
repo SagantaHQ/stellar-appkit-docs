@@ -35,7 +35,7 @@ Fetches generated PNG avatars from `https://api.stellar.expert/explorer/public/a
 When no avatar is available, the modal generates a CSS gradient from the address bytes:
 
 ```ts
-import { gradientFromAddress } from '@saganta/stellar-appkit/ui-web';
+import { gradientFromAddress } from '@saganta/stellar-appkit-ui-web';
 
 const gradient = gradientFromAddress('GA2C5RFPE6...');
 // 'linear-gradient(135deg, hsl(142, 65%, 55%), hsl(202, 65%, 45%))'

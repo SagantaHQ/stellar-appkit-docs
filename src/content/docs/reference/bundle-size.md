@@ -10,11 +10,11 @@ Every connector is independently tree-shakeable. Framework wrappers are separate
 | Import | What ships |
 |---|---|
 | `@saganta/stellar-appkit` | Core client + types (~40kb initial) |
-| `@saganta/stellar-appkit/ui-web` | Modal Web Component (separate chunk) |
-| `@saganta/stellar-appkit/react` | React hooks (only if imported) |
-| `@saganta/stellar-appkit/vue` | Vue composables (only if imported) |
-| `@saganta/stellar-appkit/solid` | Solid hooks (only if imported) |
-| `@saganta/stellar-appkit/svelte` | Svelte stores (only if imported) |
+| `@saganta/stellar-appkit-ui-web` | Modal Web Component (separate chunk) |
+| `@saganta/stellar-appkit-ui-web/react` | React hooks (only if imported) |
+| `@saganta/stellar-appkit-ui-web/vue` | Vue composables (only if imported) |
+| `@saganta/stellar-appkit-ui-web/solid` | Solid hooks (only if imported) |
+| `@saganta/stellar-appkit-ui-web/svelte` | Svelte stores (only if imported) |
 
 ## What you don't import = 0kb
 

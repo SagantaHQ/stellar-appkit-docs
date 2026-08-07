@@ -19,7 +19,7 @@ You also need to register the `<saganta-appkit-modal>` custom element once at yo
 
 ```ts
 // main.ts (or +layout.ts for SvelteKit)
-import '@saganta/stellar-appkit/ui-web';
+import '@saganta/stellar-appkit-ui-web';
 ```
 
 This import registers the Web Component with the browser's `customElements` registry. It's separate from the Svelte wrapper so the wrapper stays SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
@@ -31,7 +31,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 ```ts
 // main.ts
 import App from './App.svelte';
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 const app = new App({
   target: document.getElementById('app')!,
@@ -43,7 +43,7 @@ export default app;
 ```svelte
 <!-- App.svelte -->
 <script lang="ts">
-  import { setStellarAppKitContext } from '@saganta/stellar-appkit/svelte';
+  import { setStellarAppKitContext } from '@saganta/stellar-appkit-ui-web/svelte';
   import { createFreighterConnector, createAlbedoConnector } from '@saganta/stellar-appkit';
   import Header from './Header.svelte';
 
@@ -68,8 +68,8 @@ export default app;
 ```svelte
 <!-- Header.svelte -->
 <script lang="ts">
-  import { useConnect, useSession } from '@saganta/stellar-appkit/svelte';
-  import { openModal } from '@saganta/stellar-appkit/svelte';
+  import { useConnect, useSession } from '@saganta/stellar-appkit-ui-web/svelte';
+  import { openModal } from '@saganta/stellar-appkit-ui-web/svelte';
 
   const { isConnected, isConnecting } = useConnect();
   const session = useSession();
@@ -107,7 +107,7 @@ If you really want a component-style API, you can wrap it yourself:
 ```svelte
 <!-- Modal.svelte -->
 <script lang="ts">
-  import { stellarmodal } from '@saganta/stellar-appkit/svelte';
+  import { stellarmodal } from '@saganta/stellar-appkit-ui-web/svelte';
   export let mode: 'auto' | 'modal' | 'bottomsheet' | 'inline' = 'auto';
   export let theme: 'dark' | 'light' = 'dark';
 </script>
@@ -124,8 +124,8 @@ The `<saganta-appkit-modal>` element with `use:stellarmodal` is the modal. Place
 ```svelte
 <!-- +layout.svelte (SvelteKit) or App.svelte -->
 <script lang="ts">
-  import { setStellarAppKitContext, stellarmodal } from '@saganta/stellar-appkit/svelte';
-  import '@saganta/stellar-appkit/ui-web';
+  import { setStellarAppKitContext, stellarmodal } from '@saganta/stellar-appkit-ui-web/svelte';
+  import '@saganta/stellar-appkit-ui-web';
 
   setStellarAppKitContext({ network: 'TESTNET', connectors: [...] });
 </script>
@@ -207,8 +207,8 @@ The modal doesn't open automatically — you trigger it from your own button. Us
 ```svelte
 <!-- WalletButton.svelte -->
 <script lang="ts">
-  import { stellarmodal, openModal, closeModal } from '@saganta/stellar-appkit/svelte';
-  import '@saganta/stellar-appkit/ui-web';
+  import { stellarmodal, openModal, closeModal } from '@saganta/stellar-appkit-ui-web/svelte';
+  import '@saganta/stellar-appkit-ui-web';
 
   let modalEl: HTMLElement;
 </script>
@@ -290,7 +290,7 @@ In Svelte 4 and 5, subscribe to a store with the `$` prefix: `$session`, `$isCon
 ```svelte
 <!-- WalletButton.svelte -->
 <script lang="ts">
-  import { useConnect, useAddress } from '@saganta/stellar-appkit/svelte';
+  import { useConnect, useAddress } from '@saganta/stellar-appkit-ui-web/svelte';
 
   const { connect, disconnect, isConnected, isConnecting, error } = useConnect();
   const address = useAddress();
@@ -319,7 +319,7 @@ The underlying `StellarAppKit` client supports keeping multiple wallets connecte
 
 ```svelte
 <script lang="ts">
-  import { useConnect, useSessions } from '@saganta/stellar-appkit/svelte';
+  import { useConnect, useSessions } from '@saganta/stellar-appkit-ui-web/svelte';
 
   const { connect, switchAccount } = useConnect();
   const sessions = useSessions();
@@ -344,7 +344,7 @@ If the user's wallet is on a different network than your app expects (e.g. walle
 
 ```svelte
 <script lang="ts">
-  import { useConnect } from '@saganta/stellar-appkit/svelte';
+  import { useConnect } from '@saganta/stellar-appkit-ui-web/svelte';
   import { NetworkMismatchError } from '@saganta/stellar-appkit';
 
   const { connect } = useConnect();
@@ -372,7 +372,7 @@ If the user's wallet is on a different network than your app expects (e.g. walle
 ```svelte
 <!-- SignButton.svelte -->
 <script lang="ts">
-  import { useSignTransaction } from '@saganta/stellar-appkit/svelte';
+  import { useSignTransaction } from '@saganta/stellar-appkit-ui-web/svelte';
 
   export let xdr: string;
   const { sign, isSigning, data, error } = useSignTransaction();
@@ -401,7 +401,7 @@ await sign(xdr, { skipPreview: true });
 ```svelte
 <!-- MessageSigner.svelte -->
 <script lang="ts">
-  import { useSignMessage, useSignIn } from '@saganta/stellar-appkit/svelte';
+  import { useSignMessage, useSignIn } from '@saganta/stellar-appkit-ui-web/svelte';
 
   const { sign: signMsg, isSigning: isSigningMsg, data: msgData } = useSignMessage();
   const { sign: signIn, isSigning: isSigningIn, data: signInData } = useSignIn();
@@ -435,7 +435,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 ```svelte
 <!-- TokenTransfer.svelte -->
 <script lang="ts">
-  import { useSoroban } from '@saganta/stellar-appkit/svelte';
+  import { useSoroban } from '@saganta/stellar-appkit-ui-web/svelte';
   import { Networks } from '@stellar/stellar-sdk';
 
   export let from: string;
@@ -478,7 +478,7 @@ If you don't want to use the built-in modal's preview view, you can render your 
 ```svelte
 <!-- CustomPreview.svelte -->
 <script lang="ts">
-  import { usePreviewTransaction } from '@saganta/stellar-appkit/svelte';
+  import { usePreviewTransaction } from '@saganta/stellar-appkit-ui-web/svelte';
 
   const { preview, respond, isPending } = usePreviewTransaction();
 </script>
@@ -525,11 +525,11 @@ See [Theming](/core/theming/) for the full token list and examples.
 
 The Svelte wrapper is fully SSR-safe — `setStellarAppKitContext()` constructs the client lazily, and storage access is deferred to actual `connect()` / `restore()` calls. The stores return initial values until the client is mounted.
 
-The one thing you need to handle: the `import '@saganta/stellar-appkit/ui-web'` side-effect must run only in the browser, not on the server. In SvelteKit:
+The one thing you need to handle: the `import '@saganta/stellar-appkit-ui-web'` side-effect must run only in the browser, not on the server. In SvelteKit:
 
 ```ts
 // src/hooks.client.ts
-import '@saganta/stellar-appkit/ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
 
 export {} // hooks.client.ts must export something to be valid
 ```
@@ -540,7 +540,7 @@ Or, if you prefer, gate the import inside a component:
 <!-- +layout.svelte -->
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { setStellarAppKitContext, stellarmodal } from '@saganta/stellar-appkit/svelte';
+  import { setStellarAppKitContext, stellarmodal } from '@saganta/stellar-appkit-ui-web/svelte';
   import { createFreighterConnector } from '@saganta/stellar-appkit';
 
   setStellarAppKitContext({
@@ -551,7 +551,7 @@ Or, if you prefer, gate the import inside a component:
 
   // Register the Web Component only in the browser
   onMount(() => {
-    import('@saganta/stellar-appkit/ui-web');
+    import('@saganta/stellar-appkit-ui-web');
   });
 </script>
 
@@ -570,7 +570,7 @@ For Svelte 5 with runes, the short aliases (`useSession`, `useConnect`) are also
 ```svelte
 <script lang="ts">
   // Svelte 5 runes mode
-  import { useSession } from '@saganta/stellar-appkit/svelte';
+  import { useSession } from '@saganta/stellar-appkit-ui-web/svelte';
 
   const session = useSession(); // Readable<ConnectSession | null>
 
@@ -586,7 +586,7 @@ For Svelte 5 with runes, the short aliases (`useSession`, `useConnect`) are also
 
 ## TypeScript
 
-All types are exported from `@saganta/stellar-appkit/svelte`:
+All types are exported from `@saganta/stellar-appkit-ui-web/svelte`:
 
 ```ts
 import type {
@@ -594,7 +594,7 @@ import type {
   StellarAppKitModalProps,
   StellarAppKitModalHandle,
   StellarAppKitModalEvents,
-} from '@saganta/stellar-appkit/svelte';
+} from '@saganta/stellar-appkit-ui-web/svelte';
 ```
 
 The stores are fully typed — `useSignTransaction()` returns `{ sign, isSigning: Readable<boolean>, data: Readable<SignTransactionResult | null>, error: Readable<unknown> }`, `useSoroban()` returns the full Soroban surface with typed `InvokeOptions` and `InvokeResult`, etc. You usually don't need to import the types explicitly; they flow through the stores.
