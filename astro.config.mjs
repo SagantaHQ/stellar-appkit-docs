@@ -1,10 +1,16 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import partytown from '@astrojs/partytown';
 
 export default defineConfig({
   site: 'https://stellar-appkit.saganta.com',
   output: 'static',
   integrations: [
+    partytown({
+      config: {
+        forward: ['dataLayer.push'],
+      },
+    }),
     starlight({
       title: 'Stellar AppKit',
       description: 'One SDK for every Stellar wallet — unified wallet API, Soroban built in, transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.',

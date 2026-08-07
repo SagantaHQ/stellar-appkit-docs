@@ -35,11 +35,13 @@ const gaId = import.meta.env.NEXT_PUBLIC_GA_ID;
 <!-- Google Search Console verification -->
 <meta name="google-site-verification" content="iD-ow_BSGtlQm2oOnVqWASMgbtgBovMKBkfcRjtVVvA" />
 
-<!-- Google Analytics (only renders if NEXT_PUBLIC_GA_ID is set) -->
+<!-- Google Analytics via Partytown (runs in a web worker, off the main thread) -->
+<!-- Only renders if NEXT_PUBLIC_GA_ID is set -->
+<!-- Docs: https://docs.astro.build/en/guides/integrations-guide/partytown/ -->
 {gaId && (
   <>
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-    <script is:inline set:html={`
+    <script type="text/partytown" src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+    <script type="text/partytown" is:inline set:html={`
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
