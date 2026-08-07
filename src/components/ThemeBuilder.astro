@@ -324,13 +324,27 @@
   .tb-wallet-badge {
     display: inline-flex;
     align-items: center;
-    padding: 2px 10px;
-    border-radius: 999px;
-    background: rgba(209, 250, 229, 0.85);
-    color: #047857;
+    gap: 6px;
+    padding: 3px 10px 3px 8px;
+    border-radius: var(--sak-radius-sm);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--sak-color-accent) 32%, transparent);
+    color: color-mix(in srgb, var(--sak-color-accent) 60%, var(--sak-color-text) 40%);
+    font-family: var(--sak-font-mono);
     font-size: 0.6875rem;
     font-weight: 600;
-    border: 1px solid rgba(167, 243, 208, 0.85);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .tb-wallet-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sak-color-accent);
     flex-shrink: 0;
   }
   .tb-wallet-btn {

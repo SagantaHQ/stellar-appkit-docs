@@ -3,6 +3,36 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.2.0
+
+### UI redesign
+- **"Installed" badge redesigned** — replaced the flat green pill with an **outline badge** using the theme's accent color. The new badge uses:
+  - `color-mix(in srgb, accent 32%, transparent)` for the border — a subtle accent-tinted outline
+  - `color-mix(in srgb, accent 60%, text 40%)` for the text — mixed with the theme's text token for contrast on both light and dark surfaces (no separate light-mode override needed)
+  - A static accent-colored dot (`::before` pseudo-element) — quiet, no pulse animation
+  - `var(--sak-radius-sm)` for the border radius — uses the modal's own design token for badges/pills
+  - Monospace font, uppercase, 10.5px — precise, technical aesthetic
+  - Transparent background — blends with whatever surface it's on
+
+### Bug fixes
+- **Mobile modal not opening** — fixed the root cause: `scale-blur` (the default desktop animation) uses `filter: blur(12px)` which is a known source of skipped/dropped animations on mobile GPUs. The `onfinish` callback may not fire, leaving the panel at `opacity: 0` (invisible). Now uses mode-aware animation defaults:
+  - Desktop modal → `scale-blur` (blur is safe, GPU has headroom)
+  - Mobile bottomsheet → `slide-up` (transform-only, GPU-composited, reliable)
+  - Mobile forced to modal → `scale` (no blur, GPU-safe)
+  - The viewport check uses `window.matchMedia()` re-evaluated on every call (not cached)
+- **WAAPI safety timeout** reduced from 600ms to 400ms (animations are 300ms, so 400ms gives 100ms of grace)
+
+### New features
+- **Velocity-aware bottom-sheet dismiss** — lowered the flick threshold from 0.5 to 0.4 px/ms so a quick flick dismisses even from a short drag. Distance threshold (40% of sheet height) remains as the fallback for slow drags. Feels dramatically more native than distance-only.
+- **Haptic feedback** (Android only, no-op on iOS Safari):
+  - `navigator.vibrate(15)` on successful wallet connection
+  - `navigator.vibrate([30, 50, 30])` on error (double-buzz pattern signals failure)
+  - `navigator.vibrate(10)` on bottom-sheet drag-to-dismiss
+
+All 155 tests pass.
+
+---
+
 ## v1.1.2
 
 ### Bug fixes
