@@ -328,8 +328,8 @@
     padding: 3px 10px 3px 8px;
     border-radius: var(--sak-radius-sm);
     background: transparent;
-    border: 1px solid color-mix(in srgb, var(--sak-color-accent) 32%, transparent);
-    color: color-mix(in srgb, var(--sak-color-accent) 60%, var(--sak-color-text) 40%);
+    border: 1px solid var(--sak-color-border);
+    color: var(--sak-color-text-muted);
     font-family: var(--sak-font-mono);
     font-size: 0.6875rem;
     font-weight: 600;
@@ -337,7 +337,6 @@
     text-transform: uppercase;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: border-color 0.2s ease, color 0.2s ease;
   }
   .tb-wallet-badge::before {
     content: "";

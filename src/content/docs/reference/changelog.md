@@ -3,6 +3,17 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.2.1
+
+### Bug fixes
+- **Mobile bottom-sheet now opens reliably.** Root cause: `data-open` was set to `"false"` during `render()` and was never updated to `"true"` — the WAAPI animation was supposed to handle the visual transition, but on mobile WAAPI doesn't fire reliably, so the panel stayed at `translateY(100%)` (off-screen) forever. Fix: set `data-open="true"` immediately after `render()` — the CSS transition (`data-open="true"` → `translateY(0)`) is the **primary animation mechanism**, reliable on all browsers. WAAPI is now a progressive enhancement only for custom presets (`animation="implode"` etc.).
+- **Close animation also uses CSS transitions.** `close()` sets `data-open="false"` to trigger the CSS exit transition, waits 350ms, then cleans up. No WAAPI needed for default animations.
+- **Installed badge colors fixed.** Now matches the outline spec exactly: `--sak-color-border` for border, `--sak-color-text-muted` for text, `--sak-color-accent` only for the dot. No `color-mix` — plain theme tokens.
+
+All 155 tests pass.
+
+---
+
 ## v1.2.0
 
 ### UI redesign
