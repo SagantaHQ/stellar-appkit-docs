@@ -3,6 +3,27 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.1.0
+
+### Bug fixes
+- **WalletConnect socket retry loop fixed.** When the WC relay returned a fatal error (e.g. "Project not found" with code 3000 for an invalid `projectId`), the WC SDK's auto-reconnect logic kept retrying the WebSocket connection forever, flooding the console with "Fatal socket error" logs. The connector now:
+  - Listens for `relayer_error` events on `client.core.relayer.events` (the actual EventEmitter the WC SDK uses, not the SignClient itself)
+  - Detects fatal error codes (3000, 3001, 3002, 3003) and fatal message patterns ("Project not found", "Invalid project id", etc.)
+  - Calls `relayer.transportClose()` to set `transportExplicitlyClosed=true` and stop the retry loop
+  - Removes event listeners before teardown to prevent re-entry
+  - Tears down the client (`client.abort()`) to fully close the WebSocket
+
+- **60-second timeout added to WC connect().** If the relay is unreachable or the `projectId` is invalid, `connect()` now rejects within ~2 seconds (fatal error detected) or 60 seconds (timeout) — previously it hung forever.
+
+- **Abort promise races against `wc.connect()` AND `approval()`.** The `wc.connect()` call itself can hang when the relay is down (it awaits `relayer.publish()` which never resolves). The abort promise is now created BEFORE `wc.connect()` and races against it, so the user sees the error within seconds instead of hanging.
+
+### New features
+- **Clear error messages.** When a fatal relay error occurs, the connector throws a `ConnectError` with the message: `"WalletConnect relay error: WebSocket connection closed abnormally with code: 3000 (Project not found). Check your projectId at cloud.walletconnect.com."` — the user sees this in the modal's error view with a retry button.
+
+All 155 tests pass.
+
+---
+
 ## v1.0.9
 
 ### New features
