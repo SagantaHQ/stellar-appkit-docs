@@ -211,6 +211,20 @@ All four wrappers accept the same prop shape (defined in `src/ui-web/modal-props
 | `title` | `string` | `'Connect a wallet'` | Title shown at the top of the modal |
 | `autoRetryNetwork` | `boolean` | `false` | Auto-poll the wallet's network after a `NetworkMismatchError` |
 | `stellarExpertAvatars` | `boolean` | `false` | Fetch avatar images from Stellar Expert for connected accounts |
+| `animation` | `'none' \| 'fade' \| 'scale' \| 'scale-blur' \| 'slide-up' \| 'slide-left' \| 'implode'` | mode-based | Animation preset for both open and close. Default: `scale-blur` for modal, `slide-up` for bottom-sheet. |
+| `animationOpen` | same as `animation` | inherits `animation` | Override for the open transition only |
+| `animationClose` | same as `animation` | inherits `animation` | Override for the close transition only |
+
+### Animation config priority
+
+When multiple animation configs are present, they resolve in this order (highest → lowest):
+
+1. `animationOpen` / `animationClose` props (per-direction override)
+2. `animation` prop (single preset for both directions)
+3. `StellarAppKit` config: `modal.animation` (programmatic, set at construction time)
+4. Mode-based defaults: `scale-blur` for modal / desktop `auto`, `slide-up` for bottomsheet / mobile `auto`
+
+All animations are zero-dependency WAAPI (Web Animations API) and respect `prefers-reduced-motion: reduce` automatically. See [Modal](/ui/modal/) for the full list of animation presets and their visual effect.
 
 ## Events
 
@@ -239,8 +253,8 @@ React, Solid, and Vue expose an imperative handle via `ref`:
 interface StellarAppKitModalHandle {
   /** Open the modal. No-op in inline mode. */
   open(): Promise<void>;
-  /** Close the modal. No-op in inline mode. */
-  close(): void;
+  /** Close the modal. No-op in inline mode. Pass true to skip the WAAPI exit animation. */
+  close(skipAnimation?: boolean): void;
   /** The underlying Web Component DOM node — escape hatch for advanced use. */
   readonly element: HTMLElement & { client: StellarAppKit | null };
 }

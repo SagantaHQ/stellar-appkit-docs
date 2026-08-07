@@ -18,6 +18,7 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 ### Wallet Connectivity
 - Unified adapter interface aligned with SEP-43
 - Freighter, Albedo, xBull, Ledger, and WalletConnect adapters
+- Zero-config defaults — omit `connectors` from the config to auto-register Freighter + Albedo + xBull + Ledger. `defaultConnectors()` exported for extending the default set.
 - Network mismatch recovery with auto-retry
 - Cross-tab session sync via BroadcastChannel
 
@@ -62,7 +63,9 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 ### UI
 - <saganta-appkit-modal> Shadow DOM Web Component
 - Modal (desktop), bottom-sheet (mobile), inline (embedded) presentation
-- Draggable bottom-sheet with spring physics (@use-gesture/vanilla + motion)
+- WAAPI open/close animations — 7 presets (none, fade, scale, scale-blur, slide-up, slide-left, implode), zero dependencies, prefers-reduced-motion respected. Defaults: scale-blur for modal, slide-up for bottom-sheet.
+- Draggable bottom-sheet with custom spring physics (~30 lines, native Pointer Events + requestAnimationFrame, zero dependencies)
+- "Installed" badge on wallet list — accent-colored pill marking ready-to-use wallets
 - Wallet-provided avatars + gradient fallback + Stellar Expert avatars
 - Copy-to-clipboard on all address displays
 - Conic-gradient loading spinner
@@ -72,20 +75,20 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 ## Installation
 
 ```bash
-npm install @saganta/stellar-appkit
+npm install @saganta/stellar-appkit @saganta/stellar-appkit-ui-web
 ```
 
-All wallet SDKs (@stellar/stellar-sdk, @stellar/freighter-api, @albedo-link/intent, @creit.tech/xbull-wallet-connect, @ledgerhq/*, @walletconnect/sign-client) and gesture libraries (@use-gesture/vanilla, motion) are bundled as regular dependencies — installed automatically, version-locked, tree-shaken if unused. Frameworks (react, vue, solid-js, svelte) are optional peer dependencies.
+All wallet SDKs (@stellar/stellar-sdk, @stellar/freighter-api, @albedo-link/intent, @creit.tech/xbull-wallet-connect, @ledgerhq/*, @walletconnect/sign-client) are bundled as regular dependencies — installed automatically, version-locked, tree-shaken if unused. The UI package has zero runtime dependencies (custom spring + WAAPI). Frameworks (react, vue, solid-js, svelte) are optional peer dependencies.
 
 ## Quick Start
 
 ```ts
-import { StellarAppKit, createFreighterConnector } from '@saganta/stellar-appkit';
+import { StellarAppKit } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
 
+// connectors is optional — defaults to Freighter, Albedo, xBull, Ledger
 const appkit = new StellarAppKit({
   network: 'TESTNET',
-  connectors: [createFreighterConnector()],
   appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
 });
 
@@ -93,6 +96,12 @@ const modal = document.querySelector('saganta-appkit-modal');
 modal.client = appkit;
 modal.open();
 ```
+
+Animation config (optional — defaults are sensible):
+- HTML attributes: `animation="implode"` or `animation-open="slide-left" animation-close="fade"`
+- Programmatic: `new StellarAppKit({ ..., modal: { animation: 'scale-blur' } })`
+- Priority: HTML attrs > config > mode-based default
+- `close(skipAnimation?: boolean)` — pass `true` to skip the WAAPI exit animation (used internally by drag-to-dismiss)
 
 ## SorobanConnection
 

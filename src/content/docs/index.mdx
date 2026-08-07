@@ -44,32 +44,33 @@ Self-issued auth flow with SEP-0053 signing support, multi-candidate verificatio
 React, Vue, Solid, and Svelte — same hooks (`useConnect`, `useSession`, `useSoroban`), tree-shakable subpath exports. Only ship the framework you use.
 
 ### Themeable UI
-Shadow DOM Web Component with modal, bottom-sheet, and inline presentation. Draggable bottom-sheet with spring physics. Every color, radius, and font is a CSS custom property.
+Shadow DOM Web Component with modal, bottom-sheet, and inline presentation. **Zero runtime dependencies** — drag-to-dismiss uses a custom 30-line spring engine, open/close transitions use native WAAPI. Every color, radius, and font is a CSS custom property.
 
 ## Packages
 
 | Package | Description |
 |---|---|
 | `@saganta/stellar-appkit` | Core SDK — wallet connections, Soroban, transaction preview, framework wrappers |
+| `@saganta/stellar-appkit-ui-web` | Web UI — `<saganta-appkit-modal>` Shadow DOM Web Component + framework wrappers for React, Vue, Solid, Svelte |
 | `@saganta/stellar-appkit-siws-verify` | Server-side SIWS signature/envelope verification |
 
 ## Install
 
 ```bash
-npm install @saganta/stellar-appkit
+npm install @saganta/stellar-appkit @saganta/stellar-appkit-ui-web
 ```
 
-All wallet SDKs, the Stellar SDK, and gesture libraries are bundled as regular dependencies — installed automatically, version-locked, tree-shaken if unused.
+All wallet SDKs and the Stellar SDK are bundled as regular dependencies — installed automatically, version-locked, tree-shaken if unused. The UI package has zero runtime dependencies.
 
 ## Quick Example
 
 ```ts
-import { StellarAppKit, createFreighterConnector } from '@saganta/stellar-appkit';
+import { StellarAppKit } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
 
+// connectors is optional — defaults to Freighter, Albedo, xBull, Ledger
 const appkit = new StellarAppKit({
   network: 'TESTNET',
-  connectors: [createFreighterConnector()],
   appMetadata: { name: 'My App', domain: 'localhost', uri: 'http://localhost:3000' },
 });
 

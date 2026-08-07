@@ -58,9 +58,12 @@ Stellar already has solid wallet-connection plumbing — [SEP-43](https://github
 - Each wrapper is a separate subpath export — bundlers only ship the framework code you actually import
 
 ### UI
-- `<saganta-appkit-modal>` — a Shadow DOM Web Component, framework-agnostic, zero runtime dependency
+- `<saganta-appkit-modal>` — a Shadow DOM Web Component, framework-agnostic, **zero runtime dependency**
 - Modal (desktop), bottom-sheet (mobile web), and inline (embedded) presentation, auto-selected by viewport
-- Draggable bottom-sheet with spring physics (`@use-gesture/vanilla` + `motion`)
+- **WAAPI open/close animations** — 7 presets (none, fade, scale, scale-blur, slide-up, slide-left, implode), zero dependencies, `prefers-reduced-motion` respected. Sensible defaults: `scale-blur` for modal, `slide-up` for bottom-sheet.
+- **Draggable bottom-sheet** with custom spring physics (~30 lines, native Pointer Events + `requestAnimationFrame`, no `@use-gesture` or `motion` needed)
+- **"Installed" badge** on wallet list — accent-colored pill marking ready-to-use wallets
+- **Zero-config default connectors** — omit `connectors` from the config to auto-register Freighter + Albedo + xBull + Ledger
 - Every color/radius/font is a themeable CSS custom property that crosses the shadow boundary
 - Wallet-provided avatars with deterministic gradient fallback + opt-in Stellar Expert avatars
 - Copy-to-clipboard everywhere an address appears

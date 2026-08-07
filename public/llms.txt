@@ -41,8 +41,8 @@ Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides
 
 ## UI Components
 
-- [Modal](https://stellar-appkit.saganta.com/ui/modal/): Shadow DOM Web Component, attributes, events
-- [Bottom Sheet](https://stellar-appkit.saganta.com/ui/bottom-sheet/): Draggable with spring physics
+- [Modal](https://stellar-appkit.saganta.com/ui/modal/): Shadow DOM Web Component, attributes, events, WAAPI animations, default connectors, Installed badge
+- [Bottom Sheet](https://stellar-appkit.saganta.com/ui/bottomsheet/): Draggable with custom spring physics (zero dependencies)
 - [Avatars](https://stellar-appkit.saganta.com/ui/avatars/): Wallet-provided, Stellar Expert, gradient fallback
 - [Copy-to-Clipboard](https://stellar-appkit.saganta.com/ui/copy-clipboard/): Per-address feedback
 
