@@ -87,15 +87,20 @@ import { StellarAppKit } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
 
 // connectors is optional — defaults to Freighter, Albedo, xBull, Ledger
+// domain + uri are optional too — auto-derived from window.location in the browser
 const appkit = new StellarAppKit({
   network: 'TESTNET',
-  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+  appMetadata: { name: 'Example App' },
 });
 
 const modal = document.querySelector('stellar-appkit-modal');
 modal.client = appkit;
 modal.open();
 ```
+
+Zero-config:
+- `connectors` — omit to auto-register Freighter + Albedo + xBull + Ledger
+- `appMetadata.domain` / `appMetadata.uri` — omit to auto-derive from `window.location`. Auto-formatted if passed: `"https://example.com"` as domain → `"example.com"`; `"example.com"` as uri → `"https://example.com"`. In SSR, pass explicitly.
 
 Animation config (optional — defaults are sensible):
 - HTML attributes: `animation="implode"` or `animation-open="slide-left" animation-close="fade"`

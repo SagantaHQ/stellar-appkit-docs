@@ -82,9 +82,10 @@ Quick check that everything works:
 import { StellarAppKit } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
 
+// domain + uri auto-derived from window.location in the browser
 const appkit = new StellarAppKit({
   network: 'TESTNET',
-  appMetadata: { name: 'Test', domain: 'localhost', uri: 'http://localhost:3000' },
+  appMetadata: { name: 'Example App' },
 });
 
 console.log('StellarAppKit ready:', appkit.network);

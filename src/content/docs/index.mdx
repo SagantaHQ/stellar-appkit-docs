@@ -69,9 +69,10 @@ import { StellarAppKit } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
 
 // connectors is optional — defaults to Freighter, Albedo, xBull, Ledger
+// domain + uri are optional too — auto-derived from window.location in the browser
 const appkit = new StellarAppKit({
   network: 'TESTNET',
-  appMetadata: { name: 'My App', domain: 'localhost', uri: 'http://localhost:3000' },
+  appMetadata: { name: 'Example App' },
 });
 
 const modal = document.querySelector('stellar-appkit-modal');

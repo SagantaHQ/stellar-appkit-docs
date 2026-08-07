@@ -10,9 +10,10 @@ import { StellarAppKit } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 // connectors is optional — defaults to Freighter, Albedo, xBull, Ledger
+// domain + uri are optional too — auto-derived from window.location in the browser
 const appkit = new StellarAppKit({
   network: 'PUBLIC',
-  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+  appMetadata: { name: 'Example App' },
 });
 
 const modal = document.querySelector('stellar-appkit-modal');
@@ -67,6 +68,34 @@ const appkit = new StellarAppKit({
 ```
 
 `defaultConnectors()` is exported so you can extend rather than replace the default set.
+
+## Auto-derived `domain` and `uri`
+
+The `appMetadata` config accepts just `{ name }` — `domain` and `uri` are **optional** and auto-derived from `window.location` in the browser:
+
+- `domain` ← `window.location.hostname` (e.g. `"app.example.com"`)
+- `uri` ← `window.location.origin` (e.g. `"https://app.example.com"`)
+
+```ts
+// Minimal — domain + uri auto-derived from the current page URL
+const appkit = new StellarAppKit({
+  network: 'TESTNET',
+  appMetadata: { name: 'Example App' },
+});
+```
+
+If you pass them explicitly, they're auto-formatted:
+- `domain` with a protocol (`"https://example.com"`) → stripped to `"example.com"`
+- `uri` without a protocol (`"example.com"`) → prefixed with `"https://"`
+
+```ts
+// These are all equivalent after normalization:
+appMetadata: { name: 'Example App' }                                              // auto-derived
+appMetadata: { name: 'Example App', domain: 'example.com', uri: 'https://example.com' }  // explicit
+appMetadata: { name: 'Example App', domain: 'https://example.com', uri: 'example.com' }  // auto-formatted
+```
+
+In SSR/Node.js (no `window`), `domain` and `uri` remain `undefined` if not passed. Pass them explicitly for server-side `signIn()` flows.
 
 ## Customizing animations
 
