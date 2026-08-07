@@ -85,6 +85,8 @@ export default defineConfig({
           items: [
             { label: 'Modal', slug: 'ui/modal' },
             { label: 'Bottom Sheet', slug: 'ui/bottomsheet' },
+            { label: 'Animations', slug: 'ui/animations' },
+            { label: 'Theme Builder', slug: 'ui/theme-builder' },
             { label: 'Avatars', slug: 'ui/avatars' },
             { label: 'Copy-to-Clipboard', slug: 'ui/copy-clipboard' },
           ],

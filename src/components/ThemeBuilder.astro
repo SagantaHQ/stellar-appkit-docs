@@ -1,0 +1,582 @@
+---
+/**
+ * Interactive Theme Builder component for the docs site.
+ *
+ * Lets users pick colors, radii, and fonts via form controls, then generates
+ * a CSS snippet they can copy into their own app. The preview panel shows
+ * a mock wallet-list UI that reflects the current theme in real time.
+ *
+ * Zero dependencies — vanilla Astro component with a <script> tag for the
+ * interactivity. The CSS variables are set on the preview element, so the
+ * mock UI inherits them directly.
+ */
+---
+
+<section class="theme-builder">
+  <div class="theme-builder__grid">
+    <div class="theme-builder__controls">
+      <div class="tb-field">
+        <label class="tb-field__label">Preset</label>
+        <select id="tb-preset" class="tb-field__select">
+          <option value="editorial-dark">Editorial Dark (default)</option>
+          <option value="ocean">Ocean</option>
+          <option value="sunset">Sunset</option>
+          <option value="cyberpunk">Cyberpunk</option>
+          <option value="light">Light</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+
+      <div class="tb-field-group">
+        <h4>Colors</h4>
+        <div class="tb-color-grid">
+          <div class="tb-field">
+            <label class="tb-field__label">Background</label>
+            <div class="tb-color-row">
+              <input type="color" id="tb-bg" value="#0B0D0E" />
+              <input type="text" id="tb-bg-text" value="#0B0D0E" class="tb-field__input" />
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Surface</label>
+            <div class="tb-color-row">
+              <input type="color" id="tb-surface" value="#14171A" />
+              <input type="text" id="tb-surface-text" value="#14171A" class="tb-field__input" />
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Accent</label>
+            <div class="tb-color-row">
+              <input type="color" id="tb-accent" value="#6EE7B7" />
+              <input type="text" id="tb-accent-text" value="#6EE7B7" class="tb-field__input" />
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Text</label>
+            <div class="tb-color-row">
+              <input type="color" id="tb-text" value="#F5F6F7" />
+              <input type="text" id="tb-text-text" value="#F5F6F7" class="tb-field__input" />
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Text Muted</label>
+            <div class="tb-color-row">
+              <input type="color" id="tb-text-muted" value="#9aa0a6" />
+              <input type="text" id="tb-text-muted-text" value="#9aa0a6" class="tb-field__input" />
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Border</label>
+            <div class="tb-color-row">
+              <input type="color" id="tb-border" value="#2a2f35" />
+              <input type="text" id="tb-border-text" value="#2a2f35" class="tb-field__input" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-field-group">
+        <h4>Radius</h4>
+        <div class="tb-color-grid">
+          <div class="tb-field">
+            <label class="tb-field__label">Large (modal)</label>
+            <input type="text" id="tb-radius-lg" value="20px" class="tb-field__input" />
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Medium (buttons)</label>
+            <input type="text" id="tb-radius-md" value="12px" class="tb-field__input" />
+          </div>
+          <div class="tb-field">
+            <label class="tb-field__label">Small (badges)</label>
+            <input type="text" id="tb-radius-sm" value="8px" class="tb-field__input" />
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-field-group">
+        <h4>Fonts</h4>
+        <div class="tb-field">
+          <label class="tb-field__label">Display font</label>
+          <input type="text" id="tb-font-display" value="ui-sans-serif, system-ui, sans-serif" class="tb-field__input" />
+        </div>
+        <div class="tb-field">
+          <label class="tb-field__label">Mono font</label>
+          <input type="text" id="tb-font-mono" value="ui-monospace, monospace" class="tb-field__input" />
+        </div>
+      </div>
+    </div>
+
+    <div class="theme-builder__preview">
+      <div class="tb-preview-label">Live preview</div>
+      <div class="tb-preview-panel" id="tb-preview">
+        <div class="tb-preview-header">
+          <span class="tb-preview-title">Connect a wallet</span>
+          <span class="tb-preview-close">×</span>
+        </div>
+        <div class="tb-preview-body">
+          <div class="tb-wallet-row">
+            <div class="tb-wallet-tile">F</div>
+            <span class="tb-wallet-name">Freighter</span>
+            <span class="tb-wallet-badge">Installed</span>
+          </div>
+          <div class="tb-wallet-row">
+            <div class="tb-wallet-tile">A</div>
+            <span class="tb-wallet-name">Albedo</span>
+            <span class="tb-wallet-badge">Installed</span>
+          </div>
+          <div class="tb-wallet-row">
+            <div class="tb-wallet-tile">X</div>
+            <span class="tb-wallet-name">xBull</span>
+            <span class="tb-wallet-btn">Install</span>
+          </div>
+        </div>
+        <div class="tb-preview-footer">
+          Powered by <a href="#">Stellar AppKit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-builder__snippet">
+    <div class="tb-snippet-header">
+      <span>CSS snippet</span>
+      <button id="tb-copy" class="tb-copy-btn">Copy</button>
+    </div>
+    <pre id="tb-snippet" class="tb-snippet"></pre>
+  </div>
+</section>
+
+<style>
+  .theme-builder {
+    margin: 1.5rem 0;
+  }
+  .theme-builder__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    .theme-builder__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .theme-builder__controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .tb-field-group {
+    border-top: 1px solid var(--sl-color-gray-5);
+    padding-top: 1rem;
+  }
+  .tb-field-group h4 {
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sl-color-text);
+  }
+  .tb-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-bottom: 0.625rem;
+  }
+  .tb-field__label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--sl-color-text-muted);
+  }
+  .tb-field__select,
+  .tb-field__input {
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    background: var(--sl-color-gray-7);
+    color: var(--sl-color-text);
+    font-size: 0.8125rem;
+    font-family: var(--sl-font-mono);
+  }
+  .tb-field__select:focus,
+  .tb-field__input:focus {
+    outline: none;
+    border-color: var(--sl-color-accent);
+  }
+  .tb-color-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .tb-color-row {
+    display: flex;
+    gap: 0.375rem;
+    align-items: center;
+  }
+  .tb-color-row input[type="color"] {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .tb-color-row input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 2px;
+  }
+  .tb-color-row input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+  }
+
+  /* Preview panel */
+  .theme-builder__preview {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+  }
+  .tb-preview-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--sl-color-text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .tb-preview-panel {
+    background: #0B0D0E;
+    color: #F5F6F7;
+    border-radius: 20px;
+    overflow: hidden;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    border: 1px solid #2a2f35;
+    --sak-color-bg: #0B0D0E;
+    --sak-color-surface: #14171A;
+    --sak-color-accent: #6EE7B7;
+    --sak-color-text: #F5F6F7;
+    --sak-color-text-muted: #9aa0a6;
+    --sak-color-border: #2a2f35;
+    --sak-radius-lg: 20px;
+    --sak-radius-md: 12px;
+    --sak-radius-sm: 8px;
+    --sak-font-display: ui-sans-serif, system-ui, sans-serif;
+    --sak-font-mono: ui-monospace, monospace;
+  }
+  .tb-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.125rem;
+    border-bottom: 1px solid var(--sak-color-border);
+    background: var(--sak-color-surface);
+  }
+  .tb-preview-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--sak-color-text);
+    font-family: var(--sak-font-display);
+  }
+  .tb-preview-close {
+    color: var(--sak-color-text-muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .tb-preview-body {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background: var(--sak-color-bg);
+  }
+  .tb-wallet-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--sak-radius-md);
+    background: var(--sak-color-surface);
+    border: 1px solid transparent;
+    transition: border-color 150ms;
+  }
+  .tb-wallet-row:hover {
+    border-color: var(--sak-color-border);
+  }
+  .tb-wallet-tile {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--sak-radius-sm);
+    background: var(--sak-color-accent);
+    color: var(--sak-color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    flex-shrink: 0;
+  }
+  .tb-wallet-name {
+    flex: 1;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--sak-color-text);
+  }
+  .tb-wallet-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    border: 1px solid #a7f3d0;
+    flex-shrink: 0;
+  }
+  .tb-wallet-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: var(--sak-radius-sm);
+    background: var(--sak-color-accent);
+    color: var(--sak-color-bg);
+    font-size: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .tb-preview-footer {
+    padding: 0.625rem 1.125rem;
+    font-size: 0.6875rem;
+    color: var(--sak-color-text-muted);
+    text-align: center;
+    border-top: 1px solid var(--sak-color-border);
+    background: var(--sak-color-surface);
+  }
+  .tb-preview-footer a {
+    color: var(--sak-color-accent);
+    text-decoration: none;
+  }
+
+  /* Snippet */
+  .theme-builder__snippet {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .tb-snippet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.875rem;
+    background: var(--sl-color-gray-7);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--sl-color-text-muted);
+  }
+  .tb-copy-btn {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 4px;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-text);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 150ms;
+  }
+  .tb-copy-btn:hover {
+    background: var(--sl-color-gray-5);
+  }
+  .tb-copy-btn--copied {
+    background: var(--sl-color-green, #6EE7B7);
+    color: #0B0D0E;
+    border-color: transparent;
+  }
+  .tb-snippet {
+    margin: 0;
+    padding: 1rem;
+    font-family: var(--sl-font-mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--sl-color-text);
+    background: var(--sl-color-gray-9, #0B0D0E);
+    overflow-x: auto;
+    max-height: 320px;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const PRESETS = {
+      'editorial-dark': {
+        bg: '#0B0D0E', surface: '#14171A', accent: '#6EE7B7',
+        text: '#F5F6F7', textMuted: '#9aa0a6', border: '#2a2f35',
+        radiusLg: '20px', radiusMd: '12px', radiusSm: '8px',
+        fontDisplay: 'ui-sans-serif, system-ui, sans-serif',
+        fontMono: 'ui-monospace, monospace',
+      },
+      'ocean': {
+        bg: '#0c1322', surface: '#131c2e', accent: '#60a5fa',
+        text: '#e8eef7', textMuted: '#7a8aa5', border: '#1e2942',
+        radiusLg: '20px', radiusMd: '12px', radiusSm: '8px',
+        fontDisplay: 'ui-sans-serif, system-ui, sans-serif',
+        fontMono: 'ui-monospace, monospace',
+      },
+      'sunset': {
+        bg: '#1a0f0a', surface: '#241510', accent: '#fbbf24',
+        text: '#f5e6d3', textMuted: '#a08770', border: '#3a2418',
+        radiusLg: '20px', radiusMd: '12px', radiusSm: '8px',
+        fontDisplay: 'ui-sans-serif, system-ui, sans-serif',
+        fontMono: 'ui-monospace, monospace',
+      },
+      'cyberpunk': {
+        bg: '#0a0014', surface: '#15001f', accent: '#f0abfc',
+        text: '#fce7f3', textMuted: '#9a7a9a', border: '#2a0040',
+        radiusLg: '4px', radiusMd: '2px', radiusSm: '2px',
+        fontDisplay: 'ui-sans-serif, system-ui, sans-serif',
+        fontMono: 'ui-monospace, monospace',
+      },
+      'light': {
+        bg: '#FAFAFA', surface: '#FFFFFF', accent: '#0F7C5A',
+        text: '#0B0D0E', textMuted: '#5f6368', border: '#e5e7eb',
+        radiusLg: '20px', radiusMd: '12px', radiusSm: '8px',
+        fontDisplay: 'ui-sans-serif, system-ui, sans-serif',
+        fontMono: 'ui-monospace, monospace',
+      },
+    };
+
+    const preview = document.getElementById('tb-preview');
+    const snippetEl = document.getElementById('tb-snippet');
+    const copyBtn = document.getElementById('tb-copy');
+    const presetSelect = document.getElementById('tb-preset');
+
+    const fields = {
+      bg: ['tb-bg', 'tb-bg-text'],
+      surface: ['tb-surface', 'tb-surface-text'],
+      accent: ['tb-accent', 'tb-accent-text'],
+      text: ['tb-text', 'tb-text-text'],
+      textMuted: ['tb-text-muted', 'tb-text-muted-text'],
+      border: ['tb-border', 'tb-border-text'],
+    };
+
+    const tokenMap = {
+      bg: '--sak-color-bg',
+      surface: '--sak-color-surface',
+      accent: '--sak-color-accent',
+      text: '--sak-color-text',
+      textMuted: '--sak-color-text-muted',
+      border: '--sak-color-border',
+      radiusLg: '--sak-radius-lg',
+      radiusMd: '--sak-radius-md',
+      radiusSm: '--sak-radius-sm',
+      fontDisplay: '--sak-font-display',
+      fontMono: '--sak-font-mono',
+    };
+
+    function getValues() {
+      const v = {};
+      for (const [key, [colorId, textId]] of Object.entries(fields)) {
+        v[key] = document.getElementById(textId).value;
+      }
+      v.radiusLg = document.getElementById('tb-radius-lg').value;
+      v.radiusMd = document.getElementById('tb-radius-md').value;
+      v.radiusSm = document.getElementById('tb-radius-sm').value;
+      v.fontDisplay = document.getElementById('tb-font-display').value;
+      v.fontMono = document.getElementById('tb-font-mono').value;
+      return v;
+    }
+
+    function applyTheme(v) {
+      for (const [key, token] of Object.entries(tokenMap)) {
+        if (v[key]) {
+          preview.style.setProperty(token, v[key]);
+        }
+      }
+    }
+
+    function generateSnippet(v) {
+      const lines = ['stellar-appkit-modal {'];
+      for (const [key, token] of Object.entries(tokenMap)) {
+        if (v[key]) {
+          lines.push(`  ${token}: ${v[key]};`);
+        }
+      }
+      lines.push('}');
+      return lines.join('\n');
+    }
+
+    function update() {
+      const v = getValues();
+      applyTheme(v);
+      snippetEl.textContent = generateSnippet(v);
+    }
+
+    function loadPreset(name) {
+      if (name === 'custom' || !PRESETS[name]) return;
+      const p = PRESETS[name];
+      for (const [key, [colorId, textId]] of Object.entries(fields)) {
+        document.getElementById(colorId).value = p[key.replace('Muted', 'Muted')] ?? p[key] ?? '';
+        document.getElementById(textId).value = p[key] ?? '';
+      }
+      // Fix: textMuted key mapping
+      document.getElementById('tb-text-muted').value = p.textMuted;
+      document.getElementById('tb-text-muted-text').value = p.textMuted;
+      document.getElementById('tb-radius-lg').value = p.radiusLg;
+      document.getElementById('tb-radius-md').value = p.radiusMd;
+      document.getElementById('tb-radius-sm').value = p.radiusSm;
+      document.getElementById('tb-font-display').value = p.fontDisplay;
+      document.getElementById('tb-font-mono').value = p.fontMono;
+      update();
+    }
+
+    // Wire up color + text inputs to stay in sync
+    for (const [key, [colorId, textId]] of Object.entries(fields)) {
+      const colorEl = document.getElementById(colorId);
+      const textEl = document.getElementById(textId);
+      colorEl.addEventListener('input', () => {
+        textEl.value = colorEl.value;
+        presetSelect.value = 'custom';
+        update();
+      });
+      textEl.addEventListener('input', () => {
+        if (/^#[0-9a-fA-F]{6}$/.test(textEl.value)) {
+          colorEl.value = textEl.value;
+        }
+        presetSelect.value = 'custom';
+        update();
+      });
+    }
+
+    // Wire up radius + font inputs
+    ['tb-radius-lg', 'tb-radius-md', 'tb-radius-sm', 'tb-font-display', 'tb-font-mono'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', () => {
+        presetSelect.value = 'custom';
+        update();
+      });
+    });
+
+    presetSelect.addEventListener('change', () => loadPreset(presetSelect.value));
+
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(snippetEl.textContent);
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('tb-copy-btn--copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('tb-copy-btn--copied');
+        }, 1500);
+      } catch {
+        // Clipboard API not available — select the text instead
+        const range = document.createRange();
+        range.selectNode(snippetEl);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+    });
+
+    // Initial render
+    update();
+  })();
+</script>
