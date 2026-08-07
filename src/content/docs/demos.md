@@ -1,6 +1,6 @@
 ---
 title: Live Demos
-description: 14 working demos of Stellar AppKit — wallet connection, signing, Soroban, SIWS, theming.
+description: 17 working demos of Stellar AppKit — wallet connection, signing, Soroban, SIWS, theming.
 ---
 
 import { useEffect } from 'react';
