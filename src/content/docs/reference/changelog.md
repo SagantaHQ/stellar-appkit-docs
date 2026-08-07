@@ -3,6 +3,21 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.1.2
+
+### Bug fixes
+- **Image flash on modal open fixed.** The `render()` method was replacing the entire `innerHTML` on every state change (wallet list loading, connect events, etc.), which destroyed and recreated all `<img>` elements — causing the browser to re-decode base64 data URIs each time (visible as a flash). Now uses **targeted DOM updates**: only the `.body` content and header are replaced when they change, preserving the panel shell and all `<img>` elements in the DOM. The browser keeps the decoded images in memory, so re-renders are instant.
+- **Modal not opening on mobile (Chrome mobile) fixed.** The `computeEffectiveMode()` method was using a cached `mediaQuery` that could be stale on mobile browsers (especially after orientation changes or address bar show/hide). Now re-evaluates `window.matchMedia()` on every call to ensure the current viewport state is used. Also added a fallback to `window.innerWidth` if `matchMedia` is not available.
+- **WAAPI animation safety fallback.** Added a 600ms timeout that force-clears `panel.style.opacity` if the WAAPI animation's `onfinish` doesn't fire — fixes a mobile issue where the panel stays invisible because some Android browsers don't reliably fire `onfinish`.
+- **Panel `max-height` uses `dvh`** (dynamic viewport height) on browsers that support it — fixes the panel being cut off by the mobile address bar. Falls back to `vh` on older browsers.
+
+### Changes
+- **Ledger icon updated** with the new official brand SVG (white background + black "L" logo).
+
+All 155 tests pass.
+
+---
+
 ## v1.1.1
 
 ### Changes
