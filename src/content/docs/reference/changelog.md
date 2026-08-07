@@ -3,6 +3,80 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.0.9
+
+### New features
+- **`Networks` object exported from core.** Apps no longer need to import `@stellar/stellar-sdk` just for `Networks.TESTNET` — `import { Networks } from '@saganta/stellar-appkit'` now works. Includes `PUBLIC`, `TESTNET`, `FUTURENET`, and `STANDALONE` passphrases, verified byte-for-byte against `@stellar/stellar-sdk`. Also exports `resolveNetworkPassphrase(network)` helper.
+- **WalletConnect QR code rendered automatically by the modal using `better-qr`.** The modal now renders the WC pairing URI as an inline SVG QR code (no external API calls, no network dependency, works offline). The `onUri` callback is now **optional** — when using `<stellar-appkit-modal>`, you can omit it entirely and the modal handles QR rendering, deep linking, and copy-to-clipboard.
+- **`better-qr` added as a bundled dependency** of `@saganta/stellar-appkit-ui-web` — installed automatically, lazy-imported only when WC is used, tree-shaken out otherwise.
+
+### Bug fixes
+- **WalletConnect `SignClient` import fixed** (v1.0.8). `@walletconnect/sign-client` v2 exports `SignClient` as a named export (`mod.SignClient`), not as the default export. The old code used `mod.default` (a plain object), which threw `"SignClient.init is not a function"`. Now uses `mod.SignClient ?? mod.default` with a runtime check.
+
+### Documentation
+- Changelog updated for v1.0.4 through v1.0.9 (was stale at v1.0.3).
+
+All 155 tests pass.
+
+---
+
+## v1.0.8
+
+### Bug fixes
+- **WalletConnect `SignClient` import was using the wrong export.** `@walletconnect/sign-client` v2 exports `SignClient` as a named export (`mod.SignClient`), NOT as the default export. The old code used `mod.default` (a plain object), which threw `"SignClient.init is not a function"` — the connector never reached URI generation, so no QR code could ever appear. Fixed to use `mod.SignClient ?? mod.default` with a runtime check.
+
+---
+
+## v1.0.7
+
+### New features
+- **WalletConnect QR rendering inside the modal.** Added `setOnUri(fn)` method to the WC connector — the modal calls this before `connect()` to intercept the pairing URI and render a QR code in the connecting view. Previously, the modal showed a generic "Continue in WalletConnect" spinner with no QR code.
+- **Copy URI button** in the WC connecting view — for manual QR generation or debugging.
+- **Deep link button** for mobile users — opens the wallet app directly.
+
+### Bug fixes
+- **WC connector `onUri` now late-bound.** The connector uses a mutable `onUriHandler` instead of the closure-captured `opts.onUri`, so the modal can overwrite it at runtime.
+
+---
+
+## v1.0.6
+
+### New features
+- **Auto-derive `appMetadata.domain` + `uri` from `window.location`.** The `appMetadata` config now accepts just `{ name }` — `domain` and `uri` are optional and auto-derived from `window.location.hostname` and `window.location.origin` in the browser. Auto-formatted if passed explicitly: `"https://example.com"` as domain → `"example.com"`; `"example.com"` as uri → `"https://example.com"`. In SSR (no `window`), pass them explicitly.
+- **`normalizeAppMetadata()` exported** — normalize user input before passing to `StellarAppKit` (useful in server contexts).
+
+### Bug fixes
+- `signIn()` throws a clear error if `domain`/`uri` are missing (SSR case), pointing the user to pass them explicitly.
+
+---
+
+## v1.0.5
+
+### New features
+- **Theme Builder page** on the docs site (`/ui/theme-builder/`) — interactive visual theme editor with 5 presets, color pickers for 6 tokens, radius + font inputs, live preview, and copy-to-clipboard CSS snippet.
+- **Animations docs page** (`/ui/animations/`) — full WAAPI reference: presets table, defaults, config priority, `prefers-reduced-motion`, interruption handling, drag-to-dismiss coexistence.
+- **Animation Presets demo** (`/demos/animations`) — focused demo with separate open/close animation selectors, mode picker, and preset reference table.
+
+### Changes
+- **"Installed" badge restyled** — removed the `::before` dot, switched to a fixed green-200 palette (`#d1fae5` bg, `#047857` text, `#a7f3d0` border) so the "ready to use" signal is consistent across light and dark themes.
+
+---
+
+## v1.0.4
+
+### Breaking changes
+- **Custom element renamed:** `<saganta-appkit-modal>` → `<stellar-appkit-modal>`. All source files, docs, examples, and framework wrappers updated.
+
+### Changes
+- **GitHub URL casing fixed:** `SagantaHQ` → `sagantaHQ` everywhere.
+- **Package.json fields added** to all 3 packages + root: `repository`, `homepage` (`https://stellar-appkit.saganta.com`), `bugs`.
+- **Removed `@use-gesture/vanilla` + `motion` from `peerDependencies`** (leftover from v1.0.1 — they were removed from the code but the peer dep entries were left behind).
+
+### New features
+- **WalletConnect + Hana wallet documentation** added to README, SKILL.md, llms.txt, and docs site (new `wallets/hana.md` page, rewrote `wallets/walletconnect.md`).
+
+---
+
 ## v1.0.3
 
 ### Bug fixes
@@ -12,7 +86,7 @@ description: Release history for Stellar AppKit.
 
 ### New features
 - **Zero-config default connectors.** `StellarAppKitConfig.connectors` is now optional. If omitted (or empty), the SDK auto-registers Freighter, Albedo, xBull, and Ledger via the new `defaultConnectors()` export. WalletConnect is excluded from defaults because it requires a `projectId`.
-- **"Installed" badge on wallet list.** Available wallets now show an accent-colored pill labeled "Installed" (with a dot), making it instantly clear which wallets are ready to use vs. which need installation.
+- **"Installed" badge on wallet list.** Available wallets now show an accent-colored pill labeled "Installed", making it instantly clear which wallets are ready to use vs. which need installation.
 - **Programmatic animation config.** New `StellarAppKitModalConfig` type in core (`modal.animation` field) — set the animation globally at construction time. HTML attributes still take priority, then config, then mode-based default.
 - **`close(skipAnimation?: boolean)`** — new optional parameter to bypass the WAAPI exit animation. Used internally by drag-to-dismiss; also useful for programmatic closes that should be instant.
 
