@@ -3,6 +3,10 @@ import DefaultHead from '@astrojs/starlight/components/Head.astro';
 
 const canonical = new URL(Astro.url.pathname, 'https://stellar-appkit.saganta.com').toString();
 const { title, description } = Astro.props;
+
+// Google Analytics ID — set via NEXT_PUBLIC_GA_ID env var in Cloudflare.
+// Works for both the docs site and the demos site (same GA property).
+const gaId = import.meta.env.NEXT_PUBLIC_GA_ID;
 ---
 
 <DefaultHead {...Astro.props} />
@@ -30,6 +34,19 @@ const { title, description } = Astro.props;
 
 <!-- Google Search Console verification -->
 <meta name="google-site-verification" content="iD-ow_BSGtlQm2oOnVqWASMgbtgBovMKBkfcRjtVVvA" />
+
+<!-- Google Analytics (only renders if NEXT_PUBLIC_GA_ID is set) -->
+{gaId && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+    <script is:inline set:html={`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${gaId}');
+    `} />
+  </>
+)}
 
 <!-- Structured Data: SoftwareApplication -->
 <script type="application/ld+json" set:html={JSON.stringify({
