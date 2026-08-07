@@ -1,6 +1,6 @@
 # Stellar AppKit Documentation
 
-Documentation site for [Stellar AppKit](https://github.com/SagantaHQ/stellar-appkit) — built with [Astro Starlight](https://starlight.astro.build/), deployed on Cloudflare Pages.
+Documentation site for [Stellar AppKit](https://github.com/sagantaHQ/stellar-appkit) — built with [Astro Starlight](https://starlight.astro.build/), deployed on Cloudflare Pages.
 
 ## Development
 

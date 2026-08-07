@@ -2,7 +2,7 @@
 
 > One SDK for every Stellar wallet — unified wallet API, Soroban built in, real transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.
 > 
-> GitHub: https://github.com/SagantaHQ/stellar-appkit
+> GitHub: https://github.com/sagantaHQ/stellar-appkit
 > Docs: https://stellar-appkit.saganta.com
 > npm: @saganta/stellar-appkit
 > License: MIT
@@ -54,14 +54,14 @@ Built by Saganta as the wallet-connection layer of its Stellar/Soroban developer
 - Solid (/solid): StellarAppKitProvider + hooks, createSignal/createMemo. Also exports <StellarAppKitModal> component with ref callback prop.
 - Svelte (/svelte): setStellarAppKitContext + stores (Svelte 4 + 5). Also exports use:stellarmodal action + openModal(node)/closeModal(node)/isStellarAppKitModal(node) helpers.
 - Tree-shakable subpath exports — only ship the framework you use
-- Framework modal components deliberately do NOT import the Web Component class (extends HTMLElement, undefined in pure-Node SSR). Consumers must `import '@saganta/stellar-appkit-ui-web'` once at app entry to register <saganta-appkit-modal>.
+- Framework modal components deliberately do NOT import the Web Component class (extends HTMLElement, undefined in pure-Node SSR). Consumers must `import '@saganta/stellar-appkit-ui-web'` once at app entry to register <stellar-appkit-modal>.
 - Shared props: mode, theme, branding, logoSrc, title, autoRetryNetwork, stellarExpertAvatars
 - Shared events: connect, disconnect, error (mirrors client events)
 - Shared imperative handle (React/Solid/Vue via ref): open(), close(), element
 - Docs: https://stellar-appkit.saganta.com/wrappers/modal-components/
 
 ### UI
-- <saganta-appkit-modal> Shadow DOM Web Component
+- <stellar-appkit-modal> Shadow DOM Web Component
 - Modal (desktop), bottom-sheet (mobile), inline (embedded) presentation
 - WAAPI open/close animations — 7 presets (none, fade, scale, scale-blur, slide-up, slide-left, implode), zero dependencies, prefers-reduced-motion respected. Defaults: scale-blur for modal, slide-up for bottom-sheet.
 - Draggable bottom-sheet with custom spring physics (~30 lines, native Pointer Events + requestAnimationFrame, zero dependencies)
@@ -92,7 +92,7 @@ const appkit = new StellarAppKit({
   appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
 });
 
-const modal = document.querySelector('saganta-appkit-modal');
+const modal = document.querySelector('stellar-appkit-modal');
 modal.client = appkit;
 modal.open();
 ```
@@ -155,8 +155,8 @@ The library repo ships two AI-readable files at its root so AI coding tools (Cur
 - llms.txt — Compact plain-text API index (~250 lines) following the llms.txt convention at https://llmstxt.org/. Sections: header, install, quick start, wallet connection, signing, Soroban, SIWS verification, framework wrappers, transaction preview, theming, error handling, tree-shaking, links. Read by any agent that reads repo files.
 
 Raw URLs:
-- https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/SKILL.md
-- https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/llms.txt
+- https://raw.githubusercontent.com/sagantaHQ/stellar-appkit/main/SKILL.md
+- https://raw.githubusercontent.com/sagantaHQ/stellar-appkit/main/llms.txt
 
 This docs site also serves its own:
 - https://stellar-appkit.saganta.com/llms.txt — compact index of every docs page

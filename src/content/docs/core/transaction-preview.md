@@ -5,7 +5,7 @@ description: Every operation decoded, risk flags, contract badges, and fee estim
 
 ## How it works
 
-Every `signTransaction()` call is decoded and shown to the user *before* the wallet's own signature prompt. Attaching `<saganta-appkit-modal>` wires this up automatically.
+Every `signTransaction()` call is decoded and shown to the user *before* the wallet's own signature prompt. Attaching `<stellar-appkit-modal>` wires this up automatically.
 
 ```ts
 const appkit = new StellarAppKit({

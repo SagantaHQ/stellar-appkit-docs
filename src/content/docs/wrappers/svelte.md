@@ -15,7 +15,7 @@ That's it — all wallet SDKs (`@stellar/stellar-sdk`, `@stellar/freighter-api`,
 
 Svelte is a peer dependency (not bundled) because your app already has its own Svelte runtime — having two copies would cause store subscriptions to not propagate.
 
-You also need to register the `<saganta-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `use:stellarmodal` action (and any raw `<saganta-appkit-modal>` element in your templates) to work:
+You also need to register the `<stellar-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `use:stellarmodal` action (and any raw `<stellar-appkit-modal>` element in your templates) to work:
 
 ```ts
 // main.ts (or +layout.ts for SvelteKit)
@@ -31,7 +31,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 ```ts
 // main.ts
 import App from './App.svelte';
-import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 const app = new App({
   target: document.getElementById('app')!,
@@ -62,7 +62,7 @@ export default app;
 <Header />
 
 <!-- The modal — use:stellarmodal wires up the client automatically -->
-<saganta-appkit-modal use:stellarmodal mode="auto" theme="dark"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal mode="auto" theme="dark"></stellar-appkit-modal>
 ```
 
 ```svelte
@@ -98,7 +98,7 @@ That's a complete wallet connect flow. The `use:stellarmodal` action wires up th
 
 ## Why a Svelte action (not a component)
 
-The other framework wrappers (React/Vue/Solid) ship a `<StellarAppKitModal>` component that wraps the underlying Web Component. Svelte is different — Svelte renders unknown lowercase tags (like `<saganta-appkit-modal>`) as-is in templates, so a wrapper component would just add an extra layer of indirection without buying anything.
+The other framework wrappers (React/Vue/Solid) ship a `<StellarAppKitModal>` component that wraps the underlying Web Component. Svelte is different — Svelte renders unknown lowercase tags (like `<stellar-appkit-modal>`) as-is in templates, so a wrapper component would just add an extra layer of indirection without buying anything.
 
 Svelte **actions** (`use:stellarmodal`) are the idiomatic pattern for enhancing a DOM node — they're plain TS functions that take the node and return a destroy callback. This keeps the wrapper zero-runtime-overhead and avoids needing a Svelte compiler step in the build (the rest of the wrapper is plain TS, so it tree-shakes cleanly).
 
@@ -112,14 +112,14 @@ If you really want a component-style API, you can wrap it yourself:
   export let theme: 'dark' | 'light' = 'dark';
 </script>
 
-<saganta-appkit-modal use:stellarmodal {mode} {theme}></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal {mode} {theme}></stellar-appkit-modal>
 ```
 
 But the action-on-raw-element pattern is what the docs recommend.
 
 ## Embedding the UI
 
-The `<saganta-appkit-modal>` element with `use:stellarmodal` is the modal. Place it once in your root layout:
+The `<stellar-appkit-modal>` element with `use:stellarmodal` is the modal. Place it once in your root layout:
 
 ```svelte
 <!-- +layout.svelte (SvelteKit) or App.svelte -->
@@ -130,7 +130,7 @@ The `<saganta-appkit-modal>` element with `use:stellarmodal` is the modal. Place
   setStellarAppKitContext({ network: 'TESTNET', connectors: [...] });
 </script>
 
-<saganta-appkit-modal use:stellarmodal mode="auto" theme="dark"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal mode="auto" theme="dark"></stellar-appkit-modal>
 <slot />
 ```
 
@@ -149,13 +149,13 @@ The `mode` attribute controls how the modal is presented:
 
 ```svelte
 <!-- Desktop modal + mobile bottom-sheet (default) -->
-<saganta-appkit-modal use:stellarmodal mode="auto"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal mode="auto"></stellar-appkit-modal>
 
 <!-- Always a bottom-sheet, even on desktop -->
-<saganta-appkit-modal use:stellarmodal mode="bottomsheet"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal mode="bottomsheet"></stellar-appkit-modal>
 
 <!-- Embedded inline — no overlay, always visible -->
-<saganta-appkit-modal use:stellarmodal mode="inline"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal mode="inline"></stellar-appkit-modal>
 ```
 
 For `inline` mode, the modal renders in place — make sure its parent has a defined width and height, because the modal will fill its container.
@@ -165,14 +165,14 @@ For `inline` mode, the modal renders in place — make sure its parent has a def
 The `theme` attribute picks one of the built-in palettes:
 
 ```svelte
-<saganta-appkit-modal use:stellarmodal theme="dark"></saganta-appkit-modal>   <!-- default -->
-<saganta-appkit-modal use:stellarmodal theme="light"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal theme="dark"></stellar-appkit-modal>   <!-- default -->
+<stellar-appkit-modal use:stellarmodal theme="light"></stellar-appkit-modal>
 ```
 
 For deeper customization, override individual CSS custom properties on the host element via the `style` attribute:
 
 ```svelte
-<saganta-appkit-modal
+<stellar-appkit-modal
   use:stellarmodal
   theme="dark"
   style="
@@ -183,7 +183,7 @@ For deeper customization, override individual CSS custom properties on the host 
     --sak-radius-lg: 20px;
     --sak-font-display: 'Geist Sans', sans-serif;
   "
-></saganta-appkit-modal>
+></stellar-appkit-modal>
 ```
 
 See [Theming](/core/theming/) for the full token list.
@@ -218,7 +218,7 @@ The modal doesn't open automatically — you trigger it from your own button. Us
 <!-- Also possible: programmatic close from anywhere with the element ref -->
 <button on:click={() => closeModal(modalEl)}>Force close</button>
 
-<saganta-appkit-modal use:stellarmodal bind:this={modalEl} mode="auto" theme="dark"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal bind:this={modalEl} mode="auto" theme="dark"></stellar-appkit-modal>
 ```
 
 The `openModal()` function calls the underlying Web Component's `open()` method, which:
@@ -235,10 +235,10 @@ If a `signTransaction()` call goes through the preview flow (the default), the m
 
 ## Listening to events
 
-The underlying Web Component dispatches standard `CustomEvent`s. Svelte's `on:event-name` syntax picks them up directly on the `<saganta-appkit-modal>` element:
+The underlying Web Component dispatches standard `CustomEvent`s. Svelte's `on:event-name` syntax picks them up directly on the `<stellar-appkit-modal>` element:
 
 ```svelte
-<saganta-appkit-modal
+<stellar-appkit-modal
   use:stellarmodal
   mode="auto"
   on:sc-connect={(e) => {
@@ -256,7 +256,7 @@ The underlying Web Component dispatches standard `CustomEvent`s. Svelte's `on:ev
     console.error('Wallet error:', err);
     // err is a ConnectError — check err.code for SEP-43 error codes
   }}
-></saganta-appkit-modal>
+></stellar-appkit-modal>
 ```
 
 You can also subscribe to the same events reactively via stores (see below), which is more idiomatic in Svelte.
@@ -315,7 +315,7 @@ In Svelte 4 and 5, subscribe to a store with the `$` prefix: `$session`, `$isCon
 
 ### Connecting multiple wallets
 
-The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first. **Note:** the built-in `<saganta-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client.
+The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first. **Note:** the built-in `<stellar-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client.
 
 ```svelte
 <script lang="ts">
@@ -515,9 +515,9 @@ If you don't want to use the built-in modal's preview view, you can render your 
 
 There are three layers of theming:
 
-1. **Built-in theme** — pass `theme="dark"` or `theme="light"` to the `<saganta-appkit-modal>` element.
+1. **Built-in theme** — pass `theme="dark"` or `theme="light"` to the `<stellar-appkit-modal>` element.
 2. **CSS custom properties** — override individual tokens via the `style` attribute (see [Embedding the UI](#theming) above).
-3. **Custom CSS** — target the host element with `saganta-appkit-modal { ... }` in your global stylesheet. Styles cross the shadow boundary for the host element itself.
+3. **Custom CSS** — target the host element with `stellar-appkit-modal { ... }` in your global stylesheet. Styles cross the shadow boundary for the host element itself.
 
 See [Theming](/core/theming/) for the full token list and examples.
 
@@ -529,7 +529,7 @@ The one thing you need to handle: the `import '@saganta/stellar-appkit-ui-web'` 
 
 ```ts
 // src/hooks.client.ts
-import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 export {} // hooks.client.ts must export something to be valid
 ```
@@ -555,7 +555,7 @@ Or, if you prefer, gate the import inside a component:
   });
 </script>
 
-<saganta-appkit-modal use:stellarmodal mode="auto" theme="dark"></saganta-appkit-modal>
+<stellar-appkit-modal use:stellarmodal mode="auto" theme="dark"></stellar-appkit-modal>
 <slot />
 ```
 

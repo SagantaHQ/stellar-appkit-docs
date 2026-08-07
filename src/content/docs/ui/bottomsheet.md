@@ -28,7 +28,7 @@ The bottom-sheet uses the `slide-up` WAAPI preset by default:
 Override per-modal via HTML attributes:
 
 ```html
-<saganta-appkit-modal mode="bottomsheet" animation="fade"></saganta-appkit-modal>
+<stellar-appkit-modal mode="bottomsheet" animation="fade"></stellar-appkit-modal>
 ```
 
 Or globally via the `StellarAppKit` config:
@@ -54,7 +54,7 @@ When a drag-dismiss completes, the spring has already animated the panel off-scr
 ## Forcing bottom-sheet mode
 
 ```html
-<saganta-appkit-modal mode="bottomsheet"></saganta-appkit-modal>
+<stellar-appkit-modal mode="bottomsheet"></stellar-appkit-modal>
 ```
 
 `'bottom-sheet'` (with hyphen) is also accepted as a backwards-compatible alias.
@@ -62,13 +62,13 @@ When a drag-dismiss completes, the spring has already animated the panel off-scr
 ## Forcing modal mode (even on mobile)
 
 ```html
-<saganta-appkit-modal mode="modal"></saganta-appkit-modal>
+<stellar-appkit-modal mode="modal"></stellar-appkit-modal>
 ```
 
 ## Inline mode (no overlay)
 
 ```html
-<saganta-appkit-modal mode="inline"></saganta-appkit-modal>
+<stellar-appkit-modal mode="inline"></stellar-appkit-modal>
 ```
 
 The panel is always rendered in place with no overlay and no open/close animations. Useful for embedding the wallet UI directly into a page section.

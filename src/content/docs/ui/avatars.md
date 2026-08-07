@@ -25,7 +25,7 @@ interface WalletConnector {
 ## Stellar Expert avatars
 
 ```html
-<saganta-appkit-modal stellar-expert-avatars="true"></saganta-appkit-modal>
+<stellar-appkit-modal stellar-expert-avatars="true"></stellar-appkit-modal>
 ```
 
 Fetches generated PNG avatars from `https://api.stellar.expert/explorer/public/account/{address}/avatar`. Falls back to the gradient on error. Off by default (third-party request).

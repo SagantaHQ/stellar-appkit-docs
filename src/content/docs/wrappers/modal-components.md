@@ -1,17 +1,17 @@
 ---
 title: Framework Modal Components
-description: Each framework wrapper ships a typed component wrapping the underlying saganta-appkit-modal Web Component — React, Vue, Solid, and Svelte.
+description: Each framework wrapper ships a typed component wrapping the underlying stellar-appkit-modal Web Component — React, Vue, Solid, and Svelte.
 ---
 
-Each framework wrapper (`/react`, `/vue`, `/solid`, `/svelte`) ships a typed component wrapping the underlying `<saganta-appkit-modal>` Web Component. Use these in place of the raw custom element when you want typed props, automatic client wiring from the same context as the hooks, and event forwarding as native framework events.
+Each framework wrapper (`/react`, `/vue`, `/solid`, `/svelte`) ships a typed component wrapping the underlying `<stellar-appkit-modal>` Web Component. Use these in place of the raw custom element when you want typed props, automatic client wiring from the same context as the hooks, and event forwarding as native framework events.
 
 ## Why this exists
 
-The underlying modal is a Web Component — it works in any framework, but feels unidiomatic. In React you'd have to manage `useRef`, manually set `element.client = appkit`, and listen for `CustomEvent`s. In Vue you'd need a `<saganta-appkit-modal>` tag in your template with manual `onMounted` wiring. The framework modal components wrap all of that behind a normal typed component with the same API surface across all four frameworks.
+The underlying modal is a Web Component — it works in any framework, but feels unidiomatic. In React you'd have to manage `useRef`, manually set `element.client = appkit`, and listen for `CustomEvent`s. In Vue you'd need a `<stellar-appkit-modal>` tag in your template with manual `onMounted` wiring. The framework modal components wrap all of that behind a normal typed component with the same API surface across all four frameworks.
 
 ## The one-line setup requirement
 
-**Always import `@saganta/stellar-appkit-ui-web` once at your app entry point** to register the `<saganta-appkit-modal>` custom element:
+**Always import `@saganta/stellar-appkit-ui-web` once at your app entry point** to register the `<stellar-appkit-modal>` custom element:
 
 ```ts
 // app entry — e.g. main.tsx, main.ts, +layout.svelte
@@ -31,7 +31,7 @@ import {
 } from '@saganta/stellar-appkit-ui-web/react';
 import type { StellarAppKitModalHandle } from '@saganta/stellar-appkit-ui-web/react';
 import { createFreighterConnector } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 export function App() {
   return (
@@ -147,7 +147,7 @@ Solid doesn't have `forwardRef` — instead, the component takes a `ref` **callb
 
 ## Svelte
 
-Svelte uses a `use:stellarmodal` **action** on the raw `<saganta-appkit-modal>` element, rather than a wrapper component. This is the idiomatic Svelte pattern for wrapping a Web Component — Svelte already renders unknown lowercase tags (like `<saganta-appkit-modal>`) as-is, so a wrapper component would just add indirection without buying anything.
+Svelte uses a `use:stellarmodal` **action** on the raw `<stellar-appkit-modal>` element, rather than a wrapper component. This is the idiomatic Svelte pattern for wrapping a Web Component — Svelte already renders unknown lowercase tags (like `<stellar-appkit-modal>`) as-is, so a wrapper component would just add indirection without buying anything.
 
 ```svelte
 <script lang="ts">
@@ -178,7 +178,7 @@ Svelte uses a `use:stellarmodal` **action** on the raw `<saganta-appkit-modal>` 
   }
 </script>
 
-<saganta-appkit-modal
+<stellar-appkit-modal
   use:stellarmodal
   bind:this={modalEl}
   mode="auto"
@@ -243,7 +243,7 @@ All four wrappers forward the same three events fired by the underlying Web Comp
 | React | `onConnect={...}`, `onDisconnect={...}`, `onError={...}` (callback props) |
 | Solid | `onConnect={...}`, `onDisconnect={...}`, `onError={...}` (callback props) |
 | Vue | `@connect="..."`, `@disconnect="..."`, `@error="..."` (template emits) |
-| Svelte | `on:sc-connect={...}`, `on:sc-disconnect={...}`, `on:sc-error={...}` (on the raw `<saganta-appkit-modal>` element) |
+| Svelte | `on:sc-connect={...}`, `on:sc-disconnect={...}`, `on:sc-error={...}` (on the raw `<stellar-appkit-modal>` element) |
 
 ## Imperative handle
 
@@ -297,23 +297,23 @@ Vue inline style:
 Svelte (on the raw element):
 
 ```svelte
-<saganta-appkit-modal use:stellarmodal style="--sak-color-bg: #0B0D0E; --sak-color-accent: #6EE7B7;" />
+<stellar-appkit-modal use:stellarmodal style="--sak-color-bg: #0B0D0E; --sak-color-accent: #6EE7B7;" />
 ```
 
 ## SSR safety
 
-The framework modal components are fully SSR-safe — they don't touch `window`, `document`, or `HTMLElement` at module load time. The custom element tag (`<saganta-appkit-modal>`) is rendered as-is during SSR, then hydrated on the client when `@saganta/stellar-appkit-ui-web` is imported.
+The framework modal components are fully SSR-safe — they don't touch `window`, `document`, or `HTMLElement` at module load time. The custom element tag (`<stellar-appkit-modal>`) is rendered as-is during SSR, then hydrated on the client when `@saganta/stellar-appkit-ui-web` is imported.
 
 If you're using Next.js, Astro, Nuxt, or SvelteKit, the modal component can be rendered in your root layout without any special handling. Just make sure the `import '@saganta/stellar-appkit-ui-web'` is in a client-side entry point (or a component that's only rendered on the client).
 
 ## Without a provider
 
-If you want to use the modal without the framework provider (e.g. you already have a `StellarAppKit` instance from elsewhere), use the raw `<saganta-appkit-modal>` Web Component directly:
+If you want to use the modal without the framework provider (e.g. you already have a `StellarAppKit` instance from elsewhere), use the raw `<stellar-appkit-modal>` Web Component directly:
 
 ```ts
 import '@saganta/stellar-appkit-ui-web';
 
-const modal = document.querySelector('saganta-appkit-modal')!;
+const modal = document.querySelector('stellar-appkit-modal')!;
 modal.client = appkit; // wire up the client manually
 await modal.open();
 ```

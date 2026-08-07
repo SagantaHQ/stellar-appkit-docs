@@ -15,7 +15,7 @@ That's it — all wallet SDKs (`@stellar/stellar-sdk`, `@stellar/freighter-api`,
 
 React is a peer dependency (not bundled) because your app already has its own React instance — having two copies of React breaks hooks.
 
-You also need to register the `<saganta-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `<StellarAppKitModal>` React component to work:
+You also need to register the `<stellar-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `<StellarAppKitModal>` React component to work:
 
 ```ts
 // main.tsx (or whatever your app entry is)
@@ -33,7 +33,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
-import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -110,7 +110,7 @@ That's a complete wallet connect flow. The `<StellarAppKitModal>` component hand
 
 ## Embedding the UI
 
-The `<StellarAppKitModal>` component wraps the underlying `<saganta-appkit-modal>` Web Component. Mount it once anywhere inside your `<StellarAppKitProvider>` tree — typically in the root layout, next to your app shell:
+The `<StellarAppKitModal>` component wraps the underlying `<stellar-appkit-modal>` Web Component. Mount it once anywhere inside your `<StellarAppKitProvider>` tree — typically in the root layout, next to your app shell:
 
 ```tsx
 <StellarAppKitProvider config={...}>
@@ -304,7 +304,7 @@ function WalletButton() {
 
 ### Connecting multiple wallets
 
-The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first. **Note:** the built-in `<saganta-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client.
+The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first. **Note:** the built-in `<stellar-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client.
 
 ```tsx
 const { connect, sessions, switchAccount } = useConnect();
@@ -497,7 +497,7 @@ There are three layers of theming:
 
 1. **Built-in theme** — pass `theme="dark"` or `theme="light"` to `<StellarAppKitModal>`.
 2. **CSS custom properties** — override individual tokens via the `style` prop (see [Embedding the UI](#theming) above).
-3. **Custom CSS** — target the host element with `saganta-appkit-modal { ... }` in your global stylesheet. Styles cross the shadow boundary for the host element itself.
+3. **Custom CSS** — target the host element with `stellar-appkit-modal { ... }` in your global stylesheet. Styles cross the shadow boundary for the host element itself.
 
 See [Theming](/core/theming/) for the full token list and examples.
 

@@ -15,7 +15,7 @@ export default defineConfig({
       title: 'Stellar AppKit',
       description: 'One SDK for every Stellar wallet — unified wallet API, Soroban built in, transaction previews, and framework wrappers for React, Vue, Solid, and Svelte.',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/SagantaHQ/stellar-appkit' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/sagantaHQ/stellar-appkit' },
       ],
       head: [
         { tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
@@ -77,6 +77,7 @@ export default defineConfig({
             { label: 'xBull', slug: 'wallets/xbull' },
             { label: 'Ledger', slug: 'wallets/ledger' },
             { label: 'WalletConnect', slug: 'wallets/walletconnect' },
+            { label: 'Hana Wallet', slug: 'wallets/hana' },
           ],
         },
         {

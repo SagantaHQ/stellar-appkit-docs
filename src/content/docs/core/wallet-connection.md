@@ -37,7 +37,7 @@ appkit.session;                           // the active one
 await appkit.switchAccount('freighter');  // back to Freighter, Ledger stays connected
 ```
 
-**Note:** the built-in `<saganta-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client. If you're using the modal, treat the connect flow as single-wallet.
+**Note:** the built-in `<stellar-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client. If you're using the modal, treat the connect flow as single-wallet.
 
 ## Network mismatch recovery
 

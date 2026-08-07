@@ -58,7 +58,7 @@ Stellar already has solid wallet-connection plumbing — [SEP-43](https://github
 - Each wrapper is a separate subpath export — bundlers only ship the framework code you actually import
 
 ### UI
-- `<saganta-appkit-modal>` — a Shadow DOM Web Component, framework-agnostic, **zero runtime dependency**
+- `<stellar-appkit-modal>` — a Shadow DOM Web Component, framework-agnostic, **zero runtime dependency**
 - Modal (desktop), bottom-sheet (mobile web), and inline (embedded) presentation, auto-selected by viewport
 - **WAAPI open/close animations** — 7 presets (none, fade, scale, scale-blur, slide-up, slide-left, implode), zero dependencies, `prefers-reduced-motion` respected. Sensible defaults: `scale-blur` for modal, `slide-up` for bottom-sheet.
 - **Draggable bottom-sheet** with custom spring physics (~30 lines, native Pointer Events + `requestAnimationFrame`, no `@use-gesture` or `motion` needed)
@@ -76,11 +76,11 @@ Want to see Stellar AppKit in action before installing? Check out the **[live de
 
 ## License
 
-MIT — see [LICENSE](https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE).
+MIT — see [LICENSE](https://github.com/sagantaHQ/stellar-appkit/blob/main/LICENSE).
 
 ## Packages
 
 | Package | What it is |
 |---|---|
-| [`@saganta/stellar-appkit`](https://github.com/SagantaHQ/stellar-appkit) | Unified Stellar wallet connections, Soroban, and transaction preview — the core SDK. Includes the themeable `<saganta-appkit-modal>` Web Component at the `/ui-web` subpath, plus framework wrappers at `/react`, `/vue`, `/solid`, `/svelte`. |
-| [`@saganta/stellar-appkit-siws-verify`](https://github.com/SagantaHQ/stellar-appkit) | Server-side SIWS signature/envelope verification. |
+| [`@saganta/stellar-appkit`](https://github.com/sagantaHQ/stellar-appkit) | Unified Stellar wallet connections, Soroban, and transaction preview — the core SDK. Includes the themeable `<stellar-appkit-modal>` Web Component at the `/ui-web` subpath, plus framework wrappers at `/react`, `/vue`, `/solid`, `/svelte`. |
+| [`@saganta/stellar-appkit-siws-verify`](https://github.com/sagantaHQ/stellar-appkit) | Server-side SIWS signature/envelope verification. |

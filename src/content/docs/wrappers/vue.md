@@ -15,7 +15,7 @@ That's it — all wallet SDKs (`@stellar/stellar-sdk`, `@stellar/freighter-api`,
 
 Vue is a peer dependency (not bundled) because your app already has its own Vue instance — having two copies of Vue would cause reactive state to not sync between components.
 
-You also need to register the `<saganta-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `<StellarAppKitModal>` Vue component to work:
+You also need to register the `<stellar-appkit-modal>` custom element once at your app entry — this is a side-effect import that's required for the `<StellarAppKitModal>` Vue component to work:
 
 ```ts
 // main.ts
@@ -32,7 +32,7 @@ This is the minimum to get a working wallet connect flow with the modal UI embed
 // main.ts
 import { createApp } from 'vue';
 import App from './App.vue';
-import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 createApp(App).mount('#app');
 ```
@@ -137,7 +137,7 @@ The plugin form is simpler — use it unless you need different StellarAppKit in
 
 ## Embedding the UI
 
-The `<StellarAppKitModal>` component wraps the underlying `<saganta-appkit-modal>` Web Component. Mount it once anywhere inside the component tree where `provideStellarAppKit()` was called — typically in the root layout, next to your app shell:
+The `<StellarAppKitModal>` component wraps the underlying `<stellar-appkit-modal>` Web Component. Mount it once anywhere inside the component tree where `provideStellarAppKit()` was called — typically in the root layout, next to your app shell:
 
 ```vue
 <template>
@@ -333,7 +333,7 @@ Returned refs are `shallowRef` + `shallowReadonly` to avoid Vue's deep reactivit
 
 ### Connecting multiple wallets
 
-The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first. **Note:** the built-in `<saganta-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client.
+The underlying `StellarAppKit` client supports keeping multiple wallets connected at the API level — connecting a second wallet doesn't replace the first. **Note:** the built-in `<stellar-appkit-modal>` UI is single-wallet — connecting a new wallet through the modal replaces the previous one in the UI, even though the underlying API keeps both sessions alive. The multi-session API is intended for apps that build their own wallet management UI on top of the client.
 
 ```vue
 <script setup lang="ts">
@@ -529,7 +529,7 @@ There are three layers of theming:
 
 1. **Built-in theme** — pass `theme="dark"` or `theme="light"` to `<StellarAppKitModal>`.
 2. **CSS custom properties** — override individual tokens via the `:style` prop (see [Embedding the UI](#theming) above).
-3. **Custom CSS** — target the host element with `saganta-appkit-modal { ... }` in your global stylesheet. Styles cross the shadow boundary for the host element itself.
+3. **Custom CSS** — target the host element with `stellar-appkit-modal { ... }` in your global stylesheet. Styles cross the shadow boundary for the host element itself.
 
 See [Theming](/core/theming/) for the full token list and examples.
 
@@ -568,7 +568,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 import '@saganta/stellar-appkit-ui-web';
 
 export default defineNuxtPlugin(() => {
-  // The side-effect import above registers <saganta-appkit-modal>
+  // The side-effect import above registers <stellar-appkit-modal>
 });
 ```
 

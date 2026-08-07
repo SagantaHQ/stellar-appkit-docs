@@ -28,13 +28,13 @@ Every connector lazy-imports its SDK inside its `connect()` / `signTransaction()
 
 ## Register the UI Web Component
 
-The `<saganta-appkit-modal>` Web Component is in the `@saganta/stellar-appkit-ui-web` package. Import it once at your app entry to register the custom element:
+The `<stellar-appkit-modal>` Web Component is in the `@saganta/stellar-appkit-ui-web` package. Import it once at your app entry to register the custom element:
 
 ```ts
 import '@saganta/stellar-appkit-ui-web';
 ```
 
-This is a side-effect import — it registers `<saganta-appkit-modal>` with the browser's `customElements` registry. It's separate from the framework wrapper exports so the wrappers stay SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
+This is a side-effect import — it registers `<stellar-appkit-modal>` with the browser's `customElements` registry. It's separate from the framework wrapper exports so the wrappers stay SSR-safe (the Web Component class extends `HTMLElement`, which is undefined in pure-Node contexts).
 
 ## Install a framework wrapper (optional, peer dependency)
 
@@ -72,7 +72,7 @@ WalletConnect is excluded from defaults because it requires a `projectId`. Use `
 
 ## Installing the dev version from git
 
-For testing an in-development version before it's published to npm, see the [Git install guide](https://github.com/SagantaHQ/stellar-appkit#installing-the-dev-version-directly-from-git) in the README.
+For testing an in-development version before it's published to npm, see the [Git install guide](https://github.com/sagantaHQ/stellar-appkit#installing-the-dev-version-directly-from-git) in the README.
 
 ## Verifying the install
 

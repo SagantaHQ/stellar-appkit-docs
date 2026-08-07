@@ -3,7 +3,7 @@ title: AI Integration
 description: Stellar AppKit ships an AI skill file (SKILL.md) and llms.txt so AI agents like Cursor, Copilot, and Claude can understand the library's API and write correct code without reading the whole codebase.
 ---
 
-Stellar AppKit ships two AI-readable files at the root of the [library repository](https://github.com/SagantaHQ/stellar-appkit):
+Stellar AppKit ships two AI-readable files at the root of the [library repository](https://github.com/sagantaHQ/stellar-appkit):
 
 - **`SKILL.md`** — a structured skill description that AI agents can load to learn when and how to use the library
 - **`llms.txt`** — a compact, plain-text index of the library's API surface, install commands, and common patterns, following the [llms.txt convention](https://llmstxt.org/)
@@ -54,7 +54,7 @@ If you're using a skill-aware agent, the skill loads on demand. If you're using 
 
 ```bash
 # Add the skill to your project
-curl -O https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/SKILL.md
+curl -O https://raw.githubusercontent.com/sagantaHQ/stellar-appkit/main/SKILL.md
 # Then reference it in your prompt:
 # "Use the stellar-appkit skill to add a Freighter connect button to my Next.js app"
 ```
@@ -88,12 +88,12 @@ It is divided into sections:
 If you want to give an agent the library context without cloning the repo, point it at the raw URL:
 
 ```
-https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/llms.txt
+https://raw.githubusercontent.com/sagantaHQ/stellar-appkit/main/llms.txt
 ```
 
 For example, in Cursor chat:
 
-> Read https://raw.githubusercontent.com/SagantaHQ/stellar-appkit/main/llms.txt and use it to refactor my wallet connection code to use StellarAppKit.
+> Read https://raw.githubusercontent.com/sagantaHQ/stellar-appkit/main/llms.txt and use it to refactor my wallet connection code to use StellarAppKit.
 
 ### Reading llms.txt as a project file
 
@@ -140,14 +140,14 @@ For the best results when building a Stellar dApp with an AI agent:
 
 ## Keeping the files in sync
 
-Both files are maintained in the [library repository](https://github.com/SagantaHQ/stellar-appkit), not in this docs site. When the API changes, both `SKILL.md` and `llms.txt` are updated in the same commit. The docs site's own `llms.txt` and `llms-full.txt` are regenerated separately.
+Both files are maintained in the [library repository](https://github.com/sagantaHQ/stellar-appkit), not in this docs site. When the API changes, both `SKILL.md` and `llms.txt` are updated in the same commit. The docs site's own `llms.txt` and `llms-full.txt` are regenerated separately.
 
-If you notice the files are out of date, please open an issue or PR at [SagantaHQ/stellar-appkit](https://github.com/SagantaHQ/stellar-appkit).
+If you notice the files are out of date, please open an issue or PR at [sagantaHQ/stellar-appkit](https://github.com/sagantaHQ/stellar-appkit).
 
 ## Links
 
-- [`SKILL.md` on GitHub](https://github.com/SagantaHQ/stellar-appkit/blob/main/SKILL.md)
-- [`llms.txt` on GitHub](https://github.com/SagantaHQ/stellar-appkit/blob/main/llms.txt)
+- [`SKILL.md` on GitHub](https://github.com/sagantaHQ/stellar-appkit/blob/main/SKILL.md)
+- [`llms.txt` on GitHub](https://github.com/sagantaHQ/stellar-appkit/blob/main/llms.txt)
 - [Docs site `llms.txt`](/llms.txt)
 - [Docs site `llms-full.txt`](/llms-full.txt)
 - [llms.txt convention](https://llmstxt.org/)

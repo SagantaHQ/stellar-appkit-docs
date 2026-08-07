@@ -17,7 +17,7 @@ hero:
       icon: external
       variant: minimal
     - text: GitHub
-      link: https://github.com/SagantaHQ/stellar-appkit
+      link: https://github.com/sagantaHQ/stellar-appkit
       icon: external
       variant: minimal
 ---
@@ -51,7 +51,7 @@ Shadow DOM Web Component with modal, bottom-sheet, and inline presentation. **Ze
 | Package | Description |
 |---|---|
 | `@saganta/stellar-appkit` | Core SDK — wallet connections, Soroban, transaction preview, framework wrappers |
-| `@saganta/stellar-appkit-ui-web` | Web UI — `<saganta-appkit-modal>` Shadow DOM Web Component + framework wrappers for React, Vue, Solid, Svelte |
+| `@saganta/stellar-appkit-ui-web` | Web UI — `<stellar-appkit-modal>` Shadow DOM Web Component + framework wrappers for React, Vue, Solid, Svelte |
 | `@saganta/stellar-appkit-siws-verify` | Server-side SIWS signature/envelope verification |
 
 ## Install
@@ -74,7 +74,7 @@ const appkit = new StellarAppKit({
   appMetadata: { name: 'My App', domain: 'localhost', uri: 'http://localhost:3000' },
 });
 
-const modal = document.querySelector('saganta-appkit-modal');
+const modal = document.querySelector('stellar-appkit-modal');
 modal.client = appkit;
 modal.open();
 ```
@@ -87,4 +87,4 @@ Want to see Stellar AppKit in action before installing? Check out the **[live de
 
 ## License
 
-MIT — see [LICENSE](https://github.com/SagantaHQ/stellar-appkit/blob/main/LICENSE).
+MIT — see [LICENSE](https://github.com/sagantaHQ/stellar-appkit/blob/main/LICENSE).

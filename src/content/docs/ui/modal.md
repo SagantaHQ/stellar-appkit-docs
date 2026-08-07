@@ -1,11 +1,11 @@
 ---
 title: Modal
-description: The <saganta-appkit-modal> Web Component — modal, bottom-sheet, and inline presentation with zero-dependency WAAPI animations.
+description: The <stellar-appkit-modal> Web Component — modal, bottom-sheet, and inline presentation with zero-dependency WAAPI animations.
 ---
 
 ## Overview
 
-`<saganta-appkit-modal>` is a Shadow DOM Web Component. Attach a `StellarAppKit` instance via the `.client` property, then call `.open()`. The modal ships with sensible default open/close animations — no configuration needed.
+`<stellar-appkit-modal>` is a Shadow DOM Web Component. Attach a `StellarAppKit` instance via the `.client` property, then call `.open()`. The modal ships with sensible default open/close animations — no configuration needed.
 
 ## Attributes
 
@@ -83,9 +83,9 @@ const appkit = new StellarAppKit({
 
 ```html
 <!-- Per-modal override (option 1 or 2): -->
-<saganta-appkit-modal animation-open="slide-left" animation-close="fade"></saganta-appkit-modal>
+<stellar-appkit-modal animation-open="slide-left" animation-close="fade"></stellar-appkit-modal>
 <!-- OR single preset for both: -->
-<saganta-appkit-modal animation="scale"></saganta-appkit-modal>
+<stellar-appkit-modal animation="scale"></stellar-appkit-modal>
 ```
 
 ### Accessibility — `prefers-reduced-motion`

@@ -7,7 +7,7 @@ description: Get a working wallet connect flow in about ten lines of code.
 
 ```ts
 import { StellarAppKit } from '@saganta/stellar-appkit';
-import '@saganta/stellar-appkit-ui-web'; // registers <saganta-appkit-modal>
+import '@saganta/stellar-appkit-ui-web'; // registers <stellar-appkit-modal>
 
 // connectors is optional — defaults to Freighter, Albedo, xBull, Ledger
 const appkit = new StellarAppKit({
@@ -15,7 +15,7 @@ const appkit = new StellarAppKit({
   appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
 });
 
-const modal = document.querySelector('saganta-appkit-modal');
+const modal = document.querySelector('stellar-appkit-modal');
 modal.client = appkit; // wires up the UI — preview, balance, history, network mismatch recovery
 
 connectButton.addEventListener('click', () => modal.open());
@@ -24,7 +24,7 @@ await appkit.restore(); // resume a persisted session on page load, if any
 ```
 
 ```html
-<saganta-appkit-modal mode="auto" theme="dark" title="Connect a wallet"></saganta-appkit-modal>
+<stellar-appkit-modal mode="auto" theme="dark" title="Connect a wallet"></stellar-appkit-modal>
 ```
 
 That's a working wallet connect flow with:
@@ -74,10 +74,10 @@ The modal ships with sensible default animations, but you can override them per-
 
 ```html
 <!-- Per-modal: implode animation for both open and close -->
-<saganta-appkit-modal animation="implode"></saganta-appkit-modal>
+<stellar-appkit-modal animation="implode"></stellar-appkit-modal>
 
 <!-- Per-modal: separate open and close animations -->
-<saganta-appkit-modal animation-open="slide-left" animation-close="fade"></saganta-appkit-modal>
+<stellar-appkit-modal animation-open="slide-left" animation-close="fade"></stellar-appkit-modal>
 ```
 
 ```ts

@@ -6,7 +6,7 @@ description: Every color, radius, and font is a CSS custom property that crosses
 ## CSS custom properties
 
 ```css
-saganta-appkit-modal {
+stellar-appkit-modal {
   --sak-color-bg: #0B0D0E;
   --sak-color-surface: #14171A;
   --sak-color-border: rgba(255,255,255,0.08);
@@ -24,9 +24,9 @@ saganta-appkit-modal {
 ## Theme attribute
 
 ```html
-<saganta-appkit-modal theme="dark"></saganta-appkit-modal>
-<saganta-appkit-modal theme="light"></saganta-appkit-modal>
-<saganta-appkit-modal theme="auto"></saganta-appkit-modal>
+<stellar-appkit-modal theme="dark"></stellar-appkit-modal>
+<stellar-appkit-modal theme="light"></stellar-appkit-modal>
+<stellar-appkit-modal theme="auto"></stellar-appkit-modal>
 ```
 
 `theme="auto"` follows the user's `prefers-color-scheme`.
