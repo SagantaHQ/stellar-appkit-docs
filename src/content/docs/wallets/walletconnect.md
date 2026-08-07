@@ -22,9 +22,9 @@ import {
   StellarAppKit,
   createWalletConnectConnector,
   defaultConnectors,
+  Networks,
 } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
-import { Networks } from '@stellar/stellar-sdk';
 
 const appkit = new StellarAppKit({
   network: 'TESTNET',
@@ -40,38 +40,40 @@ const appkit = new StellarAppKit({
         url: 'https://app.example.com',
         icons: ['https://app.example.com/icon.png'],
       },
-      onUri: (uri) => {
-        // Display the URI as a QR code (desktop) or trigger a deep link (mobile).
-        // The modal does NOT render the QR code for you — you need to render
-        // it yourself, or use a QR library like `qrcode` or `qrcode.react`.
-        showQRCode(uri);
-      },
       networkPassphrase: Networks.TESTNET,
+      // onUri is OPTIONAL — the modal renders the QR code automatically
+      // using better-qr. Only set it if you're building your own UI.
     }),
   ],
-  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+  appMetadata: { name: 'My App' },
 });
 ```
 
-### 3. Render the QR code
+### 3. QR code rendering (automatic with the modal)
 
-The `onUri` callback fires when WalletConnect generates a pairing URI. You need to display it as a QR code so the user can scan it with their wallet app. The modal itself doesn't render the QR code — you provide the UI.
+When using `<stellar-appkit-modal>` (recommended), the QR code is rendered **automatically** — the modal intercepts the pairing URI via `setOnUri()` and renders it as an inline SVG using [`better-qr`](https://www.npmjs.com/package/better-qr). You don't need to install a QR library or write any QR rendering code.
+
+The modal's connecting view shows:
+1. "Generating pairing code…" briefly while the WC relay generates the URI
+2. The QR code SVG (in a white rounded frame, with the wallet logo centered)
+3. "Scan with WalletConnect" + "Open Hana, Lobstr, or Hot Wallet and scan this QR code to connect."
+4. "Open in wallet app" deep link button (for mobile)
+5. "Copy URI" button (with "Copied!" feedback)
+
+**If you're NOT using the modal** (building your own UI), set `onUri` to render the QR yourself:
 
 ```tsx
-import { useState, useEffect } from 'react';
-import QRCode from 'qrcode.react';
+import { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 
-function WalletConnectQR() {
-  const [uri, setUri] = useState<string | null>(null);
+createWalletConnectConnector({
+  // ...
+  onUri: (uri) => setQrUri(uri),
+  networkPassphrase: Networks.TESTNET,
+});
 
-  useEffect(() => {
-    // Pass the onUri callback to the connector
-    // (or use a state management pattern to share it)
-  }, []);
-
-  if (!uri) return <div>Generating QR code…</div>;
-  return <QRCode value={uri} size={256} />;
-}
+// In your component:
+{qrUri && <QRCodeSVG value={qrUri} size={256} />}
 ```
 
 ## Supported wallets
@@ -112,28 +114,28 @@ Any wallet that implements the [Stellar WalletConnect namespace](https://github.
 
 The WalletConnect session topic is persisted via the injected `ConnectStorage` (localStorage by default). On `restore()`, the connector checks if the session is still active via `client.session.get(topic)` and reconnects if so. Sessions expire after 7 days by default (configurable in your WalletConnect Cloud project settings).
 
-## `@walletconnect/sign-client` is bundled
+## `@walletconnect/sign-client` and `better-qr` are bundled
 
-You do **not** need to install `@walletconnect/sign-client` separately — it's a bundled dependency of `@saganta/stellar-appkit`, installed automatically and version-locked to a known-working range. It's lazy-imported inside the connector's methods, so it's tree-shaken out of your bundle if you don't use the WalletConnect connector.
+You do **not** need to install `@walletconnect/sign-client` or `better-qr` separately — they're bundled dependencies of `@saganta/stellar-appkit` and `@saganta/stellar-appkit-ui-web` respectively. They're installed automatically and version-locked to known-working ranges. They're lazy-imported inside the connector's methods, so they're tree-shaken out of your bundle if you don't use the WalletConnect connector.
 
 ## Deep linking on mobile
 
-On mobile, instead of showing a QR code, you can trigger a deep link that opens the wallet app directly:
+When using `<stellar-appkit-modal>`, the modal automatically renders a "Open in wallet app" deep link button alongside the QR code. On mobile, the user can tap this to open their wallet app directly instead of scanning the QR code.
+
+**If you're building your own UI** (no modal), you can trigger a deep link manually:
 
 ```ts
 createWalletConnectConnector({
   // ...
   onUri: (uri) => {
-    // Detect mobile
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile) {
-      // Open the wallet app via deep link
-      window.location.href = uri;
+      window.location.href = uri; // deep link to wallet app
     } else {
-      // Show QR code on desktop
-      setQrUri(uri);
+      setQrUri(uri); // render QR on desktop
     }
   },
+  networkPassphrase: Networks.TESTNET,
 });
 ```
 

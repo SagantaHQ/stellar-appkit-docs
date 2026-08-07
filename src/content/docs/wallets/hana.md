@@ -24,9 +24,9 @@ import {
   StellarAppKit,
   createWalletConnectConnector,
   defaultConnectors,
+  Networks,
 } from '@saganta/stellar-appkit';
 import '@saganta/stellar-appkit-ui-web';
-import { Networks } from '@stellar/stellar-sdk';
 
 const appkit = new StellarAppKit({
   network: 'TESTNET', // or 'PUBLIC' for Mainnet
@@ -42,14 +42,11 @@ const appkit = new StellarAppKit({
         url: 'https://app.example.com',
         icons: ['https://app.example.com/icon.png'],
       },
-      onUri: (uri) => {
-        // Render QR code for the user to scan with Hana
-        showQRCode(uri);
-      },
       networkPassphrase: Networks.TESTNET,
+      // onUri is OPTIONAL — the modal renders the QR code automatically
     }),
   ],
-  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+  appMetadata: { name: 'My App' },
 });
 ```
 
@@ -62,44 +59,50 @@ const appkit = new StellarAppKit({
 
 The projectId is free and is used to route pairing requests through WalletConnect's relay infrastructure.
 
-## QR code rendering
+## QR code rendering (automatic with the modal)
 
-The modal does **not** render the QR code for you — you need to provide the UI. Use any QR code library:
+When using `<stellar-appkit-modal>` (recommended), the QR code is rendered **automatically** — the modal intercepts the pairing URI via `setOnUri()` and renders it as an inline SVG using [`better-qr`](https://www.npmjs.com/package/better-qr). You don't need to install a QR library or write any QR rendering code.
+
+The modal's connecting view shows:
+1. "Generating pairing code…" briefly
+2. The QR code SVG with the wallet logo centered
+3. "Scan with WalletConnect" + instructions
+4. "Open in wallet app" deep link button (for mobile)
+5. "Copy URI" button
+
+**If you're NOT using the modal** (building your own UI), install a QR library and render it yourself:
 
 ```bash
 npm install qrcode.react
 ```
 
 ```tsx
-import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 
-function WalletConnectQR({ uri }: { uri: string | null }) {
-  if (!uri) {
-    return <div>Generating QR code…</div>;
-  }
-  return (
-    <div style={{ background: 'white', padding: '16px', borderRadius: '12px' }}>
-      <QRCodeSVG value={uri} size={256} />
-      <p>Scan with Hana Wallet</p>
-    </div>
-  );
-}
+// In your connector config:
+createWalletConnectConnector({
+  // ...
+  onUri: (uri) => setQrUri(uri),
+  networkPassphrase: Networks.TESTNET,
+});
+
+// In your component:
+{qrUri && <QRCodeSVG value={qrUri} size={256} />}
 ```
 
 ## Mobile deep linking
 
-On mobile, instead of showing a QR code, you can trigger a deep link that opens the Hana app directly:
+When using the modal, a "Open in wallet app" deep link button is rendered automatically alongside the QR code. On mobile, the user can tap it to open Hana directly.
+
+**If you're building your own UI**, trigger the deep link manually:
 
 ```ts
 onUri: (uri) => {
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile) {
-    // Opens the Hana app via deep link
-    window.location.href = uri;
+    window.location.href = uri; // deep link to Hana
   } else {
-    // Show QR code on desktop
-    setQrUri(uri);
+    setQrUri(uri); // render QR on desktop
   }
 },
 ```

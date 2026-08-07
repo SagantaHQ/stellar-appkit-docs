@@ -436,7 +436,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 <!-- TokenTransfer.svelte -->
 <script lang="ts">
   import { useSoroban } from '@saganta/stellar-appkit-ui-web/svelte';
-  import { Networks } from '@stellar/stellar-sdk';
+  import { Networks } from '@saganta/stellar-appkit';
 
   export let from: string;
   export let to: string;

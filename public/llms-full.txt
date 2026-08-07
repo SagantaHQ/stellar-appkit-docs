@@ -111,7 +111,7 @@ Animation config (optional — defaults are sensible):
 ## SorobanConnection
 
 ```ts
-import { SorobanConnection } from '@saganta/stellar-appkit';
+import { SorobanConnection, Networks } from '@saganta/stellar-appkit';
 
 const soroban = new SorobanConnection({
   rpcUrl: 'https://soroban-testnet.stellar.org',

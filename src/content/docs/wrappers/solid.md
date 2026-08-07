@@ -416,7 +416,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 
 ```tsx
 import { useSoroban } from '@saganta/stellar-appkit-ui-web/solid';
-import { Networks } from '@stellar/stellar-sdk';
+import { Networks } from '@saganta/stellar-appkit';
 import type { JSX } from 'solid-js';
 
 export function TokenTransfer(props: {

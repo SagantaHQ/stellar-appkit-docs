@@ -452,7 +452,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 <!-- TokenTransfer.vue -->
 <script setup lang="ts">
   import { useSoroban } from '@saganta/stellar-appkit-ui-web/vue';
-  import { Networks } from '@stellar/stellar-sdk';
+  import { Networks } from '@saganta/stellar-appkit';
 
   const props = defineProps<{
     from: string;

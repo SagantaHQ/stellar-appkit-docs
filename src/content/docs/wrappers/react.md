@@ -412,7 +412,7 @@ See [Sign-In With Stellar](/core/siws/) for the server-side verification flow.
 
 ```tsx
 import { useSoroban } from '@saganta/stellar-appkit-ui-web/react';
-import { Networks } from '@stellar/stellar-sdk';
+import { Networks } from '@saganta/stellar-appkit';
 
 function TokenTransfer({ from, to, amount }: {
   from: string;

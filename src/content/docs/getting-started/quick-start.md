@@ -52,8 +52,8 @@ import {
   StellarAppKit,
   createWalletConnectConnector,
   defaultConnectors,
+  Networks,
 } from '@saganta/stellar-appkit';
-import { Networks } from '@stellar/stellar-sdk';
 
 const appkit = new StellarAppKit({
   network: 'PUBLIC',
@@ -62,6 +62,7 @@ const appkit = new StellarAppKit({
     createWalletConnectConnector({
       projectId: 'your-wc-project-id',
       networkPassphrase: Networks.PUBLIC,
+      // onUri is optional — the modal renders the QR code automatically
     }),
   ],
 });
