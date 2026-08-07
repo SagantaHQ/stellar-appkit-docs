@@ -3,6 +3,17 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.1.1
+
+### Changes
+- **WalletConnect icon replaced** with the official brand SVG (blue rounded square with the WC logo). Pre-encoded as base64 in both the connector's `meta.icon` and the modal's `walletIcons` fallback — loads instantly with no network request.
+- **Ledger icon replaced** with the official brand SVG (Ledger "L" logo). Same pre-encoded base64 approach — no external dependency.
+- **"Installed" badge background** changed from solid `#d1fae5` to alpha-transparent `rgba(209, 250, 229, 0.85)` so it blends naturally with the row's surface color in both light and dark themes. Border also changed to `rgba(167, 243, 208, 0.85)`.
+
+All 155 tests pass.
+
+---
+
 ## v1.1.0
 
 ### Bug fixes
