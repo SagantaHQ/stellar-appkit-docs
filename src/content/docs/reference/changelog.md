@@ -3,6 +3,23 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.3.0
+
+### Breaking changes (WalletConnect API simplification)
+- **`metadata` is now optional** on `createWalletConnectConnector()`. When omitted, derived from `window.location` (browser): `name` from hostname, `url` from origin. When provided, follows the Reown/WalletConnect metadata style. This means you can now write:
+  ```ts
+  createWalletConnectConnector({ projectId: '...' })
+  ```
+  instead of being forced to pass `metadata: { name, description, url, icons }`.
+- **`networkPassphrase` is now optional** on `createWalletConnectConnector()`. When omitted, derived from the `StellarAppKit` config's `network` field via the `Networks` map (e.g. `'TESTNET'` → `Networks.TESTNET`). The `StellarAppKit` constructor injects the network into the WC connector via `_setNetwork()`.
+
+### Changes
+- **xBull always available** — `getReachability()` now returns `'available'` even when the extension isn't detected, because the xBull SDK bridge falls back to the xBull web wallet (`https://wallet.xbull.app`) automatically. Previously returned `'not-installed'`, which showed an "Install" button instead of letting the user connect via the web wallet.
+
+All 155 tests pass.
+
+---
+
 ## v1.2.5
 
 ### Changes
