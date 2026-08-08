@@ -3,6 +3,23 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.3
+
+### Bug fixes
+- **Freighter desktop extension not detected.** The previous fix (v1.9.2) added a 1-second timeout on `isConnected()` that was too aggressive — the extension's content script needs more time to respond via `postMessage`, especially on page load. Fixed by:
+  1. Adding a **fast synchronous path** — checks `window.freighter` (the boolean flag the extension injects on page load). If present, returns `'available'` immediately without calling the async `isConnected()` API at all. This is the most common case and eliminates the timeout entirely.
+  2. Increasing the async timeout from 1s → 3s for the fallback `isConnected()` call, giving the extension's content script time to initialize.
+  3. Fixing the response check — was checking `!res.error` but the actual API returns `{ isConnected: boolean, error?: string }`. Now correctly checks `res.isConnected`.
+
+- **Three Freighter environments properly handled:**
+  1. **Desktop browser extension** — detected via `window.freighter === true` (fast path) or `isConnected()` (async fallback). Connects via the extension API directly.
+  2. **Mobile in-app browser (Android/iOS)** — detected via `window.stellar.provider === "freighter" && window.stellar.platform === "mobile"`. Returns `'not-installed'` for the extension connector so the user connects via WalletConnect instead (which uses Freighter's native deep-link handoff).
+  3. **Mobile (WalletConnect)** — works via the WalletConnect connector with `stellar:pubnet` / `stellar:testnet` chain IDs and all 4 WC methods.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.2
 
 ### Bug fixes
