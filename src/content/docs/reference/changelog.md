@@ -3,6 +3,26 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.4.2
+
+### Documentation
+- README, SKILL.md, llms.txt, ARCHITECTURE.md all updated for v1.2.5–v1.4.1 features:
+  - Automatic SIWS authentication flow (`siws` config with `statement`, `nonce`, `verify`, `disconnectOnFail`)
+  - `disconnectOnFail` behavior (deferred disconnect to modal close, not immediate)
+  - xBull web wallet fallback (always `'available'`)
+  - WalletConnect `metadata` + `networkPassphrase` optional
+  - Wallet tile icons as CSS `background-image` (no flash)
+  - Outline "Installed" badge (border + muted text + accent dot)
+  - Bottomsheet drag fixed (`touch-action: none`)
+  - `max-width: 100vw` on overlay/panel
+  - Albedo logo (sea blue "A")
+  - Freighter/xBull/Hana/WalletConnect/Ledger icons as base64 data URIs
+- ARCHITECTURE.md: new sections §8.16 (SIWS flow), §8.17 (xBull web wallet), §8.18 (WC metadata/networkPassphrase optional)
+
+All 155 tests pass.
+
+---
+
 ## v1.4.1
 
 ### Bug fixes
