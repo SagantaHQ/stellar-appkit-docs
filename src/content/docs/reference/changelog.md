@@ -3,6 +3,38 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.7.0
+
+### Breaking changes
+- **`verify` now receives `context`** — third parameter `{ address, network }` so the developer can compare server-side without an extra round-trip
+- **`siwsSessionChange` event added** to `StellarAppKitEvents` — fires when the SIWS session is set, cleared, or expires
+
+### New features
+- **Session persistence** — SIWS session stored in `localStorage` and restored on `appkit.restore()`. Survives page reloads.
+- **`appkit.signOut()`** — manually sign out: clears session, calls `signout()`, disconnects wallet. For "Log out" buttons.
+- **`appkit.requireAuth()`** — throws `ConnectError` if not authenticated. For guarding actions.
+- **`appkit.validateSession()`** — calls `refresh()` (or `session()` if no `refresh`) to validate against the server. Returns `SiwsSession | null`. If invalid, clears session.
+- **`appkit.reauthenticate()`** — clears session and triggers re-auth. For privilege escalation.
+- **`useSiwsSession()` hook** (React) — reactive `SiwsSession | null`, re-renders on session changes
+- **`useIsAuthenticated()` hook** (React) — reactive `boolean`
+- **`siws-checking` view** — separate "Checking session…" state before nonce fetch
+- **Cancel button** — during SIWS flow, user can cancel (disconnects if `disconnectOnFail` is true)
+- **Timeout on nonce/verify** — 15s default, configurable via `timeoutMs`
+- **Retry rate limiting** — max 3 retries (configurable via `maxRetries`), then shows "Too many attempts"
+- **`refresh?` callback** — optional session refresh without requiring new sign-in
+- **`SiwsError` + `SiwsErrorType`** — discriminated error types for programmatic handling
+
+### Security improvements
+- **Address binding**: session address must match connected wallet
+- **Network binding**: session network must match connected wallet
+- **Expiry auto-check**: `siwsSession` getter auto-clears expired sessions
+- **Signout on disconnect**: `signoutOnDisconnect: true` (default) prevents orphaned server sessions
+- **Nonce timeout**: prevents hanging on unresponsive servers
+
+All 155 tests pass.
+
+---
+
 ## v1.6.0
 
 ### Breaking changes (SIWS config expansion)
