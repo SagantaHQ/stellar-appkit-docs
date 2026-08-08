@@ -3,6 +3,15 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.6
+
+### Bug fixes
+- **Wallet icons no longer have padding between the icon and its container.** The `.wallet-tile` CSS used `background-size: cover` which left gaps on icons that had transparent padding baked into their image data (Freighter, xBull, WalletConnect, Ledger). Changed to `background-size: 100% 100%` which stretches the icon to fill the tile edge-to-edge with zero gap. Also added `object-fit: fill` to the `.header-wallet-icon` (the 20×20px icon in the panel header) for the same reason.
+
+All 307 tests pass.
+
+---
+
 ## v1.8.5
 
 ### Bug fixes
