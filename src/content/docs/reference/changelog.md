@@ -3,6 +3,24 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.7.1
+
+### Documentation
+- README, SKILL.md, llms.txt, ARCHITECTURE.md all updated for v1.7.0 SIWS features:
+  - Session persistence (localStorage + restore on page reload)
+  - `appkit.signOut()`, `appkit.requireAuth()`, `appkit.validateSession()`, `appkit.reauthenticate()`
+  - `useSiwsSession()` + `useIsAuthenticated()` hooks (React)
+  - `siwsSessionChange` event
+  - `siws-checking` view, Cancel button, timeout (15s), retry limiting (3)
+  - `verify` now receives `context: { address, network }`
+  - `refresh?` callback, `maxRetries?`, `timeoutMs?`
+  - `SiwsError` + `SiwsErrorType` discriminated errors
+- ARCHITECTURE.md §8.16 fully rewritten with complete SiwsConfig type, flow diagram, session persistence, API methods, hooks, security, and implementation details
+
+All 155 tests pass.
+
+---
+
 ## v1.7.0
 
 ### Breaking changes
