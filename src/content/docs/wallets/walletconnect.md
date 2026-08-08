@@ -82,10 +82,21 @@ Any wallet that implements the [Stellar WalletConnect namespace](https://github.
 
 | Wallet | Platform | Notes |
 |---|---|---|
+| **Freighter Mobile** | iOS + Android | Connects via WalletConnect — supports all 4 methods: `stellar_signXDR`, `stellar_signAndSubmitXDR`, `stellar_signMessage`, `stellar_signAuthEntry` (SEP-43) |
 | **Hana Wallet** | Browser extension + mobile | SDF's wallet, supports `stellar_signXDR` and `stellar_signMessage` |
 | **Lobstr** | Mobile (iOS/Android) | One of the most popular Stellar mobile wallets |
 | **Hot Wallet** | Mobile | Supports signing via WalletConnect relay |
 | **Any WC-compatible wallet** | Any | If it speaks the Stellar WC namespace, it works |
+
+### Freighter Mobile specifics
+
+[Freighter](https://freighter.app/) is the most popular Stellar wallet. The browser extension connects directly via the SEP-43 extension API (no WalletConnect needed). The **mobile app** (iOS + Android) connects via WalletConnect.
+
+- **All 4 WC methods supported**: `stellar_signXDR`, `stellar_signAndSubmitXDR`, `stellar_signMessage` (SEP-53), `stellar_signAuthEntry` (SEP-43)
+- **Chain IDs**: `stellar:pubnet`, `stellar:testnet`, `stellar:futurenet` (v1.8.3+ — previously the connector used the network passphrase as the chain ID, which Freighter Mobile rejected)
+- **`signMessage` response**: returns `{ signature }` (SEP-53 format, base64 Ed25519 signature)
+- **`signAuthEntry` response**: returns `{ signedAuthEntry, signerAddress }`
+- **Docs**: [docs.freighter.app/mobile-walletconnect](https://docs.freighter.app/mobile-walletconnect/installation)
 
 ### Hana Wallet specifics
 

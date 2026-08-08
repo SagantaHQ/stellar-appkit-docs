@@ -3,6 +3,30 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.3
+
+### Bug fixes
+- **Freighter Mobile (Android/iOS) now connects via WalletConnect.** The session proposal was using the wrong chain ID format — `stellar:${networkPassphrase}` produced invalid IDs like `stellar:Test SDF Network ; September 2015` instead of `stellar:testnet`. Freighter Mobile (and other WC-compatible wallets that validate chain IDs) rejected the session. Fixed by adding a `resolveWcChainId()` helper that maps the network name to the correct WC chain ID format: `stellar:pubnet`, `stellar:testnet`, `stellar:futurenet`.
+- **All 4 Stellar WC methods now listed in the session proposal.** Previously only `stellar_signXDR`, `stellar_signMessage`, `stellar_getAddress`, `stellar_getNetwork` were listed. Now the proposal includes all 4 methods from the Freighter Mobile WC docs: `stellar_signXDR`, `stellar_signAndSubmitXDR`, `stellar_signMessage`, `stellar_signAuthEntry`. The `stellar_getAddress` / `stellar_getNetwork` methods were removed from the proposal (they're not standard WC methods — they were leftovers from an older draft).
+- **`accountsChanged` event added to session proposal.** Previously `events: []` was passed. Now `events: ['accountsChanged']` is listed, matching the Freighter Mobile WC docs.
+- **`signAuthEntry()` now works for WalletConnect.** Previously it was a stub that threw "WalletConnect does not support signing Soroban auth entries." Now it calls `stellar_signAuthEntry` with `{ entryXdr }` params and reads `{ signedAuthEntry, signerAddress }` from the response. The `signAuthEntry` capability is now `true` (was `false`).
+- **`signMessage()` response field mapping fixed for Freighter Mobile.** Freighter Mobile returns `{ signature }` (per SEP-53), not `{ signedMessage }`. The connector now checks both fields: `result.signature ?? result.signedMessage` — so it works with Freighter Mobile AND older WC wallets (Hana, Lobstr) that return `signedMessage`.
+
+### Root cause analysis
+The Freighter Mobile wallet follows the [Freighter Mobile WalletConnect docs](https://docs.freighter.app/mobile-walletconnect/connecting) which specify:
+- Namespace: `stellar`
+- Chain IDs: `stellar:pubnet`, `stellar:testnet` (NOT the passphrase)
+- Methods: all 4 (`stellar_signXDR`, `stellar_signAndSubmitXDR`, `stellar_signMessage`, `stellar_signAuthEntry`)
+- Events: `accountsChanged`
+- `signMessage` returns `{ signature }` (SEP-53 format)
+- `signAuthEntry` returns `{ signedAuthEntry, signerAddress }`
+
+Our connector was using the network passphrase as the chain ID, listing only 2 of the 4 methods, listing non-standard `stellar_getAddress`/`stellar_getNetwork` methods, passing no events, disabling `signAuthEntry`, and reading the wrong response field for `signMessage`. Freighter Mobile rejected the session proposal because the chain ID was invalid.
+
+All 307 tests pass.
+
+---
+
 ## v1.8.2
 
 ### Bug fixes
