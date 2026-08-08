@@ -3,6 +3,20 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.2.2
+
+### Changes
+- **Animation code reverted to v1.1.2 approach** — WAAPI is the primary animation mechanism (smoother, supports custom presets like implode/slide-left). CSS `data-open` transitions are a **fallback** for mobile where WAAPI doesn't fire reliably. `data-open="true"` is set immediately after `render()` so the CSS transition fires in parallel with WAAPI — if WAAPI succeeds, it overrides the CSS; if WAAPI fails (mobile), the CSS transition ensures the panel is visible.
+- **Wallet list icons moved from `<img>` to CSS `background-image`** — the `.wallet-tile` span now uses `style="background-image: url(...)"` instead of an `<img>` child element. This eliminates the image flash entirely: the browser caches the decoded background image in the CSS layer, so re-renders (which update the body content via targeted DOM updates) don't destroy/recreate any image elements.
+
+### Demos site
+- **Removed "Examples" from the top bar** — renamed to "Demos"
+- **Added `overflow-x: hidden` to body** — prevents horizontal scroll on mobile
+
+All 155 tests pass.
+
+---
+
 ## v1.2.1
 
 ### Bug fixes
