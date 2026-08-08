@@ -3,6 +3,17 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.4.1
+
+### Bug fixes
+- **`disconnectOnFail` behavior fixed.** Previously, when SIWS failed, the wallet was disconnected immediately — the user couldn't retry. Now:
+  - **`disconnectOnFail: true` (default)**: The wallet stays connected while the user sees the error + "Try again" button. Only when the user **closes the modal** (X button, drag-to-dismiss, Escape, overlay click) and SIWS hasn't succeeded, the wallet is disconnected. This ensures the auth flow was completed before the wallet session is kept.
+  - **`disconnectOnFail: false`**: The wallet is never disconnected, even if SIWS fails and the user closes the modal. The wallet stays connected without auth.
+
+All 155 tests pass.
+
+---
+
 ## v1.4.0
 
 ### New features
