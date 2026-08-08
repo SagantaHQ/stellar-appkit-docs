@@ -3,6 +3,21 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.7
+
+### Bug fixes
+- **Bottomsheet drag now works in both directions (up AND down) with rubber-band physics.** The root cause was a hard clamp `currentY = Math.max(0, dy)` that made upward drag a dead zone — `currentY` was always 0 when dragging up, so the sheet had zero response to upward gestures. Fixed by replacing the clamp with rubber-band resistance: downward drags move 1:1, upward drags move at 35% of pointer distance (same damped feel as iOS/Material sheets when pulling past fully-open).
+
+- **Overlay opacity clamped to [0, 1].** Once upward drags could produce negative `currentY` values, the overlay fade math could push opacity fractionally above 1. Added `Math.min(1, ...)` upper clamp.
+
+- **Dismiss velocity check now uses signed velocity.** The old `Math.abs(velocity) > 0.4` meant a fast upward flick (high unsigned velocity) could trigger dismiss — backwards from what a user pulling up to see more would expect. Changed to `velocity > 0.5` (signed, downward-only).
+
+- **Fixed stale comment** claiming the gesture system uses `@use-gesture/vanilla` and `motion` as lazy-imported dependencies — it doesn't; it's native touch+mouse events + a hand-rolled spring engine, zero external dependencies.
+
+All 307 tests pass.
+
+---
+
 ## v1.8.6
 
 ### Bug fixes
