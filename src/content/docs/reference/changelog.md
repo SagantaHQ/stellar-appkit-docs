@@ -3,6 +3,87 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.0
+
+### New feature: Internationalization (i18n) — 25 locales with lazy loading
+
+The entire modal UI is now translatable. English is bundled by default; 24 additional locales are lazy-loaded via dynamic `import()` on first use, so the initial bundle stays small.
+
+**Supported locales:** `en` (bundled), `zh-CN`, `zh-TW`, `es`, `pt-BR`, `ja`, `ko`, `de`, `fr`, `ru`, `ar` (RTL), `hi`, `it`, `tr`, `pl`, `vi`, `id`, `uk`, `nl`, `th`, `he` (RTL), `cs`, `sv`, `ro`, `fa` (RTL) — 25 total.
+
+**Usage — set locale at initialization:**
+```ts
+new StellarAppKit({
+  network: 'TESTNET',
+  locale: 'zh-CN', // ← modal renders in Simplified Chinese
+  ...
+});
+```
+
+**Usage — change locale at runtime:**
+```ts
+import { setLocale, getLocale, t, onLocaleChange } from '@saganta/stellar-appkit';
+
+await setLocale('ja'); // lazy-loads the Japanese locale
+console.log(getLocale()); // 'ja'
+console.log(t('title.connect_wallet')); // 'ウォレットを接続'
+```
+
+**Usage — React hooks:**
+```tsx
+import { useLocale, useSetLocale } from '@saganta/stellar-appkit-ui-web/react';
+
+function LanguageSwitcher() {
+  const locale = useLocale();
+  const setLocale = useSetLocale();
+  return (
+    <select value={locale} onChange={(e) => setLocale(e.target.value)}>
+      <option value="en">English</option>
+      <option value="zh-CN">简体中文</option>
+      <option value="ja">日本語</option>
+      ...
+    </select>
+  );
+}
+```
+
+**ICU MessageFormat support** — uses [`intl-messageformat`](https://www.npmjs.com/package/intl-messageformat) for interpolation, plurals, and selection:
+- `{walletName}` — simple variable interpolation
+- `{count, plural, one {# pending signature} other {# pending signatures}}` — pluralization with proper CLDR plural rules per locale (Arabic has 6 forms, Russian has 4, Chinese has 1, etc.)
+- `{maxRetries}` — any variable name
+
+**Architecture:**
+- `packages/core/src/i18n/` — core i18n module (`t()`, `setLocale()`, `getLocale()`, `onLocaleChange()`, `loadLocale()`, `preloadLocale()`, `getSupportedLocales()`)
+- `packages/core/src/i18n/locales/en.ts` — English locale (bundled, `as const` for type safety)
+- `packages/core/src/i18n/locales/{24 other codes}.ts` — lazy-loaded locale files, one per language
+- `StellarAppKitConfig.locale?: LocaleCode` — config field for initial locale
+- `StellarAppKitProviderConfig.locale?: LocaleCode` — React provider config field
+- `useLocale()` / `useSetLocale()` — React hooks for reactive locale state
+- Modal subscribes to `onLocaleChange()` and re-renders automatically when the locale changes
+- `IntlMessageFormat` instances are cached per (key, locale) for performance
+- English is statically imported (no flash of untranslated text on first render)
+- All other locales use `import()` — the bundler code-splits each into a separate chunk
+- Unknown locale codes fall back to English silently (never breaks the app)
+- Missing keys in a locale fall back to English, then to the key itself
+
+### Tests
+- **New test file: `packages/core/tests/i18n.test.ts`** — 56 tests covering:
+  - Default state (English bundled, `t()` returns English, unknown keys return key itself)
+  - Interpolation (`{walletName}`, multiple variables, HTML in values)
+  - ICU plural syntax (English one/other, Chinese other-only, Russian one/few/many/other, Arabic zero/one/two/few/many/other with Arabic-Indic digit localization)
+  - `setLocale()` lazy loading (zh-CN, ja, es, ar, back to en, idempotent, interpolation in non-English, plurals in non-English)
+  - `onLocaleChange()` (immediate fire, fire on switch, unsubscribe)
+  - `getSupportedLocales()` (returns 24 non-English codes, doesn't include 'en')
+  - `preloadLocale()` (loads without switching)
+  - Fallback chain (missing key → English → key itself)
+  - Unknown locale codes (fall back to English silently)
+  - All 24 non-English locales load successfully and translate `title.connect_wallet`
+- **Updated `packages/ui-web/tests/siws-flow.test.ts`** — source-level tests now check for `t()` calls instead of literal English strings (5 tests updated)
+
+Total test count: 251 → 307 (56 new tests). All 307 pass.
+
+---
+
 ## v1.7.3
 
 ### Tests
