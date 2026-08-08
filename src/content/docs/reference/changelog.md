@@ -3,6 +3,32 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.5.0
+
+### Breaking changes
+- **`appMetadata` now follows the WalletConnect/Reown metadata standard.** Changed from `{ name, domain?, uri? }` to `{ name, description?, url?, icons? }`. The same object is:
+  - Fed directly to WalletConnect as its `metadata` (no need for separate WC `metadata` option)
+  - Used for SIWS: `domain` is derived from `url` (strip protocol+path), `uri` = `url`
+  - Used for the modal's transaction preview app icon (`icons[0]`)
+
+  ```ts
+  const appkit = new StellarAppKit({
+    network: 'TESTNET',
+    appMetadata: {
+      name: 'My App',
+      description: 'A Stellar dApp',
+      url: 'https://saganta.com',
+      icons: ['https://saganta.com/icon.png'],
+    },
+  });
+  ```
+
+  Only `name` is required. When `url` is omitted, derived from `window.location.origin` (browser). The `StellarAppKit` constructor injects the normalized `appMetadata` into WalletConnect connectors via `_setAppMetadata()`.
+
+All 155 tests pass.
+
+---
+
 ## v1.4.2
 
 ### Documentation
