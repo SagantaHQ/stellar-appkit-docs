@@ -3,6 +3,45 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.4.0
+
+### New features
+- **Automatic SIWS authentication flow.** Added `siws?: SiwsConfig` to the `StellarAppKit` config. When set, the modal automatically triggers a Sign-In With Stellar flow immediately after the wallet connects — without closing the wallet UI. The flow:
+  1. Show "Fetching nonce…" → calls `siwsConfig.nonce()`
+  2. Show "Approve the sign-in request in [Wallet]" → calls `signIn()` (wallet prompts)
+  3. Show "Verifying your signature…" → calls `siwsConfig.verify(result, nonce)`
+  4. If `verify` returns `true` → connected view (success)
+  5. If any step fails → extracts error message from any error type (Error, string, object with `message` property), shows SIWS error view with the message + "Try again" button, and if `disconnectOnFail` is `true` (default), disconnects the wallet entirely.
+
+  ```ts
+  const appkit = new StellarAppKit({
+    network: 'TESTNET',
+    siws: {
+      statement: 'Sign in to My App',
+      disconnectOnFail: true, // default
+      nonce: async () => {
+        const res = await fetch('/api/siws/nonce');
+        return res.text();
+      },
+      verify: async (data, nonce) => {
+        const res = await fetch('/api/siws/verify', {
+          method: 'POST',
+          body: JSON.stringify({ ...data, nonce }),
+        });
+        return res.ok;
+      },
+    },
+  });
+  ```
+
+- **Error message extraction.** Errors from any step (nonce fetch, sign, verify) are extracted from any error type — `Error.message`, `ConnectError.message`, plain strings, objects with `message` or `reason` properties — so the user always sees a meaningful message in the SIWS error view.
+
+- **Haptic feedback on SIWS success/failure** (Android, no-op on iOS Safari).
+
+All 155 tests pass.
+
+---
+
 ## v1.3.0
 
 ### Breaking changes (WalletConnect API simplification)
