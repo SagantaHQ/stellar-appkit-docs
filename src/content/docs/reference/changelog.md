@@ -3,6 +3,32 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.6.0
+
+### Breaking changes (SIWS config expansion)
+- **`verify` now returns `SiwsSession | null | undefined`** instead of `boolean`. The returned session is validated (address + network + expiry) before being accepted.
+- **`session` callback added** — called immediately after wallet connect to check for an existing valid session. If the session's address + network match the connected wallet and it's not expired, sign-in is skipped entirely.
+- **`signout` callback added** — logs the user out from the server. Called before wallet disconnect when `signoutOnDisconnect` is `true` (default).
+- **`signoutOnDisconnect` option added** — when `true` (default), calls `signout()` before disconnecting the wallet. When `false`, the server session stays alive.
+
+### New features
+- **`SiwsSession` type** — `{ network, address, expiry, metadata? }`. Stored on the client via `appkit.siwsSession` (getter with auto-expiry check).
+- **`appkit.siwsSession`** — getter that returns the current SIWS session, or `null` if not authenticated or expired.
+- **`appkit.setSiwsSession(session)`** — setter (called internally by the modal after successful verify).
+- **`appkit.clearSiwsSession()`** — clears the local session + calls `signout()` if configured. Called automatically on wallet disconnect.
+- **Session validation** — after `verify()` returns a session, the SDK validates that `address` matches the connected wallet, `network` matches, and `expiry` is in the future. If any check fails, the user sees a specific error message.
+- **Session skip** — if `session()` returns a valid session matching the connected wallet, the entire nonce → sign → verify flow is skipped.
+
+### Security improvements (suggested)
+- **Address binding**: the returned session's `address` must match the connected wallet's address — prevents session hijacking between wallets.
+- **Network binding**: the session's `network` must match the connected wallet's network — prevents testnet/mainnet confusion.
+- **Expiry check**: sessions past their `expiry` timestamp are treated as expired — the `siwsSession` getter auto-clears expired sessions.
+- **Signout on disconnect**: `signoutOnDisconnect: true` (default) ensures the server session is invalidated when the user disconnects their wallet — prevents orphaned server sessions.
+
+All 155 tests pass.
+
+---
+
 ## v1.5.0
 
 ### Breaking changes
