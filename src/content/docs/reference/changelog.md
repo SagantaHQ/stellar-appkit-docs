@@ -3,6 +3,21 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.2
+
+### Bug fixes
+- **WalletConnect QR code now scannable.** The QR quiet zone was set to 2 modules — the QR spec requires at least 4 for reliable scanning. Fixed `margin: 2` → `margin: 4` in the `toSvg()` call. Wallets were unable to detect the QR because the insufficient quiet zone caused scanning failures.
+
+- **Freighter Android in-app browser no longer times out.** The connector was calling the Freighter extension API (`window.freighterApi`) inside Freighter's mobile in-app browser, where that API is not available — causing an indefinite hang. Fixed by detecting `window.stellar.provider === "freighter" && window.stellar.platform === "mobile"` (the same detection used by [Stellar Wallets Kit](https://github.com/Creit-Tech/Stellar-Wallets-Kit)) and returning `'not-installed'` for the Freighter connector in that context. The user then connects via WalletConnect instead, which uses Freighter's native deep-link handoff. Also added a 1-second timeout on the `isConnected()` availability check (matching SWK's approach) so a non-responsive environment fails fast instead of hanging.
+
+- **Drag handle height fixed.** Removed the extra `padding: 10px 0` + `box-sizing: content-box` that made the handle 25px tall — it's now back to the normal 5px visual height with standard `margin: 8px auto 4px`.
+
+- **`user-select: none` added to modal/sheet title, header, and wallet list.** Text selection was interfering with drag/swipe gestures — selecting text would prevent the pointer events from registering as a drag. Added `user-select: none; -webkit-user-select: none;` to `.panel`, `.header`, `.header .title`, `.wallet-row`, and `.drag-handle`.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.1
 
 ### Bug fixes + new feature
