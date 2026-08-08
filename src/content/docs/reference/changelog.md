@@ -3,6 +3,35 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.5
+
+### New feature: Klever wallet support
+
+Integrated [Klever Wallet](https://klever.io) — a Stellar browser extension wallet. Klever is now included in `defaultConnectors()` alongside Freighter, Albedo, xBull, Ledger, and Rabet.
+
+**New file:** `packages/core/src/connectors/klever.ts` — `createKleverConnector()`
+
+**Detection:** checks `window.kleverWallet.stellar` for presence (no npm SDK dependency — Klever injects its API directly).
+
+**Klever API** (injected as `window.kleverWallet.stellar`):
+- `getAddress()` → `{ address }` — connect to user's account
+- `signTransaction(xdr, opts)` → `{ signedTxXdr, signerAddress? }`
+- `signAuthEntry(authEntry, opts)` → `{ signedAuthEntry, signerAddress? }`
+- `signMessage(message, opts)` → `{ signedMessage, signerAddress? }`
+- `getNetwork()` → `{ network, networkPassphrase }`
+
+**Capabilities:**
+- `signTransaction`: ✅
+- `signMessage`: ✅
+- `signAuthEntry`: ✅
+- `submit`: ❌
+
+This matches the [Stellar Wallets Kit](https://github.com/Creit-Tech/Stellar-Wallets-Kit) approach — pure pass-through to the injected `window.kleverWallet.stellar` object, zero npm dependencies.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.4
 
 ### New feature: Rabet wallet support
