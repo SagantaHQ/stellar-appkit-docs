@@ -3,6 +3,19 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.7.2
+
+### Bug fixes
+- **React `<StellarAppKitProvider>` now passes `siws` config through to the underlying `StellarAppKit` client.** Previously, setting `config.siws` on the provider had no effect — the modal never triggered the automatic SIWS flow, and `useSiwsSession()` / `useIsAuthenticated()` always returned null. Now passing a `SiwsConfig` via the provider correctly enables the full v1.7.0 SIWS experience: automatic sign-in on connect, session persistence, `signOut()`, `validateSession()`, and `reauthenticate()`.
+- The provider's `useMemo` dependency array now includes `config.siws` so changing the SIWS config (e.g. via a feature flag) recreates the client correctly.
+
+### Type changes
+- `StellarAppKitProviderConfig` (React) gained a `siws?: SiwsConfig` field, matching the same field on the core `StellarAppKitConfig` type.
+
+All 155 tests pass.
+
+---
+
 ## v1.7.1
 
 ### Documentation
