@@ -3,6 +3,17 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.1
+
+### Bug fixes + new feature
+- **Bottomsheet: no upward movement when fully open.** Removed the rubber-band resistance for upward drag — when the sheet is 100% open and 100% height, dragging up does nothing (clamped at 0). No bounce, no spring-back. Only downward drag moves the sheet.
+- **Modal: swipe-to-close gesture added.** The desktop modal now supports swipe in any direction (up, down, left, right) to dismiss. Swipe follows the finger with 50% resistance, fades the panel, and animates offscreen in the dominant direction. Fast flick or >100px distance triggers dismiss; otherwise springs back to center. Interactive elements (buttons, links) are excluded.
+- New file: `packages/ui-web/src/ui-web/animations/modal-swipe-controller.ts` — `ModalSwipeController` class using native Pointer Events + Motion springs.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.0
 
 ### Major refactor: Motion.dev animation engine
