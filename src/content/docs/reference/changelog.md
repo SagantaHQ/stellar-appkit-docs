@@ -3,6 +3,44 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.7.3
+
+### Tests
+- **New test file: `packages/core/tests/siws-session.test.ts`** — 49 tests covering the full v1.7.x SIWS session lifecycle on `StellarAppKit`:
+  - `siwsSession` getter (null when unset, auto-clears expired, treats `expiry: 0` as non-expiring)
+  - `setSiwsSession(session | null)` — persists to storage, emits `siwsSessionChange` + `sessionsChanged`
+  - `clearSiwsSession()` — clears in-memory + storage, emits event only when a session was set, calls `signout()` per `signoutOnDisconnect` config, swallows `signout()` errors
+  - `signOut()` — clears session + disconnects wallet, safe no-op when nothing is connected
+  - `requireAuth()` — throws `ConnectError` when not authenticated, returns void when authenticated, throws when session has expired (getter auto-clears first)
+  - `validateSession()` — uses `refresh()` when configured (falls back to `session()`), clears session on null/throw/address-mismatch/network-mismatch/expiry, accepts + stores fresh valid sessions
+  - `reauthenticate()` — clears session, emits `siwsSessionChange: null`, safe when no session is set
+  - `restoreSiwsSession()` (via `restore()`) — restores valid session from storage, clears expired session from storage, ignores corrupted JSON, no-ops when `siwsConfig` is not set or no wallet session was restored
+  - Event type contract — `siwsSessionChange` is declared on `StellarAppKitEvents` with payload `SiwsSession | null`
+  - `SiwsError` class — constructible with type + message, covers all 9 documented `SiwsErrorType` values
+- **New test file: `packages/ui-web/tests/siws-flow.test.ts`** — 43 tests covering the modal's `triggerSiwsFlow()` wiring:
+  - Source-level checks for all 5 SIWS view states (`siws-checking`, `siws-nonce`, `siws-signing`, `siws-verifying`, `siws-error`)
+  - View state transition order (each state set BEFORE the corresponding async call)
+  - `maxRetries` (default 3) and `timeoutMs` (default 15000) configuration
+  - `withTimeout` wrapper applied to `session()`, `nonce()`, and `verify()`
+  - Retry counter increments on failure, resets to 0 on success, shows "Too many failed attempts" at max
+  - Cancel button handler (`data-action="cancel-siws"`) sets `siwsCancelled`, resets state, disconnects wallet per `disconnectOnFail`
+  - `handleSiwsFailure` is a no-op when `siwsCancelled` is true
+  - `close()` disconnects wallet when `siwsPending` is true and `disconnectOnFail` is true
+  - Session validation (address, network, expiry) on both `session()` and `verify()` return paths
+  - `verify()` receives context `{ address, network }` as third arg (v1.7.0 breaking change)
+  - Behavioral tests for `extractErrorMessage` (Error, string, plain object, `.reason` vs `.message`, null/undefined/numbers, empty Error)
+  - Behavioral tests for `withTimeout` (resolves fast, rejects on timeout, propagates original rejection, doesn't cancel the slower promise)
+  - User-facing status text for each SIWS view state
+- **Extended `packages/ui-web/tests/react.test.ts`** — 4 new tests for the v1.7.2 React provider fix:
+  - `StellarAppKitProviderConfig` type accepts a `siws` field
+  - `siws` is optional on the config type
+  - `useSiwsSession` and `useIsAuthenticated` are exported hooks
+  - Source-level check that the provider forwards `config.siws` to the `StellarAppKit` constructor + includes it in the `useMemo` dependency array
+
+Total test count: 155 → 251 (96 new tests). All 251 pass.
+
+---
+
 ## v1.7.2
 
 ### Bug fixes
