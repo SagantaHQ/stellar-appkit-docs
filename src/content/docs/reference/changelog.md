@@ -3,6 +3,21 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.2.5
+
+### Changes
+- **Wallet tile icons now fill the tile** — changed `background-size` from `28px 28px` to `cover` so the icon fills the tile edge-to-edge, matching the parent's `border-radius: 10px` + `overflow: hidden`.
+- **Bottomsheet drag fixed** — changed `touch-action` from `pan-y` to `none` on the panel. `pan-y` allowed the browser to intercept vertical touches for page scrolling, which stole the pointer events from the drag handler. `none` forces the browser to hand all touch events to the panel's pointer handlers, so the drag follows the finger exactly.
+- **Albedo logo created** — stylized "A" on a sea blue (`#0066B2`) background. Updated in both the connector's `meta.icon` and the modal's `walletIcons` fallback.
+
+### Demos site
+- **Nav title is now "Stellar AppKit" only** — removed the "Demos" suffix
+- **Removed the "Demos" nav link** — the brand logo already links to home
+
+All 155 tests pass.
+
+---
+
 ## v1.2.4
 
 ### Changes
