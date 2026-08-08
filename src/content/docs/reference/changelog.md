@@ -3,6 +3,43 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.1
+
+### Documentation
+- **New docs page: [Internationalization](/core/i18n/)** — covers all 25 supported locales, ICU MessageFormat, the core `setLocale()`/`getLocale()`/`t()`/`onLocaleChange()` API, React/Vue/Solid/Svelte hooks, lazy-loading architecture, RTL languages, and how to add custom locales.
+- **Rewrote: [Sign-In With Stellar](/core/siws/)** — was 67 lines, now ~370. Covers everything that was missing:
+  - **Automatic SIWS flow** (`SiwsConfig`) — the full `session`/`nonce`/`verify`/`signout`/`refresh` callback shape with code examples
+  - **`verify` context parameter** (v1.7.0 breaking change) — third arg `{ address, network }`
+  - **`disconnectOnFail`**, **`signoutOnDisconnect`**, **`maxRetries`**, **`timeoutMs`** config knobs
+  - **Session persistence** (v1.7.0+) — localStorage + restore on page reload
+  - **`SiwsSession` type** — `network`, `address`, `expiry`, `metadata?`
+  - **Session lifecycle methods** — `siwsSession` getter (auto-clears expired), `setSiwsSession`, `clearSiwsSession`, `signOut`, `requireAuth`, `validateSession`, `reauthenticate`, `restoreSiwsSession`
+  - **React hooks** — `useSiwsSession`, `useIsAuthenticated`
+  - **`siwsSessionChange` event**
+  - **`SiwsError` + `SiwsErrorType`** — 9 discriminated error types
+  - **SIWS view states** — `siws-checking` → `siws-nonce` → `siws-signing` → `siws-verifying` → `siws-error`
+  - **Cancel button** + retry limiting + timeouts
+  - **Server-side API contract** — the 4 endpoints your backend needs
+  - **Security considerations** — address binding, network binding, expiry auto-check, signout-on-disconnect, nonce timeout, single-use nonces, httpOnly cookies
+  - **v1.7.2 fix note** — React provider didn't forward `config.siws` to the underlying client before v1.7.2
+- **Updated: [Wallet Connection](/core/wallet-connection/)** — added `appMetadata` section documenting the v1.5.0 WalletConnect/Reown metadata standard (`{ name, description?, url?, icons? }`), migration table from the old `{ name, domain?, uri? }` shape, three-purpose explanation (SIWS messages, WC session proposals, modal preview icon). Also added `defaultConnectors()` docs (v1.0.6+), xBull web wallet fallback (v1.3.0+), and the `siwsSessionChange` event (v1.7.0+).
+- **Updated: [Quick Start](/getting-started/quick-start/)** — replaced the old `appMetadata.domain`/`appMetadata.uri` auto-derive section with the v1.5.0 WC standard shape.
+- **Updated: [API Reference](/reference/api/)** — full rewrite. Now includes `siwsConfig`, `siwsSession` getter, all SIWS lifecycle methods (`setSiwsSession`, `clearSiwsSession`, `signOut`, `requireAuth`, `validateSession`, `reauthenticate`), `StellarAppKitEvents` with `siwsSessionChange`, `SiwsConfig` type with all fields, `SiwsSession` type, `SiwsError` + `SiwsErrorType`, the full i18n API (`setLocale`, `getLocale`, `t`, `onLocaleChange`, `loadLocale`, `preloadLocale`, `getSupportedLocales`, `LocaleCode`), `defaultConnectors()`, and `Networks`. Updated `appMetadata` shape to the WC standard.
+- **Updated: [React](/wrappers/react/)** — added `useSiwsSession`, `useIsAuthenticated`, `useLocale`, `useSetLocale` to the hooks table. Added "SIWS session hooks" and "Internationalization hooks" sections with code examples. Fixed old `appMetadata` shape.
+- **Updated: [Vue](/wrappers/vue/)** — added the 4 new composables to the table + cross-links to the SIWS and i18n guides. Fixed old `appMetadata` shape.
+- **Updated: [Solid](/wrappers/solid/)** — same additions as Vue. Fixed old `appMetadata` shape.
+- **Updated: [Svelte](/wrappers/svelte/)** — same additions as Vue. Fixed old `appMetadata` shape.
+- **Updated: [Modal Components](/wrappers/modal-components/)** — fixed old `appMetadata` shape in all code examples.
+- **Updated: `llms.txt`** — added Internationalization page link, updated SIWS page description to mention the automatic flow + session lifecycle + hooks.
+- **Updated: `llms-full.txt`** — rewrote the SIWS section (was 13 lines, now ~100) with the full automatic flow, session lifecycle methods, React hooks, events, and `SiwsError`. Added a new "Internationalization (i18n)" section. Updated the `appMetadata` zero-config description to the v1.5.0 WC standard.
+- **Sidebar** — added "Internationalization" entry under Core Concepts.
+
+### Library
+- Added `useSiwsSession()`, `useIsAuthenticated()`, `useLocale()`, `useSetLocale()` to the **Vue**, **Solid**, and **Svelte** wrappers (previously only React had them).
+- All 307 tests pass.
+
+---
+
 ## v1.8.0
 
 ### New feature: Internationalization (i18n) — 25 locales with lazy loading

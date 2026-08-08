@@ -46,11 +46,7 @@ createApp(App).mount('#app');
   provideStellarAppKit({
     network: 'TESTNET',
     connectors: [createFreighterConnector(), createAlbedoConnector()],
-    appMetadata: {
-      name: 'My App',
-      domain: 'app.example.com',
-      uri: 'https://app.example.com',
-    },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 </script>
 
@@ -110,7 +106,7 @@ const app = createApp(App);
 app.use(StellarAppKitPlugin, {
   network: 'TESTNET',
   connectors: [createFreighterConnector()],
-  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+  appMetadata: { name: 'My App', url: 'https://app.example.com' },
   restoreOnMount: true, // default — restores any persisted session on install
 });
 app.mount('#app');
@@ -128,7 +124,7 @@ app.mount('#app');
   provideStellarAppKit({
     network: 'TESTNET',
     connectors: [createFreighterConnector()],
-    appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 </script>
 ```
@@ -297,8 +293,16 @@ All composables must be called inside a component tree where `provideStellarAppK
 | `useSoroban({ rpcUrl, networkPassphrase })` | `{ soroban, invoke, previewInvoke, estimateFee, contract, status, ... }` | Invoke lifecycle |
 | `usePreviewTransaction()` | `{ preview, respond, isPending }` | Preview pending / resolved |
 | `usePreviewAuthEntry()` | `{ preview, respond, isPending }` | Preview pending / resolved |
+| `useSiwsSession()` | `Readonly<Ref<SiwsSession \| null>>` (v1.7.0+) | SIWS session set / cleared / expired |
+| `useIsAuthenticated()` | `ComputedRef<boolean>` (v1.7.0+) | SIWS session change |
+| `useLocale()` | `Readonly<Ref<LocaleCode>>` (v1.8.0+) | Locale change |
+| `useSetLocale()` | `(locale: LocaleCode) => Promise<void>` (v1.8.0+) | Stable (function reference) |
 
 Returned refs are `shallowRef` + `shallowReadonly` to avoid Vue's deep reactivity overhead on the (potentially large) session objects. Treat them as you would any other ref — `{{ session?.address }}` in templates, `session.value?.address` in script.
+
+### SIWS + i18n composables
+
+See the [Sign-In With Stellar](/core/siws/) guide for the full SIWS flow (`SiwsConfig`, session lifecycle methods, `siwsSessionChange` event) and the [Internationalization](/core/i18n/) guide for the 25 supported locales and ICU MessageFormat details.
 
 ## Connection management
 
@@ -558,7 +562,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(StellarAppKitPlugin, {
     network: 'TESTNET',
     connectors: [createFreighterConnector()],
-    appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 });
 ```

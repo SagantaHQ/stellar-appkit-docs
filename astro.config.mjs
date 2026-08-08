@@ -46,6 +46,7 @@ export default defineConfig({
             { label: 'Transaction Preview', slug: 'core/transaction-preview' },
             { label: 'Soroban Integration', slug: 'core/soroban' },
             { label: 'Sign-In With Stellar', slug: 'core/siws' },
+            { label: 'Internationalization', slug: 'core/i18n' },
             { label: 'Theming', slug: 'core/theming' },
           ],
         },

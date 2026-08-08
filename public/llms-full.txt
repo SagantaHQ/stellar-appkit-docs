@@ -99,8 +99,8 @@ modal.open();
 ```
 
 Zero-config:
-- `connectors` — omit to auto-register Freighter + Albedo + xBull + Ledger
-- `appMetadata.domain` / `appMetadata.uri` — omit to auto-derive from `window.location`. Auto-formatted if passed: `"https://example.com"` as domain → `"example.com"`; `"example.com"` as uri → `"https://example.com"`. In SSR, pass explicitly.
+- `connectors` — omit to auto-register Freighter + Albedo + xBull + Ledger via `defaultConnectors()`
+- `appMetadata` — v1.5.0+ follows the WalletConnect/Reown metadata standard: `{ name, description?, url?, icons? }`. Only `name` is required. `url` is derived from `window.location` if omitted (browser). In SSR, pass `url` explicitly. The same object is used for SIWS messages (domain derived from url, uri = url), WalletConnect session proposals, and the modal's transaction preview app icon (icons[0]).
 
 Animation config (optional — defaults are sensible):
 - HTML attributes: `animation="implode"` or `animation-open="slide-left" animation-close="fade"`
@@ -132,20 +132,123 @@ await token.transfer({ from, to, amount: 100n });
 
 ## SIWS
 
+### Manual sign-in (client-side)
+
 ```ts
-// Client
 const { message, signedMessage, signerAddress, signedData } = await appkit.signIn({
   statement: 'Sign in to My App',
   nonce: await fetch('/api/siws/nonce').then(r => r.text()),
 });
+// POST { message, signedMessage, signerAddress, signedData } to your backend
+```
 
-// Server
+### Server-side verification
+
+```ts
 import { verifySiws } from '@saganta/stellar-appkit-siws-verify';
 const result = await verifySiws(
   { message, signedMessage, signerAddress, signedData },
   { expectedDomain: 'app.example.com', expectedNonce }
 );
+// result.ok → result.claims.address is the authenticated user
+// !result.ok → result.reason explains why (enable debug: true for diagnostics)
 ```
+
+### Automatic SIWS flow (v1.4.0+) — pass a SiwsConfig to StellarAppKit
+
+The modal automatically runs the full SIWS flow right after the user connects a wallet: session check → nonce → sign → verify. The SDK manages the session lifecycle (persistence, expiry, sign-out, re-authentication).
+
+```ts
+const appkit = new StellarAppKit({
+  network: 'TESTNET',
+  appMetadata: { name: 'My App', url: 'https://app.example.com' },
+  siws: {
+    statement: 'Sign in to My App',
+    session: async () => {                          // check for existing server session
+      const res = await fetch('/api/siws/session');
+      return res.ok ? res.json() : null;            // return SiwsSession to skip sign-in
+    },
+    nonce: async () => {                            // fetch server-issued nonce
+      const { nonce } = await fetch('/api/siws/nonce').then(r => r.json());
+      return nonce;
+    },
+    verify: async (data, nonce, ctx) => {           // verify server-side, return SiwsSession
+      const res = await fetch('/api/siws/verify', {
+        method: 'POST',
+        body: JSON.stringify({ ...data, nonce }),
+      });
+      return res.ok ? res.json() : null;            // ctx has { address, network } (v1.7.0+)
+    },
+    signout: async () => {                          // clear server session
+      await fetch('/api/siws/logout', { method: 'POST' });
+      return true;
+    },
+    refresh: async () => {                          // optional — refresh before expiry
+      const res = await fetch('/api/siws/session');
+      return res.ok ? res.json() : null;
+    },
+    disconnectOnFail: true,    // disconnect wallet if user closes modal before SIWS succeeds
+    signoutOnDisconnect: true, // call signout() before clearing wallet session
+    maxRetries: 3,             // show "Too many attempts" after 3 failures
+    timeoutMs: 15_000,         // 15s timeout for nonce() and verify()
+  },
+});
+```
+
+### SIWS session lifecycle methods (v1.7.0+) — on the StellarAppKit client
+
+- `appkit.siwsSession` — getter, returns SiwsSession | null, auto-clears expired
+- `appkit.setSiwsSession(session | null)` — manually set/clear, persists to localStorage, emits siwsSessionChange
+- `appkit.clearSiwsSession()` — clears session + storage, calls signout() per config
+- `appkit.signOut()` — clears session + disconnects wallet (for "Log out" buttons)
+- `appkit.requireAuth()` — throws ConnectError if not authenticated (guard privileged actions)
+- `appkit.validateSession()` — re-checks against server via refresh() or session(), clears on mismatch
+- `appkit.reauthenticate()` — clears session + emits siwsSessionChange:null (triggers fresh sign-in)
+
+### SIWS session persistence (v1.7.0+)
+
+Sessions are persisted to localStorage and restored on appkit.restore() (called by the React provider on mount). Survives page reloads — no re-sign needed on refresh.
+
+### SIWS React hooks (v1.7.0+)
+
+```tsx
+import { useSiwsSession, useIsAuthenticated } from '@saganta/stellar-appkit-ui-web/react';
+const session = useSiwsSession();          // reactive SiwsSession | null
+const isAuthenticated = useIsAuthenticated();  // reactive boolean
+```
+
+### SIWS events
+
+`siwsSessionChange` event fires with SiwsSession | null on set/clear/expire.
+
+### SiwsError (v1.7.0+) — discriminated error type
+
+```ts
+type SiwsErrorType = 'session-check-failed' | 'nonce-fetch-failed' | 'sign-rejected' | 'verify-failed' | 'session-mismatch' | 'session-expired' | 'timeout' | 'max-retries-exceeded' | 'cancelled';
+```
+
+## Internationalization (i18n) — v1.8.0+
+
+The entire modal UI is translatable into 25 locales. English is bundled by default; 24 additional locales are lazy-loaded via dynamic import() on first use.
+
+Supported locales: en (bundled), zh-CN, zh-TW, es, pt-BR, ja, ko, de, fr, ru, ar (RTL), hi, it, tr, pl, vi, id, uk, nl, th, he (RTL), cs, sv, ro, fa (RTL).
+
+```ts
+// Set at initialization
+new StellarAppKit({ locale: 'zh-CN', ... });
+
+// Change at runtime (async — lazy-loads the locale)
+import { setLocale, getLocale, t, onLocaleChange } from '@saganta/stellar-appkit';
+await setLocale('ja');
+t('title.connect_wallet');  // → 'ウォレットを接続'
+
+// React hooks
+import { useLocale, useSetLocale } from '@saganta/stellar-appkit-ui-web/react';
+const locale = useLocale();
+const setLocale = useSetLocale();
+```
+
+Uses intl-messageformat for ICU MessageFormat: {walletName} interpolation, {count, plural, one {# item} other {# items}} pluralization with CLDR-compliant rules per locale (Arabic has 6 forms, Russian has 4, Chinese has 1). Arabic-Indic digit localization (1 → ١ in Arabic).
 
 ## Error Handling
 

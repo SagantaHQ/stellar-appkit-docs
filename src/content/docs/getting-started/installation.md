@@ -64,7 +64,7 @@ import '@saganta/stellar-appkit-ui-web';
 // Zero-config — Freighter, Albedo, xBull, and Ledger are all registered automatically.
 const appkit = new StellarAppKit({
   network: 'TESTNET',
-  appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+  appMetadata: { name: 'My App', url: 'https://app.example.com' },
 });
 ```
 

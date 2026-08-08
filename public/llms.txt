@@ -12,7 +12,8 @@ Stellar AppKit is a Web3Modal / Reown AppKit equivalent for Stellar. It provides
 - [Wallet Connection](https://stellar-appkit.saganta.com/core/wallet-connection/): Connect wallets, manage sessions, switch accounts, network mismatch recovery
 - [Transaction Preview](https://stellar-appkit.saganta.com/core/transaction-preview/): Risk flags, contract badges, fee estimates, balance deltas
 - [Soroban Integration](https://stellar-appkit.saganta.com/core/soroban/): invoke(), RPC failover, typed contract clients, auth-entry signing
-- [Sign-In With Stellar](https://stellar-appkit.saganta.com/core/siws/): SEP-0053 signing, multi-candidate verification, debug diagnostics
+- [Sign-In With Stellar](https://stellar-appkit.saganta.com/core/siws/): SEP-0053 signing, automatic SIWS flow, session persistence, useSiwsSession/useIsAuthenticated hooks, SiwsConfig, signOut/validateSession/reauthenticate
+- [Internationalization](https://stellar-appkit.saganta.com/core/i18n/): 25 locales (English bundled, 24 lazy-loaded), ICU MessageFormat, setLocale/useLocale/useSetLocale
 - [Theming](https://stellar-appkit.saganta.com/core/theming/): CSS custom properties, theme attribute, all modal attributes
 
 ## Framework Wrappers

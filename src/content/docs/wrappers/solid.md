@@ -56,11 +56,7 @@ export function App(): JSX.Element {
     <StellarAppKitProvider config={{
       network: 'TESTNET',
       connectors: [createFreighterConnector(), createAlbedoConnector()],
-      appMetadata: {
-        name: 'My App',
-        domain: 'app.example.com',
-        uri: 'https://app.example.com',
-      },
+      appMetadata: { name: 'My App', url: 'https://app.example.com' },
     }}>
       <Header />
       <StellarAppKitModal mode="auto" theme="dark" />
@@ -269,8 +265,16 @@ All hooks must be called inside a `<StellarAppKitProvider>` tree. They read the 
 | `useSoroban({ rpcUrl, networkPassphrase })` | `{ soroban, invoke, previewInvoke, estimateFee, contract, status, ... }` | Invoke lifecycle |
 | `usePreviewTransaction()` | `{ preview, respond, isPending }` (accessors) | Preview pending / resolved |
 | `usePreviewAuthEntry()` | `{ preview, respond, isPending }` (accessors) | Preview pending / resolved |
+| `useSiwsSession()` | `Accessor<SiwsSession \| null>` (v1.7.0+) | SIWS session set / cleared / expired |
+| `useIsAuthenticated()` | `Accessor<boolean>` (v1.7.0+) | SIWS session change |
+| `useLocale()` | `Accessor<LocaleCode>` (v1.8.0+) | Locale change |
+| `useSetLocale()` | `(locale: LocaleCode) => Promise<void>` (v1.8.0+) | Stable (function reference) |
 
 Remember: in Solid, reactive values are functions — call them to read the current value (`isConnected()`, `session()?.address`). This is the same as any other Solid hook.
+
+### SIWS + i18n hooks
+
+See the [Sign-In With Stellar](/core/siws/) guide for the full SIWS flow (`SiwsConfig`, session lifecycle methods, `siwsSessionChange` event) and the [Internationalization](/core/i18n/) guide for the 25 supported locales and ICU MessageFormat details.
 
 ## Connection management
 

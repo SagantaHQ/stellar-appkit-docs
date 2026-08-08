@@ -51,11 +51,7 @@ export default app;
   setStellarAppKitContext({
     network: 'TESTNET',
     connectors: [createFreighterConnector(), createAlbedoConnector()],
-    appMetadata: {
-      name: 'My App',
-      domain: 'app.example.com',
-      uri: 'https://app.example.com',
-    },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 </script>
 
@@ -282,8 +278,16 @@ The wrapper exports two naming conventions for each store: the `Store`-suffixed 
 | `useSorobanStore()` / `useSoroban({ rpcUrl, networkPassphrase })` | `{ soroban, invoke, previewInvoke, estimateFee, contract, status, ... }` | Invoke lifecycle |
 | `usePreviewTransactionStore()` / `usePreviewTransaction()` | `{ preview, respond, isPending }` | Preview pending / resolved |
 | `usePreviewAuthEntryStore()` / `usePreviewAuthEntry()` | `{ preview, respond, isPending }` | Preview pending / resolved |
+| `useSiwsSessionStore()` / `useSiwsSession()` | `Readable<SiwsSession \| null>` (v1.7.0+) | SIWS session set / cleared / expired |
+| `useIsAuthenticatedStore()` / `useIsAuthenticated()` | `Readable<boolean>` (v1.7.0+) | SIWS session change |
+| `useLocaleStore()` / `useLocale()` | `Readable<LocaleCode>` (v1.8.0+) | Locale change |
+| `useSetLocale()` | `(locale: LocaleCode) => Promise<void>` (v1.8.0+) | Stable (function reference) |
 
-In Svelte 4 and 5, subscribe to a store with the `$` prefix: `$session`, `$isConnected`, etc. In Svelte 5 with runes, you can also use `get(session)` to read the value outside of a reactive context.
+In Svelte 4 and 5, subscribe to a store with the `$` prefix: `$session`, `$isConnected`, `$siwsSession`, `$locale`, etc. In Svelte 5 with runes, you can also use `get(session)` to read the value outside of a reactive context.
+
+### SIWS + i18n stores
+
+See the [Sign-In With Stellar](/core/siws/) guide for the full SIWS flow (`SiwsConfig`, session lifecycle methods, `siwsSessionChange` event) and the [Internationalization](/core/i18n/) guide for the 25 supported locales and ICU MessageFormat details.
 
 ## Connection management
 
@@ -546,7 +550,7 @@ Or, if you prefer, gate the import inside a component:
   setStellarAppKitContext({
     network: 'TESTNET',
     connectors: [createFreighterConnector()],
-    appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 
   // Register the Web Component only in the browser

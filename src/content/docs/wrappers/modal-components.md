@@ -38,7 +38,7 @@ export function App() {
     <StellarAppKitProvider config={{
       network: 'TESTNET',
       connectors: [createFreighterConnector()],
-      appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+      appMetadata: { name: 'My App', url: 'https://app.example.com' },
     }}>
       <ModalHost />
     </StellarAppKitProvider>
@@ -77,7 +77,7 @@ The component uses `forwardRef` and `useImperativeHandle` to expose `open()`, `c
   provideStellarAppKit({
     network: 'TESTNET',
     connectors: [createFreighterConnector()],
-    appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 
   const modal = ref<InstanceType<typeof StellarAppKitModal>>();
@@ -135,7 +135,7 @@ export function App() {
     <StellarAppKitProvider config={{
       network: 'TESTNET',
       connectors: [createFreighterConnector()],
-      appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+      appMetadata: { name: 'My App', url: 'https://app.example.com' },
     }}>
       <ModalHost />
     </StellarAppKitProvider>
@@ -164,7 +164,7 @@ Svelte uses a `use:stellarmodal` **action** on the raw `<stellar-appkit-modal>` 
   setStellarAppKitContext({
     network: 'TESTNET',
     connectors: [createFreighterConnector()],
-    appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+    appMetadata: { name: 'My App', url: 'https://app.example.com' },
   });
 
   let modalEl: HTMLElement;

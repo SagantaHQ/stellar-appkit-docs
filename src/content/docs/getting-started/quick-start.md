@@ -70,33 +70,36 @@ const appkit = new StellarAppKit({
 
 `defaultConnectors()` is exported so you can extend rather than replace the default set.
 
-## Auto-derived `domain` and `uri`
+## `appMetadata` (v1.5.0+ — WalletConnect standard)
 
-The `appMetadata` config accepts just `{ name }` — `domain` and `uri` are **optional** and auto-derived from `window.location` in the browser:
-
-- `domain` ← `window.location.hostname` (e.g. `"app.example.com"`)
-- `uri` ← `window.location.origin` (e.g. `"https://app.example.com"`)
+`appMetadata` follows the [WalletConnect/Reown metadata standard](https://docs.reown.com/advanced/walletconnect-metadata). Only `name` is required — `url` is auto-derived from `window.location` in the browser:
 
 ```ts
-// Minimal — domain + uri auto-derived from the current page URL
+// Minimal — url auto-derived from the current page URL
 const appkit = new StellarAppKit({
   network: 'TESTNET',
   appMetadata: { name: 'Example App' },
 });
 ```
 
-If you pass them explicitly, they're auto-formatted:
-- `domain` with a protocol (`"https://example.com"`) → stripped to `"example.com"`
-- `uri` without a protocol (`"example.com"`) → prefixed with `"https://"`
+The same object is used for three purposes:
+1. **SIWS messages** — `domain` is derived from `url` (protocol + path stripped), `uri` = `url`
+2. **WalletConnect session proposals** — passed directly as the WC `metadata` field
+3. **Modal transaction preview** — `icons[0]` is shown as the app icon
 
 ```ts
-// These are all equivalent after normalization:
-appMetadata: { name: 'Example App' }                                              // auto-derived
-appMetadata: { name: 'Example App', domain: 'example.com', uri: 'https://example.com' }  // explicit
-appMetadata: { name: 'Example App', domain: 'https://example.com', uri: 'example.com' }  // auto-formatted
+// Full shape (v1.5.0+):
+appMetadata: {
+  name: 'Example App',                    // required
+  description: 'A Stellar dApp',          // optional — shown in WC session proposal
+  url: 'https://app.example.com',         // optional — auto-derived in browser, required in SSR
+  icons: ['https://app.example.com/icon.png'],  // optional — modal preview app icon
+}
 ```
 
-In SSR/Node.js (no `window`), `domain` and `uri` remain `undefined` if not passed. Pass them explicitly for server-side `signIn()` flows.
+> **Migration from v1.4.x:** the old shape was `{ name, domain?, uri? }`. The v1.5.0 change to the WC standard replaces `domain`/`uri` with `url` (domain is derived), and adds `description` + `icons`. See the [Wallet Connection](/core/wallet-connection/) guide for the full migration table.
+
+In SSR/Node.js (no `window`), `url` remains `undefined` if not passed. Pass it explicitly for server-side `signIn()` flows.
 
 ## Customizing animations
 

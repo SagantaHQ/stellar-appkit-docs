@@ -64,8 +64,7 @@ export function App() {
       connectors: [createFreighterConnector(), createAlbedoConnector()],
       appMetadata: {
         name: 'My App',
-        domain: 'app.example.com',
-        uri: 'https://app.example.com',
+        url: 'https://app.example.com',
       },
     }}>
       <Header />
@@ -275,6 +274,69 @@ All hooks must be called inside a `<StellarAppKitProvider>` tree. They read the 
 | `useSoroban({ rpcUrl, networkPassphrase })` | `{ soroban, invoke, previewInvoke, estimateFee, contract, status, ... }` | Invoke lifecycle |
 | `usePreviewTransaction()` | `{ preview, respond, isPending }` | Preview pending / resolved |
 | `usePreviewAuthEntry()` | `{ preview, respond, isPending }` | Preview pending / resolved |
+| `useSiwsSession()` | `SiwsSession \| null` (v1.7.0+) | SIWS session set / cleared / expired |
+| `useIsAuthenticated()` | `boolean` (v1.7.0+) | SIWS session change |
+| `useLocale()` | `LocaleCode` (v1.8.0+) | Locale change |
+| `useSetLocale()` | `(locale: LocaleCode) => Promise<void>` (v1.8.0+) | Stable (function reference) |
+
+## SIWS session hooks (v1.7.0+)
+
+When you pass `siws` config to the provider, the modal automatically runs the SIWS flow on connect. Use these hooks to read the session state reactively:
+
+```tsx
+import {
+  useSiwsSession,
+  useIsAuthenticated,
+  useAppKit,
+} from '@saganta/stellar-appkit-ui-web/react';
+
+function AuthStatus() {
+  const session = useSiwsSession();
+  const isAuthenticated = useIsAuthenticated();
+
+  if (!isAuthenticated || !session) {
+    return <span>Not signed in</span>;
+  }
+
+  return (
+    <span>
+      Signed in as {session.address.slice(0, 8)}…
+      (expires {new Date(session.expiry).toLocaleString()})
+    </span>
+  );
+}
+
+function SignOutButton() {
+  const appkit = useAppKit();
+  return <button onClick={() => appkit.signOut()}>Sign out</button>;
+}
+```
+
+For the full SIWS flow — `SiwsConfig`, session lifecycle methods (`setSiwsSession`, `clearSiwsSession`, `signOut`, `requireAuth`, `validateSession`, `reauthenticate`), and the `siwsSessionChange` event — see the [Sign-In With Stellar](/core/siws/) guide.
+
+## Internationalization hooks (v1.8.0+)
+
+```tsx
+import { useLocale, useSetLocale } from '@saganta/stellar-appkit-ui-web/react';
+import type { LocaleCode } from '@saganta/stellar-appkit';
+
+function LanguageSwitcher() {
+  const locale = useLocale();
+  const setLocale = useSetLocale();
+
+  return (
+    <select value={locale} onChange={(e) => setLocale(e.target.value as LocaleCode)}>
+      <option value="en">English</option>
+      <option value="zh-CN">简体中文</option>
+      <option value="ja">日本語</option>
+      <option value="es">Español</option>
+      {/* ... 21 more locales */}
+    </select>
+  );
+}
+```
+
+See the [Internationalization](/core/i18n/) guide for the full list of 25 supported locales, ICU MessageFormat details, and the core `setLocale()` / `getLocale()` / `t()` API.
 
 ## Connection management
 
@@ -520,7 +582,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <StellarAppKitProvider config={{
       network: 'TESTNET',
       connectors: [createFreighterConnector()],
-      appMetadata: { name: 'My App', domain: 'app.example.com', uri: 'https://app.example.com' },
+      appMetadata: { name: 'My App', url: 'https://app.example.com' },
     }}>
       <StellarAppKitModal mode="auto" theme="dark" />
       {children}
