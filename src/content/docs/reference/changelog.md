@@ -3,6 +3,41 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.0
+
+### Major refactor: Motion.dev animation engine
+
+Replaced ALL custom WAAPI animation code and the hand-rolled spring/physics engine with **[`motion`](https://motion.dev)** as the core animation engine. Complete rewrite of the animation system.
+
+**New files:**
+- `packages/ui-web/src/ui-web/animations/motion-animator.ts` — `ModalMotionAnimator` + `BottomsheetMotionAnimator`
+- `packages/ui-web/src/ui-web/animations/motion-drag-controller.ts` — `BottomsheetMotionDragController`
+
+**Removed:**
+- All custom WAAPI preset files (scale-blur.ts, slide-up.ts)
+- Custom animation resolver, reduced-motion checker
+- `setupBottomSheetGestures()` (~200 lines of custom pointer event + spring code)
+- `springTo()` (~50 lines of hand-rolled spring physics)
+- `cancelActiveAnimation()`, `getResolvedAnimations()`, `activeAnimation`, `resolvedAnimations`, `gestureDestroyer`
+
+**New animation system:**
+1. `ModalMotionAnimator` — spring open (stiffness 280, damping 22), fast ease-in close (200ms)
+2. `BottomsheetMotionAnimator` — spring slide-up open (stiffness 340, damping 28), smooth close (250ms), snap-back spring (stiffness 400, damping 35)
+3. `BottomsheetMotionDragController` — native Pointer Events + Motion springs for snap-back/dismissal, rubber-band resistance, velocity-aware dismiss
+
+**Key improvements:**
+- Fluid, premium feel with Motion's spring physics
+- Bidirectional drag with rubber-band resistance
+- No CSS transition conflicts
+- prefers-reduced-motion support
+- Shadow DOM safe (event delegation on ShadowRoot)
+- ~5-7kb gzipped bundle impact
+- Backward compatible with existing presets + attributes
+
+All 307 tests pass.
+
+---
+
 ## v1.8.7
 
 ### Bug fixes
