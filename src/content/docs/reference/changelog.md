@@ -3,6 +3,16 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.2.3
+
+### Changes
+- **xBull and Hana icons updated** with official brand PNGs (128×128, base64-encoded). Both the connector `meta.icon` (xBull) and the modal's `walletIcons` fallback map are updated. No external URL — loads instantly.
+- **Modal/bottomsheet max-width capped at `100vw`** — uses `min(380px, 100vw)` for modal and `min(560px, 100vw)` for bottomsheet. Also added `max-width: 100vw` and `overflow-x: clip` to the overlay. This prevents the modal from overflowing horizontally when the host page has bad CSS that causes x-axis overflow.
+
+All 155 tests pass.
+
+---
+
 ## v1.2.2
 
 ### Changes
