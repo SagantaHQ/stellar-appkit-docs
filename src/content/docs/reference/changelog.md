@@ -3,6 +3,20 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.4
+
+### Bug fixes
+- **Bottomsheet drag handle now works reliably.** The root cause was that `setupBottomSheetGestures()` was called on **every re-render** (via `wireEvents()`), which destroyed and recreated the gesture handlers each time. If a re-render happened during a drag (e.g. wallet list loading, status change), the drag was interrupted and the gesture handlers were lost. Fixed by:
+  1. Only calling `setupBottomSheetGestures()` once (guarded by `!this.gestureDestroyer`)
+  2. Moving event listeners from the `panel` element to the `ShadowRoot` (event delegation) — this way the listeners survive full re-renders that replace the panel element entirely (`this.root.innerHTML = ...`)
+  3. Cleaning up `gestureDestroyer` in `finishClose()` so handlers are recreated fresh on the next `open()`
+  4. Using `getPanel()` helper inside each handler to always query the current panel element (since it may be replaced during a re-render)
+  5. Wrapping `setPointerCapture` / `releasePointerCapture` in try-catch (can fail if the pointerId is invalid or the element was replaced)
+
+All 307 tests pass.
+
+---
+
 ## v1.8.3
 
 ### Bug fixes
