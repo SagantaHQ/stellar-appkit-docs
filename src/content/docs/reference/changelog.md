@@ -3,6 +3,15 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.2.4
+
+### Changes
+- **Freighter icon updated** with official brand PNG (128×128, base64-encoded). Updated in both the connector's `meta.icon` (was a remote URL) and the modal's `walletIcons` fallback map. No external request — loads instantly.
+
+All 155 tests pass.
+
+---
+
 ## v1.2.3
 
 ### Changes
