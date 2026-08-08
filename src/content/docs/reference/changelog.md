@@ -3,6 +3,29 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.5
+
+### Bug fixes
+- **Bottomsheet drag handle rewritten using PlainSheet's approach.** Studied the [`@plainsheet/core`](https://www.plainsheet.org) source code (a well-tested bottom-sheet library) and applied its key design principles to our drag implementation — without replacing our modal with PlainSheet's DOM structure. Three major changes:
+
+  1. **Switched from Pointer Events to dual Touch + Mouse events.** Pointer Events (`pointerdown`/`pointermove`/`pointerup`) can be unreliable on some mobile browsers — especially iOS Safari where `setPointerCapture` can fail silently and break the drag. PlainSheet uses separate `touchstart`/`touchmove`/`touchend` (for mobile) and `mousedown`/`mousemove`/`mouseup` (for desktop). This is the most compatible approach across all browsers.
+
+  2. **Removed `setPointerCapture` entirely.** It was the single biggest source of drag failures — it can fail if the pointerId is invalid, if the element was replaced by a re-render, or on certain browsers. Instead, for mouse events, `mousemove`/`mouseup` are attached to `document` (so the drag continues even if the cursor leaves the panel). For touch events, the touch is implicitly captured to the element that received `touchstart` — no explicit capture needed.
+
+  3. **Added `requestAnimationFrame` batching for transform updates.** Previously, `style.transform` was set on every `pointermove` event — these can fire faster than the browser can paint (60fps = 16ms/frame, but touch events can fire every 4-8ms), causing jank. Now, transform updates are batched via `requestAnimationFrame` — one update per frame, smooth 60fps dragging.
+
+  Additional improvements:
+  - Touch listeners use `{ passive: true }` (no `preventDefault` needed — `touch-action: none` CSS handles scroll suppression)
+  - Single-finger touch only (`e.touches.length !== 1` guard)
+  - Left-click only for mouse (`e.button !== 0` guard)
+  - Common `startDrag`/`moveDrag`/`endDrag` functions shared between touch and mouse paths
+  - Event delegation on ShadowRoot for `touchstart`/`mousedown` (survives panel element replacement)
+  - Document-level `mousemove`/`mouseup` (survives panel replacement + works outside panel bounds)
+
+All 307 tests pass.
+
+---
+
 ## v1.8.4
 
 ### Bug fixes
