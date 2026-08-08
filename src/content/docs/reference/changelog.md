@@ -3,6 +3,22 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.8.2
+
+### Bug fixes
+- **Close button (X icon) now plays the exit animation** — previously, clicking the X close button could close the modal without playing the WAAPI exit animation. The root cause was the CSS `transition: transform 320ms` on the panel fighting the WAAPI animation when `data-open` flipped to `false`. Fixed by setting `panel.style.transition = 'none'` before playing the WAAPI exit animation, then restoring it in `finishClose()`. The same fix is applied to the `open()` method for the enter animation.
+- **Bottomsheet drag handle now works reliably** — the drag-to-dismiss gesture was binding `pointerdown` on the entire panel, which could interfere with scrolling inside the body content. Fixed by restricting drag initiation to the drag handle, header, footer, and full-screen loading/error views only. The body content (wallet list, transaction preview, etc.) now scrolls normally without triggering the drag gesture.
+- **Drag handle grab area enlarged** — the visible drag handle is 36×5px, but the grab area is now ~25px tall (10px transparent padding above + 5px handle + 10px padding below) so it's easier to grab on touch devices.
+
+### Documentation
+- **Root README** — added a bold, visible "Official Docs · Official Demos" links table at the top with npm and GitHub links. Previously the docs/demos links were buried deep in the README.
+- **Per-package READMEs** — created proper README.md files for `@saganta/stellar-appkit-ui-web` and `@saganta/stellar-appkit-siws-verify` (they previously had no README, so npm showed no README for those packages). Updated the core package README with the correct v1.5.0 appMetadata shape. All three READMEs include the bold Official Docs + Official Demos links table, install instructions, quick start, and links to full docs.
+- **npm tarball** — added `README.md` to the `files` field in all 3 package.json files so the README is always included in the npm tarball (npm auto-includes it, but being explicit ensures it).
+
+All 307 tests pass.
+
+---
+
 ## v1.8.1
 
 ### Documentation
