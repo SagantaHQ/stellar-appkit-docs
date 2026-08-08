@@ -3,6 +3,35 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.4
+
+### New feature: Rabet wallet support
+
+Integrated [Rabet](https://rabet.io) — a Stellar browser extension wallet. Rabet is now included in `defaultConnectors()` alongside Freighter, Albedo, xBull, and Ledger.
+
+**New file:** `packages/core/src/connectors/rabet.ts` — `createRabetConnector()`
+
+**Rabet API** (injected as `window.rabet`):
+- `rabet.connect()` → `{ publicKey, error? }` — connect to user's account
+- `rabet.sign(xdr, network)` → `{ xdr, error? }` — sign a transaction
+- `rabet.disconnect()` — disconnect
+- `rabet.isUnlocked()` → `Promise<boolean>` — check if wallet is unlocked
+- `rabet.on('accountChanged', handler)` — event
+- `rabet.on('networkChanged', handler)` — event
+
+**Capabilities:**
+- `signTransaction`: ✅ (via `rabet.sign()`)
+- `signMessage`: ❌ (Rabet does not support message signing)
+- `signAuthEntry`: ❌ (Rabet does not support Soroban auth entry signing)
+
+**Detection:** checks `window.rabet` for presence, `rabet.isUnlocked()` for lock state.
+
+**Icon:** purple gradient with stylized "R" mark, added to `walletIcons` registry.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.3
 
 ### Bug fixes
