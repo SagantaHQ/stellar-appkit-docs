@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.42
+
+### Bug fix
+
+- **Friendbot uses fetch instead of window.open.** The "Get Testnet funds" button now calls friendbot.stellar.org via `fetch()` instead of opening a new browser tab. The funding stays entirely within the modal — no tab switching, no popup. On success, balance polls pick up the new XLM automatically. On failure, the banner silently clears after 3.5s.
+
+---
+
 ## v1.9.41
 
 ### Bug fix
