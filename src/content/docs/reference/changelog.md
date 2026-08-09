@@ -3,6 +3,22 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.19
+
+### Bug fix
+
+- **Trezor deps moved from `optionalDependencies` to `peerDependencies` (optional).** The previous v1.9.17 fix (moving Trezor to `optionalDependencies`) wasn't sufficient — `optionalDependencies` are still installed by default, so bundlers like bundlephobia, webpack 5, and Rollup still tried to resolve the full Trezor dep tree. The root cause is that `@trezor/utils` (a transitive dep of `@trezor/connect-web` v9.7.3) has an inconsistent `exports` map: it exposes `./lib/bigNumber` but not `./libESM/bigNumber`, yet webpack's ESM resolution ends up trying to import the `libESM` deep path, failing with `Package subpath './libESM/bigNumber' is not defined by "exports"`.
+
+  Moved `@trezor/connect-web` and `@trezor/connect-plugin-stellar` to `peerDependencies` with `peerDependenciesMeta` marking them optional. This means:
+  1. `npm install @saganta/stellar-appkit` no longer installs the Trezor packages by default — the broken dep tree is never pulled in.
+  2. Apps that want Trezor support must install the packages themselves: `npm install @trezor/connect-web @trezor/connect-plugin-stellar`.
+  3. The `createTrezorConnector()` factory still works — it uses dynamic `import('@trezor/connect-web')` which resolves at runtime from the host app's `node_modules`.
+  4. Bundlephobia / webpack / Rollup can now bundle `@saganta/stellar-appkit` without hitting the Trezor `exports` map issue.
+
+  The `trezor.ts` connector's JSDoc was updated to document the manual install requirement.
+
+---
+
 ## v1.9.18
 
 ### Features
