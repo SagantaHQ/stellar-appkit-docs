@@ -3,6 +3,34 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.21
+
+### Features
+
+- **5 named themes with dark + light variants.** Replaced the old 2-theme system (`dark`/`light`) with 5 named themes, each available in dark and light:
+
+  | Theme | Accent | Vibe |
+  |---|---|---|
+  | **`minimal`** (default) | Blue `#3B82F6` | Neutral, fits any project (Reown/WalletConnect style) |
+  | **`sky`** | Sky blue `#38BDF8` | Light, airy, friendly |
+  | **`ocean`** | Ocean blue `#60A5FA` | Serious, financial, trustworthy |
+  | **`forest`** | Mint green `#6EE7B7` | Earthy, sustainable, growth |
+  | **`sunset`** | Coral `#FB7185` | Warm, energetic, creative |
+
+  **Why minimal as default?** Most projects install the library and use it without changing the theme. The default `minimal` theme uses a neutral blue accent (inspired by Reown's and WalletConnect's modal UIs) that blends into any project's brand — not opinionated, not colorful, just clean.
+
+  **How themes are built:** Each theme is just an accent color override on top of a shared dark/light base palette. No duplicated CSS, no file size increase. The `theme` attribute accepts:
+  - Named theme: `theme="minimal"`, `theme="sky"`, `theme="ocean"`, `theme="forest"`, `theme="sunset"`
+  - Light variant: append `:light` — e.g. `theme="sky:light"`, `theme="ocean:light"`
+  - System color scheme: `theme="auto"` (follows `prefers-color-scheme`, defaults to minimal)
+  - Backwards compat: `theme="dark"` and `theme="light"` still work (map to `minimalDark`/`minimalLight`)
+
+  Themes are also importable in JS: `import { skyDark, oceanLight } from '@saganta/stellar-appkit-ui-web'`.
+
+  The old `darkTheme` and `lightTheme` exports are kept as deprecated aliases — existing consumers don't need to change anything.
+
+---
+
 ## v1.9.20
 
 ### Features
