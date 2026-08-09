@@ -3,6 +3,18 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.31
+
+### Features
+
+- **QR center logo deep gray background.** Changed the QR center logo container background from `#2A2D31` to `#1b1a1c` (deeper gray). The monochrome (B&W) logo image sits on this deep gray background — white parts stay visible, black parts blend in.
+
+- **"Generating QRCode…" title for WalletConnect.** While waiting for the pairing URI to arrive, the connecting view now shows "Generating QRCode…" as the title (instead of the generic "Continue in WalletConnect"). Once the URI arrives, the QR view renders with "Scan with WalletConnect". Also updated the English i18n `generating_code` label from "Generating pairing code…" to "Generating QRCode…".
+
+- **Removed `alt` attribute from QR image.** The QR `<img>` now has `alt=""` (decorative) — the "Scan with WalletConnect" title above it already describes what it is for screen readers.
+
+---
+
 ## v1.9.30
 
 ### Features
