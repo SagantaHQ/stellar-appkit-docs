@@ -3,6 +3,16 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.45
+
+### Features
+
+- **QR Code labels.** Changed "Scan QRCode" → "Scan QR Code" and "Generating QRCode…" → "Generating QR Code…" across English + 6 non-English locales.
+
+- **Balance + tx history polling every 15 seconds.** After login, the modal polls Horizon for the latest balance + transaction history every 15 seconds. Polling starts on connect, stops on disconnect, and is cleaned up when the modal is destroyed. 15s is frequent enough to feel live without hammering the API.
+
+---
+
 ## v1.9.44
 
 ### Bug fix
