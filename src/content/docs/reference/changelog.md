@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.35
+
+### Bug fix
+
+- **QR logo container — white halo ring + 12px border-radius.** Matching the reference image: added a 6px white ring (`box-shadow: 0 0 0 6px #fff`) around the deep gray logo container, creating clean separation between the QR modules and the logo. Changed `border-radius` from 22px to 12px for a tighter, more squared-off container.
+
+---
+
 ## v1.9.34
 
 ### Features
