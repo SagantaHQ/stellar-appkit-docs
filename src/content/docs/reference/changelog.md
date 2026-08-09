@@ -3,6 +3,18 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.25
+
+### Features
+
+- **Switched QR library back to `qrcode`.** Replaced `@konnorr/qr-creator` with the more mature, battle-tested `qrcode` npm package. Uses `QRCode.toDataURL()` to generate a data URI `<img>` (simpler than canvas rendering, works with the modal's innerHTML render pattern). Same `errorCorrectionLevel: 'H'` for logo-overlay tolerance.
+
+- **Connecting loader logo matches wallet-tile design.** The logo shown in the connecting view (while waiting for the wallet to respond) now uses the same premium squircle aesthetic as the wallet list icons: `border-radius: 22px`, `object-fit: cover`, soft drop shadow, no border. Previously it was a smaller radius with `object-fit: contain` and no shadow — looked inconsistent with the wallet list.
+
+- **Ledger icon font-weight reduced to 400 (normal).** The previous medium (500) "L" wordmark was still too heavy. Normal (400) gives a clean, light appearance.
+
+---
+
 ## v1.9.24
 
 ### Features
