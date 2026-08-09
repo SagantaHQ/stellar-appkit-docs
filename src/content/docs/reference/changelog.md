@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.38
+
+### Bug fix
+
+- **Fixed qr-code-styling rendering — proper rounded modules + embedded center logo.** The QR modules were still rendering as square despite `qr-code-styling` being configured with rounded types. Fixed by following the official docs: `margin: 0 → 8` (margin: 0 prevented styled rendering), `errorCorrectionLevel: M → H` (30% redundancy for logo overlay), color `#000000 → #202020` (softer). The center logo is now embedded directly in the QR SVG via the library's built-in `image` option with `hideBackgroundDots: true` (removes QR modules behind the logo), `imageSize: 0.22` (~22% of QR area), and `margin: 8`. Removed the separate CSS logo overlay — the logo is now part of the SVG itself.
+
+---
+
 ## v1.9.37
 
 ### Features
