@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.33
+
+### Features
+
+- **New WC QR logo — no filter, no radius, padded margin.** Replaced the QR center logo with the new attached image (80×80 PNG). Removed all filters (grayscale/contrast) and border-radius from the logo image — the logo now shows in its original colors with no rounding. Added `padding: 10px` to the logo container so the image has a margin/breathing room inside the squircle. Changed `background-size` from `cover` to `contain` so the logo fits inside the padded container without cropping.
+
+---
+
 ## v1.9.32
 
 ### Features
