@@ -3,6 +3,24 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.18
+
+### Features
+
+- **WalletConnect pinned to top of wallet list.** `ConnectorRegistry.listReachability()` now sorts the WalletConnect connector to position #1 when present. WalletConnect is the only "always-available" connector (it's a cloud relay, not a browser extension), and surfacing it first tells users they can pair a mobile wallet even if no extension is installed. The sort is stable — other connectors keep their registration order.
+
+- **"Scan QR Code" label for WalletConnect.** The modal's wallet row now shows "Scan QR Code" instead of "Installed" for the WalletConnect connector. WalletConnect isn't "installed" in the browser-extension sense — the actual UX is opening a mobile wallet and scanning a QR code. The label is driven by a new i18n key `wallet_list.status.scan_qr`, translated across all 25 supported locales. Other installed wallets (Freighter, xBull, etc.) still show "Installed".
+
+- **"Get Testnet funds" button.** When the connected wallet is on Testnet, the modal's connected view now shows a "Get Testnet funds" button below the XLM balance. Clicking it opens `friendbot.stellar.org/?addr=<address>` in a new tab to fund the connected account, shows a "Funding requested — balance will update shortly" banner for ~3.5s, and polls the balance at 3s / 6s / 10s so the new XLM appears automatically without manual refresh. The button only renders when `session.network === 'TESTNET'` (strict equality — friendbot is Testnet-only). Localized across all 25 supported locales.
+
+- **Ledger icon replaced with clean "L" wordmark.** Replaced the old geometric block pattern with a simple white-background + black capital "L" wordmark, rendered in a geometric sans-serif font stack (`Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif`) that echoes ledger.com's "Mier" brand font. Also aligned the three other text-based wallet icons (Rabet "R", Klever "K", HOT Wallet "HOT") to the same shared font stack for consistent typography.
+
+### Chores
+
+- **React devDeps bumped to v19.** The library's root devDependencies (`@types/react` and `react`) bumped from `^18.3.0` to `^19.0.0`. This aligns the library's React types with the demos site (which uses React 19), eliminating a dual-ReactNode type conflict that surfaced when the demos started symlinking the library via `file:` paths. Runtime peer dependency unchanged (`^18.0.0 || ^19.0.0`) — consumer apps can still use either React version.
+
+---
+
 ## v1.9.17
 
 ### Bug fix
