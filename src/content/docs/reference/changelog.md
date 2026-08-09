@@ -3,6 +3,26 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.24
+
+### Features
+
+- **Premium squircle wallet icons.** Redesigned the wallet tile icons to match the iOS/app-store aesthetic — squircle border-radius (16px), soft drop shadows, and edge-to-edge `background-size: cover` logos. Removed the old border + padding approach in favor of shadow-based depth for a more premium, floating look.
+
+  The WC QR code logo overlay was also updated to match — squircle radius, `background-size: cover`, no padding, stronger drop shadow so it stands out against the QR code.
+
+- **Ledger icon font-weight reduced to 500.** The previous bold (700) "L" wordmark was too thick and looked heavy. Medium (500) gives a cleaner, more refined appearance.
+
+---
+
+## v1.9.23
+
+### Bug fix
+
+- **WC QR logo rounded corners fixed.** Added `overflow: hidden` to the `.wc-qr-logo` container (the key property that clips the inner background-image into the rounded corners) and switched `background-size` from `cover` to `contain` to preserve full wallet logos without cropping.
+
+---
+
 ## v1.9.22
 
 ### Features
