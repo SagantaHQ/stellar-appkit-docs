@@ -3,6 +3,19 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.16
+
+### Bug fix
+- **WC `signMessage` params fixed to match Stellar Wallets Kit.** The `stellar_signMessage` request was sending `params: { message, publicKey }` — but SWK sends `params: { message }` only (no `publicKey` field). Some wallets (like Lobstr) may reject the request when unexpected params are included. Removed the `publicKey` field from the `stellar_signMessage` params to match SWK's exact implementation.
+
+  Also confirmed via the [Reown Stellar RPC docs](https://docs.reown.com/advanced/multichain/rpc-reference/stellar-rpc) that `stellar_signMessage` is **not** part of the published Reown spec (only `stellar_signXDR` and `stellar_signAndSubmitXDR` are documented). It's an optional method originating from Freighter Mobile's extended namespace. Our implementation matches SWK's approach exactly:
+  - Request: `{ method: "stellar_signMessage", params: { message: string } }`
+  - Response: `{ signature: string, signerAddress?: string }` (also checks `signedMessage` for Hana/Lobstr compatibility)
+
+All 307 tests pass.
+
+---
+
 ## v1.9.15
 
 ### Bug fix
