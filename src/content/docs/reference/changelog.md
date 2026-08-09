@@ -3,6 +3,15 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.13
+
+### Bug fix
+- **Back button now shown on all error views.** Previously the back arrow (←) was only shown during the `connecting` view. When an error occurred (network mismatch, SIWS error, signing error, generic error), the header lost the back button — the user could only click "Try again" or close the modal. Now the back button appears on all error views (`connecting`, `error`, `network-mismatch`, `siws-error`, and `signing` with error), allowing the user to go back to the wallet list and try a different wallet.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.12
 
 ### Bug fix
