@@ -3,6 +3,21 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.14
+
+### Bug fix
+- **WalletConnect error messages showing `[object Object]`.** The WC SDK throws/rejects with objects (e.g. `{ code: -32601, message: "Method not found" }`), not Error instances. The connector's error handling was doing `String(err)` on these objects, producing `[object Object]`. Fixed by properly parsing WC error objects in all 3 signing methods (`signTransaction`, `signAuthEntry`, `signMessage`):
+  - If `err` is an `Error` → use `err.message`
+  - If `err` is a `string` → use it directly
+  - If `err` is an `object` → check `err.message`, `err.reason`, `err.code` in that order
+  - If `result.error` is an object → extract `.message` or JSON-stringify it
+
+  Also broadened the `signMessage` response field check to handle all known wallet response shapes: `signature` (Freighter Mobile), `signedMessage` (Hana/Lobstr), `signedMsg`, `sig` — and logs the response keys when no known field is found.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.13
 
 ### Bug fix
