@@ -3,6 +3,15 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.11
+
+### Bug fix
+- **SIWS cancel button now styled.** During the SIWS flow (checking session, fetching nonce, signing, verifying), the cancel button had no CSS — it appeared as an unstyled plain text link. Added `.connecting-view__cancel` CSS class with a ghost/secondary button style: pill-shaped border, muted text color, hover state with surface background + brighter text, active scale animation, and `user-select: none`.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.10
 
 ### Bug fix
