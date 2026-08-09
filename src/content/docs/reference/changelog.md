@@ -3,6 +3,19 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.37
+
+### Features
+
+- **Switched to `qr-code-styling` for Reown-style rounded QR code.** Replaced the `qrcode` library with `qr-code-styling`, which supports styled QR codes with:
+  - `dotsOptions.type: 'rounded'` — data modules have rounded corners
+  - `cornersSquareOptions.type: 'extra-rounded'` — finder pattern outer rings are very rounded (squircle-like)
+  - `cornersDotOptions.type: 'dot'` — finder pattern inner squares become **perfect circles** (matching Reown's QR aesthetic)
+
+  The `qrcode` library could only render square modules + square finder patterns — no styling options. `qr-code-styling` generates an SVG with custom path shapes for each module type.
+
+---
+
 ## v1.9.36
 
 ### Bug fix
