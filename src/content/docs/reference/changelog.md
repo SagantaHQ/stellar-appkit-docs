@@ -3,6 +3,15 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.17
+
+### Bug fix
+- **Trezor deps moved to optionalDependencies.** `@trezor/connect-web` and `@trezor/connect-plugin-stellar` were listed as regular dependencies, causing them to be installed in every app that uses `@saganta/stellar-appkit` — even if Trezor isn't used. The `@trezor/utils` package has export path issues that break webpack/Next.js builds. Moved to `optionalDependencies` so they install by default but don't break builds when unused. The dynamic `import()` in `trezor.ts` still works when the packages are present.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.16
 
 ### Bug fix
