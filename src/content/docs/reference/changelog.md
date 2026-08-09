@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.46
+
+### Features
+
+- **Smart balance + tx history polling.** Fetches immediately on modal open, polls every 10 seconds (silent — no loading flash), stops on close to save resources, and refreshes after a transaction is signed (2s delay for Horizon indexing).
+
+---
+
 ## v1.9.45
 
 ### Features
