@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.32
+
+### Features
+
+- **Dedicated WalletConnect QR logo.** The QR center logo now uses a dedicated 256×256 WalletConnect PNG (the attached `wc_.png`) instead of the generic wallet icon. The dedicated PNG is specifically sized + styled for the QR overlay. Also added `border-radius: 12px` to the logo image itself, creating a double-radius premium effect (22px outer container + 12px inner image).
+
+---
+
 ## v1.9.31
 
 ### Features
