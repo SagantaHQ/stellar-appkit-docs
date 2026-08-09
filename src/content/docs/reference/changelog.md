@@ -3,6 +3,29 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.7
+
+### UI improvements + QR fix
+
+**Wallet icon styling — iOS-style design:**
+- Increased tile size from 36px → 40px
+- Increased border-radius from 10px → 12px (more rounded, iOS-like)
+- Added 3px padding inside the tile so the icon doesn't touch the border
+- Changed `background-size` from `100% 100%` → `82%` (icon is slightly inset)
+- Added `box-sizing: border-box` so padding is included in the tile dimensions
+- Header wallet icon: increased from 20px → 22px, border-radius 5px → 6px, changed `object-fit: fill` → `contain` with 2px padding
+
+**WalletConnect QR code — replaced `better-qr` with `qrcode` library:**
+- `better-qr` was producing QR codes that wallets couldn't scan — replaced with the industry-standard `qrcode` npm package (the most widely-used QR library, reliable across all wallet apps)
+- QR is now pre-rendered asynchronously when the pairing URI arrives (stored as `wcQrSvg`), then injected into the synchronous `renderConnecting()` — shows "Generating QR…" briefly while rendering
+- Fixed width: 240px (was 6px/module × unknown module count)
+- Removed `better-qr` dependency from `@saganta/stellar-appkit-ui-web`
+- Added `qrcode` + `@types/qrcode` dependencies
+
+All 307 tests pass.
+
+---
+
 ## v1.9.6
 
 ### New wallets + Rabet fix
