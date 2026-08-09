@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.40
+
+### Features
+
+- **Smooth multi-layer shadow on QR container.** Replaced the single-layer box-shadow with a 3-layer smooth shadow (contact + key + ambient) for a premium soft floating effect.
+
+---
+
 ## v1.9.39
 
 ### Bug fix
