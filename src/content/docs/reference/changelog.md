@@ -3,6 +3,34 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.6
+
+### New wallets + Rabet fix
+
+**Updated Rabet connector** to match Stellar Wallets Kit's approach:
+- Added 100ms detection delay (Rabet is slow to inject `window.rabet` — SWK does the same)
+- Fixed network mapping: Stellar passphrase → Rabet's own `"mainnet"` / `"testnet"` strings (was passing the raw passphrase)
+- `signTransaction` now correctly maps `Public Global Stellar Network ; September 2015` → `"mainnet"`, everything else → `"testnet"`
+
+**New: HOT Wallet** (`createHotWalletConnector()`)
+- Uses `@hot-wallet/sdk` (v1.0.11) — `HOT.request("stellar:*", params)` RPC bridge
+- Full SEP-43 support: `signTransaction` ✅, `signAuthEntry` ✅, `signMessage` ✅
+- Added to `defaultConnectors()` — appears in the wallet picker
+- New file: `packages/core/src/connectors/hot-wallet.ts`
+
+**New: Trezor hardware wallet** (`createTrezorConnector()`)
+- Uses `@trezor/connect-web` + `@trezor/connect-plugin-stellar`
+- Requires constructor params: `{ appName, appUrl, email }` (Trezor Connect mandates a manifest)
+- BIP-44 account discovery via `listAccounts()` (paths `m/44'/148'/N'`)
+- `signTransaction` ✅ (hex→base64 signature conversion + `Transaction.addSignature`)
+- `signMessage` ❌, `signAuthEntry` ❌ (hardware wallets can't sign arbitrary data)
+- NOT in `defaultConnectors()` — create explicitly (like Ledger)
+- New file: `packages/core/src/connectors/trezor.ts`
+
+All 307 tests pass.
+
+---
+
 ## v1.9.5
 
 ### New feature: Klever wallet support
