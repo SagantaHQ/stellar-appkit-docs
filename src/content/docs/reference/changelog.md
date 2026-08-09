@@ -3,6 +3,23 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.12
+
+### Bug fix
+- **WalletConnect `signMessage` error: "Missing or invalid. request() chainId: undefined".** All `client.request()` calls were missing the required `chainId` parameter. WalletConnect v2 requires the chain ID (e.g. `stellar:testnet`) in every request so the wallet knows which chain to operate on. Without it, the wallet rejects the request with "Missing or invalid. request() chainId: undefined".
+
+  Fixed by adding `chainId: resolveWcChainId()` to all 4 `client.request()` calls:
+  - `stellar_signXDR` (signTransaction)
+  - `stellar_signAuthEntry` (signAuthEntry)
+  - `stellar_signMessage` (signMessage)
+  - `stellar_getNetwork` (network check)
+
+  Also improved the error message when `stellar_signMessage` isn't supported — now clearly states "this method is optional — the wallet may not implement it" (since we moved it to `optionalNamespaces` in v1.9.9).
+
+All 307 tests pass.
+
+---
+
 ## v1.9.11
 
 ### Bug fix
