@@ -1,19 +1,35 @@
 ---
 title: Theming
-description: 5 built-in themes (minimal, sky, ocean, forest, sunset) with dark + light variants, plus full CSS custom property overrides.
+description: 5 built-in themes (minimal, stellar, sky, ocean, sunset) with dark + light variants, plus full CSS custom property overrides.
 ---
 
 ## Built-in themes
 
-Stellar AppKit ships with **5 named themes**, each with a **dark** and **light** variant. Themes are built by overriding CSS variables on top of a shared base — no file size increase, just different accent colors.
+Stellar AppKit ships with **5 named themes**, each with a **dark** and **light** variant. Themes are built by overriding CSS variables on top of a shared neutral base — no file size increase, just different accent colors.
+
+The default theme (`minimal`) uses a **neutral near-black/near-white accent** that blends into any host website. Inspired by Apple, Linear, and Vercel's neutral UI language — no brand color, so the component looks native wherever it's embedded.
 
 | Theme | Accent (dark) | Accent (light) | Vibe |
 |---|---|---|---|
-| **`minimal`** (default) | `#3B82F6` blue | `#2563EB` blue | Neutral, fits any project (Reown/WalletConnect style) |
+| **`minimal`** (default) | `#FAFAFA` near-white | `#18181B` near-black | Neutral, fits any project (Apple/Linear/Vercel style) |
+| **`stellar`** | `#6EE7B7` mint green | `#0E9A6E` forest green | The Stellar brand theme |
 | **`sky`** | `#38BDF8` sky blue | `#0EA5E9` sky blue | Light, airy, friendly |
 | **`ocean`** | `#60A5FA` ocean blue | `#1D4ED8` deep blue | Serious, financial, trustworthy |
-| **`forest`** | `#6EE7B7` mint green | `#0E9A6E` forest green | Earthy, sustainable, growth |
 | **`sunset`** | `#FB7185` coral | `#E11D48` rose | Warm, energetic, creative |
+
+### Base palette (zinc neutrals)
+
+All themes share the same neutral base palette — only the accent changes:
+
+| Token | Dark | Light |
+|---|---|---|
+| `colorBg` | `#09090B` | `#FFFFFF` |
+| `colorSurface` | `#18181B` | `#F8F8F8` |
+| `colorSurfaceHover` | `#27272A` | `#F1F1F1` |
+| `colorBorder` | `#27272A` | `#E4E4E7` |
+| `colorText` | `#FAFAFA` | `#18181B` |
+| `colorTextMuted` | `#A1A1AA` | `#71717A` |
+| `colorDanger` | `#DC2626` | `#DC2626` |
 
 ### Usage
 
@@ -23,9 +39,9 @@ Stellar AppKit ships with **5 named themes**, each with a **dark** and **light**
 
 <!-- Named themes (dark variant by default) -->
 <stellar-appkit-modal theme="minimal"></stellar-appkit-modal>
+<stellar-appkit-modal theme="stellar"></stellar-appkit-modal>
 <stellar-appkit-modal theme="sky"></stellar-appkit-modal>
 <stellar-appkit-modal theme="ocean"></stellar-appkit-modal>
-<stellar-appkit-modal theme="forest"></stellar-appkit-modal>
 <stellar-appkit-modal theme="sunset"></stellar-appkit-modal>
 
 <!-- Light variant of a named theme (append :light) -->
@@ -41,9 +57,9 @@ Stellar AppKit ships with **5 named themes**, each with a **dark** and **light**
 ```ts
 import {
   minimalDark, minimalLight,
+  stellarDark, stellarLight,
   skyDark, skyLight,
   oceanDark, oceanLight,
-  forestDark, forestLight,
   sunsetDark, sunsetLight,
   THEME_NAMES,
   type ThemeName,
@@ -81,7 +97,7 @@ CSS custom property overrides take precedence over the `theme` attribute — you
 | Attribute | Values | Default |
 |---|---|---|
 | `mode` | `auto` \| `modal` \| `bottom-sheet` \| `inline` | `auto` |
-| `theme` | `minimal` \| `sky` \| `ocean` \| `forest` \| `sunset` \| `auto` \| `dark` \| `light` (optionally append `:light`/`:dark`) | `minimal` |
+| `theme` | `minimal` \| `stellar` \| `sky` \| `ocean` \| `sunset` \| `auto` \| `dark` \| `light` (optionally append `:light`/`:dark`) | `minimal` |
 | `branding` | `show` \| `hide` | `show` |
 | `logo-src` | image URL | — |
 | `title` | string | contextual |

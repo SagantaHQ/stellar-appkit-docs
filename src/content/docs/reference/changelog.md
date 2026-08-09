@@ -3,6 +3,28 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.22
+
+### Features
+
+- **Neutral default theme + zinc base palette.** The `minimal` theme (default) now uses a **neutral near-black/near-white accent** (`#FAFAFA` dark / `#18181B` light) instead of blue. This makes the component look native in any host website — no brand color, just clean. Inspired by Apple, Linear, and Vercel's neutral UI language.
+
+  The base palette (shared by all themes) switched to **zinc neutrals**:
+  - Dark: `#09090B` bg, `#18181B` surface, `#27272A` border, `#FAFAFA` text
+  - Light: `#FFFFFF` bg, `#F8F8F8` surface, `#E4E4E7` border, `#18181B` text
+
+  This replaces the old custom-tinted palette and gives every theme a consistent, professional foundation.
+
+- **Renamed `forest` theme to `stellar`.** The green accent theme (`#6EE7B7` dark / `#0E9A6E` light) is now called `stellar` — it's the Stellar brand theme. Apps that want the recognizable Stellar green can use `theme="stellar"`. The `forest` name is no longer valid; use `stellar` instead.
+
+  Theme list: `minimal` (default, neutral), `stellar` (green), `sky` (blue), `ocean` (deep blue), `sunset` (coral).
+
+### Why neutral as default?
+
+Most projects install the library and use it without changing the theme. A neutral accent (near-black/near-white) blends into any project's brand — the component feels like a native part of the host app, not a third-party widget with its own opinionated color. Apps that want a branded look can switch to `stellar`, `sky`, `ocean`, or `sunset`, or override the `--sak-color-accent` CSS variable directly.
+
+---
+
 ## v1.9.21
 
 ### Features
