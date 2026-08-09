@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.29
+
+### Features
+
+- **QR center logo larger + grayscale (Reown-style).** The wallet logo overlay in the center of the QR code is now 56px (was 44px, ~22% of the 256px QR) and desaturated via `filter: grayscale(100%)`. The grayscale treatment matches Reown's aesthetic — the center logo is monochrome so it doesn't compete with the black/white QR modules for visual attention. Border-radius also increased to 22px to maintain the squircle proportion at the larger size.
+
+---
+
 ## v1.9.28
 
 ### Bug fix
