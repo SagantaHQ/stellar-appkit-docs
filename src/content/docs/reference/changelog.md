@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.26
+
+### Features
+
+- **Ledger brand PNG icon.** Replaced the SVG "L" wordmark with the official Ledger brand PNG image (128×128). No more fake wordmark with a system font — the actual Ledger logo is now used. Embedded as a base64 data URI for instant loading.
+
+---
+
 ## v1.9.25
 
 ### Features
