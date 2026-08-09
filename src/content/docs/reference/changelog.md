@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.41
+
+### Bug fix
+
+- **Fixed white overlay flash during QR loading.** When the WC pairing URI arrived, the QR frame was briefly empty (white) before qr-code-styling appended the SVG. Now shows a "Generating QRCode…" text placeholder inside the frame that gets replaced when the SVG renders.
+
+---
+
 ## v1.9.40
 
 ### Features
