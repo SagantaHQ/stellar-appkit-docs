@@ -3,6 +3,24 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.20
+
+### Features
+
+- **Switched QR code library to `@konnorr/qr-creator`.** Replaced the `qrcode` npm package (which has Node.js polyfills and is larger) with `@konnorr/qr-creator` — a zero-dependency, ~5kB gzipped library that renders directly to a `<canvas>` element. The QR code now has slightly rounded blocks (`radius: 0.45`) for a more modern look, and the canvas fills the entire frame so the QR covers the whole surface (no padding around it).
+
+- **Bigger QR code.** The WalletConnect QR frame is now 256×256px (was 220×220px), making it easier to scan with mobile wallets.
+
+- **Fixed wallet logo rounded corners in QR overlay.** The previous `<img>` element with `border-radius` had a browser bug where the image would overflow the rounded corners. Replaced with a nested `<span>` pattern:
+  - Outer `<span class="wc-qr-logo">` — rounded corners (12px) + padding (6px) + white background + shadow
+  - Inner `<span class="wc-qr-logo__img">` — `background-image` with `background-size: cover` + rounded corners (6px)
+
+  This pattern reliably clips the image to the rounded shape across all browsers.
+
+- **Trezor devDeps added to root.** The Trezor packages (`@trezor/connect-web`, `@trezor/connect-plugin-stellar`) are now in the root `devDependencies` so the library can typecheck/build against them, while remaining optional peer deps for consumers (apps that want Trezor must install them manually).
+
+---
+
 ## v1.9.19
 
 ### Bug fix
