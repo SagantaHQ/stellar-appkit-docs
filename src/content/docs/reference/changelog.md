@@ -3,6 +3,16 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.27
+
+### Bug fix
+
+- **Reverted Ledger icon to SVG "L" wordmark (normal weight).** The v1.9.26 PNG brand icon was replaced back with the simple "L" wordmark — white background, black "L", font-weight 400 (normal, not bold). Matches the reference image.
+
+- **"Scan QR Code" → "Scan QRCode" (one word).** Updated the WalletConnect row label across English + 6 Latin-script locales (de, fr, nl, pt-BR, th, zh-TW). Locales where "QR" is already standalone left unchanged.
+
+---
+
 ## v1.9.26
 
 ### Features
