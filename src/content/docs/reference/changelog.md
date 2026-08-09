@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.44
+
+### Bug fix
+
+- **Brought back wallet list loading spinner.** Reverted the v1.9.43 change that showed the wallet list immediately with placeholder reachability. The loading spinner now shows again while reachability checks are in flight.
+
+---
+
 ## v1.9.43
 
 ### Bug fix
