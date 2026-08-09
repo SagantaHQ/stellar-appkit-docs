@@ -3,6 +3,16 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.39
+
+### Bug fix
+
+- **Removed wallet list loading spinner.** The spinner CSS (`.wallet-list-loading`) + spinner div were removed from `renderWalletList()`. The loading state now shows just the "Loading wallets…" text — the wallet list appears progressively as reachability checks complete.
+
+- **Fixed WC QR logo not showing.** The `qr-code-styling` library's built-in `image` option was failing to load the SVG data URI in shadow DOM (async `Image()` load silently fails for base64 SVG in some browsers). Reverted to the reliable CSS overlay approach: brought back the `.wc-qr-logo` + `.wc-qr-logo__img` HTML overlay, removed the `image` + `imageOptions` from the `QRCodeStyling` config.
+
+---
+
 ## v1.9.38
 
 ### Bug fix
