@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.36
+
+### Bug fix
+
+- **Rounded QR finder patterns.** The QR finder patterns (3 corner squares) now appear slightly rounded, matching Reown's aesthetic. Investigation revealed Reown uses the same `qrcode` library (which renders square patterns) — the rounding comes from the CSS container's `border-radius` + `overflow: hidden` clipping the entire QR image. Fixed by reducing the QR's internal `margin` from 2 to 1 (so finder patterns extend closer to the frame edges) and changing `object-fit` from `contain` to `cover` (so the image fills the frame and the rounded corners clip the finder patterns).
+
+---
+
 ## v1.9.35
 
 ### Bug fix
