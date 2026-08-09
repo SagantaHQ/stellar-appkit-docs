@@ -3,6 +3,18 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.8
+
+### Bug fix
+- **Removed WalletConnect 60-second timeout.** The connector was racing `approval()` against a 60s timeout that would fire even when nothing was wrong — the user just needed more than 60s to scan the QR and approve in their wallet. Now `approval()` waits indefinitely, only aborting when:
+  1. A fatal relay error fires (e.g. invalid projectId, relay unreachable)
+  2. The user cancels the connection (connectAborted is set by the caller)
+- Removed `CONNECT_TIMEOUT_MS` constant, `connectTimeoutTimer`, and all timeout-related cleanup code.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.7
 
 ### UI improvements + QR fix
