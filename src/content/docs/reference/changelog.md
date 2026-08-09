@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.34
+
+### Features
+
+- **White SVG WalletConnect logo for QR center.** Replaced the PNG logo with the official WalletConnect SVG logo — white paths on transparent background. Shows perfectly against the deep gray (`#1b1a1c`) QR logo container. SVG is smaller (924 bytes vs 1428 bytes for PNG), infinitely scalable, and crisp on retina/high-DPI displays. No filter needed — the white `#fff` fill in the SVG path renders natively.
+
+---
+
 ## v1.9.33
 
 ### Features
