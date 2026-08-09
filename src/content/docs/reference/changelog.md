@@ -3,6 +3,29 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.9
+
+### Bug fixes (QR scanning + WC namespaces + icon styling)
+
+**WalletConnect QR code — 3 fixes based on Qwen AI analysis:**
+
+1. **QR clipping fixed** — the 240px SVG was overflowing the 204px `.wc-qr-frame` container (which has `overflow: hidden` + 8px padding), clipping the quiet zone that scanners require. Fixed by switching from `QRCode.toString()` (raw SVG) to `QRCode.toDataURL()` (base64 PNG data URI) and wrapping in an `<img>` with `width: 100%; height: 100%` so it scales to fit the container perfectly.
+
+2. **Error correction level M → H** — the modal overlays a 40×40px wallet logo in the center of the QR code. With `errorCorrectionLevel: 'M'` (15% redundancy), the obscured center modules could make the code unscannable. Changed to `'H'` (30% redundancy) so scanners can read the code even with the center logo covering data modules.
+
+3. **WC namespaces split** — all 4 methods (`stellar_signXDR`, `stellar_signAndSubmitXDR`, `stellar_signMessage`, `stellar_signAuthEntry`) were in `requiredNamespaces`. Wallets that strictly advertise only `stellar_signXDR` would reject the pairing. Fixed by splitting:
+   - `requiredNamespaces`: only `stellar_signXDR` (base requirement)
+   - `optionalNamespaces`: `stellar_signAndSubmitXDR`, `stellar_signMessage`, `stellar_signAuthEntry` (nice-to-have)
+
+**Wallet icon styling:**
+- Reduced padding from 3px → 2px (smaller gap between icon and container)
+- Changed `background-size` from `82%` → `calc(100% - 4px)` (icon fills more of the tile)
+- Header icon: `object-fit: contain` with 2px padding (already done in v1.9.7, confirmed here)
+
+All 307 tests pass.
+
+---
+
 ## v1.9.8
 
 ### Bug fix
