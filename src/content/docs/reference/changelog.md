@@ -3,6 +3,17 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.10
+
+### Bug fix
+- **WalletConnect "network mismatch" after successful connection.** After connecting via WalletConnect, the modal showed "This wallet is on UNKNOWN, this app needs TESTNET." The root cause: the connector called `stellar_getNetwork` over the WC relay to get the wallet's network, but most WC wallets don't support this method (it's not part of the core WC Stellar namespace). When the call failed, the connector fell back to `network: 'UNKNOWN'` — which then failed the network mismatch check (`'UNKNOWN' !== 'TESTNET'`).
+
+  Fixed by falling back to the **app's configured network** (`appkitNetwork`) instead of `'UNKNOWN'` when the wallet doesn't respond to `stellar_getNetwork`. This is the correct behavior — the WC session proposal already specifies the chain (`stellar:testnet`), so the wallet agreed to operate on that network. The `stellar_getNetwork` call was redundant and its failure shouldn't cause a mismatch.
+
+All 307 tests pass.
+
+---
+
 ## v1.9.9
 
 ### Bug fixes (QR scanning + WC namespaces + icon styling)
