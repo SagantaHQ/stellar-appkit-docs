@@ -3,6 +3,16 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.30
+
+### Features
+
+- **QR center logo pure black & white + dark gray background.** Changed the QR center logo from grayscale-on-white to pure B&W on dark gray:
+  - Logo filter: `grayscale(100%) contrast(1000%)` — forces every pixel to either pure black or pure white (not just desaturated). White parts of the logo stay white; colored/dark parts become pure black.
+  - Logo container background: `#2A2D31` dark gray (was white) — provides contrast for the white parts of the B&W logo while the black parts blend in, creating a clean monochrome look that matches the QR's black/white module scheme.
+
+---
+
 ## v1.9.29
 
 ### Features
