@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.43
+
+### Bug fix
+
+- **Wallet list shows immediately — no more loading delay.** The wallet list was showing "Loading wallets…" while waiting for all connectors reachability checks to complete. Now renders the wallet list immediately with placeholder reachability, then updates with real status as checks resolve.
+
+---
+
 ## v1.9.42
 
 ### Bug fix
