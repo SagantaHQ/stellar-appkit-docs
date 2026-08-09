@@ -3,6 +3,23 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.15
+
+### Bug fix
+- **WC signMessage error now distinguishes "method not supported" from "wallet rejected".** When Lobstr (or any WC wallet) rejects a `stellar_signMessage` request — e.g. "Untrusted Transaction Domain: http://localhost:3000" — the error was being reported as "wallet does not support stellar_signMessage", which is misleading. The wallet **does** support the method; it just rejected the message content.
+
+  Fixed by checking the error message keywords:
+  - If the error contains "method not found", "not supported", or "missing method" → report as "method not supported" (the wallet doesn't implement `stellar_signMessage`)
+  - Otherwise → report as "signMessage rejected: [actual error]" (the wallet processed the request but rejected it — user declined, untrusted domain, network mismatch, etc.)
+
+  This means the "Untrusted Transaction Domain" error from Lobstr will now show as "WalletConnect signMessage rejected: Untrusted Transaction Domain: http://localhost:3000" instead of the misleading "does not support" message.
+
+  **Note:** The "Untrusted Transaction Domain" error is the wallet's own security check — Lobstr rejects SIWS messages where the domain is `localhost` or isn't in its trusted list. To fix this during development, use a tunnel like `ngrok` or `cloudflared` to get a real HTTPS domain, or test with wallets that don't enforce domain validation (Freighter, Albedo).
+
+All 307 tests pass.
+
+---
+
 ## v1.9.14
 
 ### Bug fix
