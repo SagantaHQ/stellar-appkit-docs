@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.47
+
+### Bug fix
+
+- **Balance polling only on connected view.** The 10s balance + tx history poll now only fires when the user is viewing the connected view (where balance + history are shown). Skips polling during signing, transaction preview, SIWS, wallet list, etc. — the data isn't visible there and polling is wasteful.
+
+---
+
 ## v1.9.46
 
 ### Features
