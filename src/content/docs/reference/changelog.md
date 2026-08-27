@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.48
+
+### Bug fix
+
+- **Fixed Freighter "wrong network" error.** When `signTransaction(xdr)` was called without explicit `networkPassphrase` in opts, Freighter defaulted to Main Net — causing a "transaction is on Main Net" error even when the transaction was built for Testnet. The client now injects the resolved network passphrase from the SDK config into the sign options before passing to the connector.
+
+---
+
 ## v1.9.47
 
 ### Bug fix
