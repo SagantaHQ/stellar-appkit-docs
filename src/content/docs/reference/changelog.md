@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.49
+
+### Bug fix
+
+- **Sped up connecting + signing spinner animations.** Logo breathe: 2.8s → 1.2s. Border spinner: 1.8s ease-in-out → 0.8s linear. The animations now feel responsive and energetic instead of sluggish.
+
+---
+
 ## v1.9.48
 
 ### Bug fix
