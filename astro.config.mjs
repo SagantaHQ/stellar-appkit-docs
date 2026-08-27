@@ -101,6 +101,7 @@ export default defineConfig({
             { label: 'Bundle Size', slug: 'reference/bundle-size' },
             { label: 'AI Integration', slug: 'reference/ai-integration' },
             { label: 'Changelog', slug: 'reference/changelog' },
+            { label: 'Roadmap', slug: 'reference/roadmap' },
           ],
         },
         {
