@@ -3,6 +3,14 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.50
+
+### Bug fix
+
+- **Fixed animations for reduced-motion users + rebalanced spinner timings.** v1.9.49 only changed the default animations — the `prefers-reduced-motion: reduce` override still forced an 8s spin, so users with OS-level "reduce motion" enabled saw no improvement at all. The override now runs at 2.5s. Base timings were also rebalanced after v1.9.49 over-corrected: logo breathe 1.2s → 2.5s (connect + sign views), border spinner 0.8s → 2s.
+
+---
+
 ## v1.9.49
 
 ### Bug fix
