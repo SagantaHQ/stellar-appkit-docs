@@ -3,6 +3,20 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.53
+
+### Features
+
+- **Zero-SVG React Native stack.** `react-native-svg` and `react-native-qrcode-svg` are no longer dependencies — the RN package renders everything with native primitives. Every core connector logo that ships as an SVG (Rabet, Klever, HOT Wallet, Trezor, Albedo, Ledger, WalletConnect) is pre-rasterized into a compressed 128×128 palette PNG (~7 KB for all seven, bundled as base64 literals), and `<WalletIcon>` is now a plain RN `<Image>`: wallet key → bundled PNG, raster source → native render, WalletConnect peer name → logo match ("Freighter" gets the Freighter logo even when the peer ships an SVG URL), branded letter avatar as the last resort.
+
+- **Dependency-free QR pairing.** The pairing QR is rendered by the new `<QrCodeView>` — a vendored pure-JS QR encoder (matrix core only, MIT) drawn with plain React Native Views, crisp at any size. Verified scannable end-to-end with a QR decoder against realistic 180-char WalletConnect pairing URIs and UTF-8 payloads. The Expo demo bundle dropped from 3,309 to 3,001 modules with the SVG stack gone.
+
+### Compatibility
+
+- `@saganta/stellar-appkit` and `@saganta/stellar-appkit-react-native` 1.9.53 · React Native ≥ 0.73 · no SVG dependencies · 364 tests green.
+
+---
+
 ## v1.9.52
 
 ### Features
