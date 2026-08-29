@@ -3,6 +3,22 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.55
+
+### Features
+
+- **One file per screen — modal internals split for easy management.** `AppKitModal.tsx` (922 lines) is now a slim orchestrator that owns only the view state machine, the connect actions and the bottom-sheet shell. Every screen lives in its own file: `src/ui/views/WalletListView.tsx` (wallet picker), `WalletRowView.tsx` (one wallet row), `ConnectingView.tsx` (connecting/signing + animations), `AccountView.tsx` and `ErrorView.tsx`, sharing `src/ui/styles.ts` (the design system) and `src/ui/types.ts`. Public API unchanged — same `<AppKitModal>` import, same props.
+
+- **Wallet listing redesigned to match the web modal.** The RN picker now ports the web modal's wallet-list design exactly: flat, individually-rounded rows (the bordered card containers and hairline separators are gone — press highlights the row itself), 40dp squircle tiles with a soft drop shadow and **no border**, 14/500 left-aligned names, and the web's right-hand status language — an "Installed" outline badge with a 6dp accent dot for available connectors, muted status text for locked/unavailable wallets, an accent "Install" pill for not-installed ones, and 0.55 dimming for unavailable wallets. The sheet background switched to `colorSurface` (the web panel color) so tiles and press states layer exactly like the web modal.
+
+- **Design parity is now test-enforced.** New `tests/ui-styles.test.ts` (12 tests) pins the ported values — row padding 10/8, gap 12, `radiusMd` corners, 40dp/16dp-radius borderless tile with shadow, badge pill geometry, install-pill sizing, dim opacity, body padding — so the native list can't silently drift from the web design. `styles.ts` imports only `StyleSheet`/`Platform` from react-native, which keeps it importable under bun through a light module mock.
+
+### Compatibility
+
+- `@saganta/stellar-appkit` and `@saganta/stellar-appkit-react-native` 1.9.55 · React Native ≥ 0.73 · public UI API unchanged · 382 tests green.
+
+---
+
 ## v1.9.54
 
 ### Features
