@@ -3,6 +3,28 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.54
+
+### Features
+
+- **Deep-link-only pairing on React Native.** A phone can't scan a QR code it's displaying, so the RN modal no longer renders one — pairing is deep-link only, Solana-Mobile-Adapter style. The QR pairing view (and the generic "WalletConnect" list row) are gone; `<QrCodeView>` remains exported for apps building their own tablet/desktop-style screens. A "Copy pairing code" fallback (system share sheet) covers wallets whose deep link can't open but accept a pasted pairing URI.
+
+- **Full mobile wallet registry — 21 built-in wallets.** Every consumer wallet registered against the WalletConnect Explorer's `stellar:pubnet` namespace with a native mobile link ships built-in: the featured **Freighter, LOBSTR, HOT Wallet, Scopuly** plus **SafePal, Blockchain.com, Arculus Wallet, Atomic Wallet, COCA Wallet, Trustee Wallet, MaxWallet, Zypto, Hero Wallet, UKey Wallet, ECOIN Wallet, SwiftEx Wallet, Panaroma Wallet, Kotai Wallet, Cryptokara, UKISS Hub, SOC Wallet** under a collapsible "More wallets" section. Institutional custody platforms without consumer deep links (Anchorage, Utila, GK8) are excluded; `registerMobileWallet()` still adds anything else at runtime. New `listFeaturedMobileWallets()` / `listAdditionalMobileWallets()` helpers back the sectioned UI.
+
+- **Sectioned, polished bottom sheet.** The wallet list now groups the featured Stellar wallets + registered connectors into a rounded card with hairline-separated rows, and collapses the 17 additional wallets behind a "More wallets (N)" expander with a rotating chevron and accessibility state. All buttons gained pressed feedback; the header, rows and cards were re-tuned for both light and dark themes.
+
+- **New icons render correctly on light and dark themes.** The 17 new wallet logos are pre-rasterized as 128×128 palette PNGs **with alpha (tRNS)** — transparent corners instead of flattened black backgrounds — ~30 KB total for all 21 icons, still zero SVG dependencies. WalletConnect peer names match the new wallets too ("SafePal" → SafePal logo), with variant aliases ("SafePal Wallet", "Blockchain.com Wallet", …).
+
+### Bug fix
+
+- **Fixed the corrupt Freighter icon.** The Freighter logo's base64 literal was one character too long (5505 chars — not a multiple of 4), which is silently undecodable and rendered *nothing* in RN's `<Image>` — the "icons are not showing" regression. Repaired byte-exactly via PNG chunk-CRC brute force (a duplicated `U` at offset 5331). New regression-guard tests decode **every** built-in icon and validate its PNG/JPEG header and `IEND` terminator, so a corrupt literal can never ship again.
+
+### Compatibility
+
+- `@saganta/stellar-appkit` and `@saganta/stellar-appkit-react-native` 1.9.54 · React Native ≥ 0.73 · no SVG dependencies · i18n keys added to all 25 locales · 370 tests green · Expo demo bundle verified through Metro.
+
+---
+
 ## v1.9.53
 
 ### Features
