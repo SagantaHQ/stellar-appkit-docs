@@ -3,6 +3,32 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.52
+
+### Features
+
+- **Named mobile wallets in the React Native modal.** The RN wallet list now shows every Stellar wallet with a mobile app and a WalletConnect registration under its own name — **Freighter, LOBSTR, HOT Wallet, Scopuly** (verified against the WalletConnect Explorer registry). Tapping one deep-links straight into the wallet app with the pairing URI embedded (`freighterwallet://wc?uri=…`), falls back to the wallet's universal link, then to its store page. QR pairing remains available for every other WalletConnect wallet (SafePal, Hana, …).
+
+- **True wallet names.** WalletConnect sessions now capture the peer wallet's metadata, so the connecting, signing and account views show the real wallet — "Freighter", "HOT Wallet" — instead of the generic "WalletConnect" label. Exposed in core through the new optional `getSessionPeer()` connector method.
+
+- **Wallet icons render on React Native.** New `<WalletIcon>` component understands every icon format in the SDK: PNG/JPEG data URIs (native `Image`), SVG data URIs (via `react-native-svg`), remote URLs, and a letter-avatar fallback. The mobile wallet registry ships the wallets' official logos as raster data URIs — this is what fixed "icons not showing" on RN.
+
+- **Redesigned RN bottom sheet.** Header with back/close, flat hairline-separated wallet rows with chevrons, wallet-branded connecting view with an install fallback when the wallet app can't be opened, mono-spaced address in the account card.
+
+### Compatibility
+
+- `@saganta/stellar-appkit` and `@saganta/stellar-appkit-react-native` 1.9.52 · React Native ≥ 0.73 · 348 tests green.
+
+---
+
+## v1.9.51
+
+### Release
+
+- **`@saganta/stellar-appkit-react-native` published to npm.** The React Native package's first npm release — WalletConnect mobile pairing with deep links, the Albedo WebView bridge, AsyncStorage persistence, and the bottom-sheet modal with web-parity animations. Package license aligned with the repo (MIT).
+
+---
+
 ## v1.9.50
 
 ### Bug fix
