@@ -3,6 +3,30 @@ title: Changelog
 description: Release history for Stellar AppKit.
 ---
 
+## v1.9.56
+
+### Features
+
+- **1:1 web-modal parity for the React Native UI.** The RN modal now matches the web modal's UX/UI spec exactly — every screen, state and metric:
+
+- **The web's squircle dash-arc spinner.** The web connecting spinner is *not a circle* — it's a rounded-square outline with a 120-unit dash comet traveling clockwise around its perimeter (`stroke-dasharray: 120 240`, dashoffset animating to −360). The RN port reproduces that exact geometry with **pure Views — no react-native-svg**: `squircle-track.ts` ports the SVG rect path and dash math precisely (88 viewBox, rect 82 at offset 3 with rx 20, stroke 2.5), and `SquircleArc.tsx` divides the track into short segments whose opacities are keyframed off one native-driven `Animated.Value` — the comet's painted length is conserved exactly at every point in the cycle, at 60fps with zero per-frame JS. Timings match web v1.9.50: 2s connecting (2.5s under reduced motion), 0.8s signing, 2.5s logo breathe, and the web's staggered entrance (0.5s fade + 8px slide, 80ms apart) — all disabled/slowed under `AccessibilityInfo` reduced motion.
+
+- **Back-arrow error header.** While connecting (error or not), on SIWS errors and on signing errors, the header switches to the web's `.header--connecting` variant: back chevron + the wallet's name centered + close. Back cancels the in-flight state and returns to the wallet list. Once connected, the header shows the wallet's own icon and name instead of the app title — exactly like the web modal.
+
+- **Web error routing.** A declined connect no longer dumps the user on a generic error screen: it stays on the connecting view's error variant (wallet logo without the spinner, danger-colored "Connection declined or failed…" subtitle, a 999-radius "Try again" pill that re-runs the same wallet). A rejected sign stays on the signing view with Cancel + Try again. `NetworkMismatchError` opens the wrong-network view (actual → expected networks), and everything else lands on the web's `.error-state` (28dp alert-circle, 14/600 title, `.btn` Try again).
+
+- **SIWS — Sign-In With Stellar on RN.** Pass `siws` to the `StellarAppKit` config and the modal runs the full automatic sign-in flow right after connect, phase for phase like the web modal: *Checking session… → Fetching secure nonce… → Approve the sign-in request in {wallet} → Verifying your signature…*, each step wrapped in a per-step timeout (`timeoutMs`, default 15s). Failures show "Sign-in failed" with the extracted error and a Try-again pill; retries are capped (`maxRetries`, default 3) with a "Too many failed attempts" message past the cap; cancelling or dismissing the modal before sign-in succeeds disconnects the wallet when `disconnectOnFail` is true (the default). The flow is also exported headless as `useSiwsFlow()`.
+
+- **Inline mode.** `mode="inline"` renders the web's `.inline-root` panel on RN: a bordered card (radiusLg corners + 1px `colorBorder` outline) embedded in your screen, no overlay and no close button, always visible — for users who don't want a bottom sheet. `mode="bottomsheet"` (the default) keeps the `@gorhom/bottom-sheet` presentation, now with the web's "Powered by Stellar AppKit" footer pinned at the panel bottom in both modes.
+
+- **Web-metric screens + pure-View icons.** Connecting/signing/SIWS views use the exact `.connecting-view` metrics (88×88 logo wrap, 56×56 squircle logo with radius 22, 17/600 title, 14/1.5 muted subtitle capped at 280, 999-radius pills). The header uses the web `.header` metrics (16/18/8 padding, 15/600 title, 28×28 icon buttons). UI chrome icons (back chevron, close, check, external link, alert circle, circle-X, retry arrow) are pure-View ports of the web's inline SVGs — still zero SVG dependencies. Haptics mirror the web's `navigator.vibrate` calls (15ms on success, double-buzz on errors).
+
+### Compatibility
+
+- `@saganta/stellar-appkit` and `@saganta/stellar-appkit-react-native` 1.9.56 · React Native ≥ 0.73 · public API additive (`mode`, `title`, `logo` props on `AppKitModal`; new `./ui` exports) · 422 tests green (was 382) — the squircle geometry is pinned to the SVG spec by unit tests · Expo demo bundle verified through Metro (8.5 MB hbc).
+
+---
+
 ## v1.9.55
 
 ### Features
